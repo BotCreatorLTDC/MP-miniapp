@@ -74,15 +74,23 @@ class OrderManager {
     setupProceedButton() {
         // Botón de proceder al pedido - configurar cuando se muestra el carrito
         const proceedBtn = document.getElementById('proceedOrderBtn');
+        console.log('Configurando botón proceder al pedido:', proceedBtn);
+        
         if (proceedBtn) {
             // Remover event listeners anteriores para evitar duplicados
             proceedBtn.replaceWith(proceedBtn.cloneNode(true));
             const newProceedBtn = document.getElementById('proceedOrderBtn');
+            console.log('Nuevo botón creado:', newProceedBtn);
             
-            newProceedBtn.addEventListener('click', () => {
-                console.log('Botón proceder al pedido clickeado');
+            newProceedBtn.addEventListener('click', (e) => {
+                console.log('Botón proceder al pedido clickeado', e);
+                console.log('Carrito actual:', this.app.cart);
                 this.openTelegramChat();
             });
+            
+            console.log('Event listener agregado al botón');
+        } else {
+            console.error('No se encontró el botón proceedOrderBtn');
         }
     }
     
@@ -367,7 +375,11 @@ Enviado desde la Miniapp MP Global Corp`;
     }
     
     openTelegramChat() {
+        console.log('openTelegramChat llamada');
+        console.log('Carrito:', this.app.cart);
+        
         if (this.app.cart.length === 0) {
+            console.log('Carrito vacío, mostrando toast de error');
             this.app.showToast('Tu carrito está vacío', 'error');
             return;
         }
@@ -375,15 +387,19 @@ Enviado desde la Miniapp MP Global Corp`;
         try {
             // Generar mensaje de pedido para Telegram
             const orderMessage = this.generateCartMessage();
+            console.log('Mensaje generado:', orderMessage);
             
             // Crear URL de Telegram con el mensaje
             const telegramUrl = `https://t.me/grlltdc?text=${encodeURIComponent(orderMessage)}`;
+            console.log('URL de Telegram:', telegramUrl);
             
             // Abrir chat de Telegram
+            console.log('Abriendo ventana de Telegram...');
             window.open(telegramUrl, '_blank');
             
             // Mostrar mensaje de confirmación
             this.app.showToast('¡Chat de Telegram abierto!', 'success');
+            console.log('Chat de Telegram abierto exitosamente');
             
         } catch (error) {
             console.error('Error abriendo chat de Telegram:', error);

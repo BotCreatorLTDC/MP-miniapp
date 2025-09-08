@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Order Button</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #2d5016;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #4a5d23;
+        }
+        .debug-info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Test del Botón "Proceder al Pedido"</h1>
+        
+        <div class="debug-info">
+            <h3>Debug Info:</h3>
+            <div id="debugInfo">Cargando...</div>
+        </div>
+        
+        <h3>Simular Carrito:</h3>
+        <div id="cartItems">
+            <div class="cart-item">
+                <span>Commercial Mousse (300@ por 290#) x1</span>
+                <button onclick="removeItem(this)">❌</button>
+            </div>
+            <div class="cart-item">
+                <span>Disposables - SuperDope (5ud por 95#) x2</span>
+                <button onclick="removeItem(this)">❌</button>
+            </div>
+        </div>
+        
+        <h3>Botones de Prueba:</h3>
+        <button class="test-button" id="proceedOrderBtn">Proceder al Pedido</button>
+        <button class="test-button" onclick="testTelegramUrl()">Test URL de Telegram</button>
+        <button class="test-button" onclick="testOrderMessage()">Test Mensaje de Pedido</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Simular datos del carrito
+        const mockCart = [
+            {
+                name: 'Commercial Mousse',
+                selectedQuantity: '300@',
+                selectedAmount: '290#',
+                totalPrice: '870#',
+                quantity: 1
+            },
+            {
+                name: 'Disposables - SuperDope',
+                selectedQuantity: '5ud',
+                selectedAmount: '95#',
+                totalPrice: '475#',
+                quantity: 2
+            }
+        ];
+        
+        // Función para generar mensaje de pedido
+        function generateCartMessage() {
+            const cartItems = mockCart.map(item => {
+                const unitText = item.selectedQuantity.includes('@') ? 'cada 100@' : 'c/u';
+                return `• ${item.name} (${item.selectedQuantity} por ${item.selectedAmount} ${unitText}) x${item.quantity} = ${item.totalPrice}`;
+            }).join('\n');
+            
+            const totalItems = mockCart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            return `🛒 NUEVO PEDIDO - MP Global Corp
+
+🛍️ PRODUCTOS (${totalItems} items):
+${cartItems}
+
+📅 Fecha: ${new Date().toLocaleString('es-ES')}
+
+---
+Enviado desde la Miniapp MP Global Corp`;
+        }
+        
+        // Función para abrir chat de Telegram
+        function openTelegramChat() {
+            try {
+                const orderMessage = generateCartMessage();
+                const telegramUrl = `https://t.me/grlltdc?text=${encodeURIComponent(orderMessage)}`;
+                
+                console.log('Abriendo chat de Telegram:', telegramUrl);
+                console.log('Mensaje:', orderMessage);
+                
+                // Abrir chat de Telegram
+                window.open(telegramUrl, '_blank');
+                
+                document.getElementById('results').innerHTML = `
+                    <div style="background: #d4edda; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                        <h4>✅ Chat de Telegram Abierto</h4>
+                        <p>Se ha abierto el chat con @grlltdc con el mensaje del pedido.</p>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error abriendo chat de Telegram:', error);
+                document.getElementById('results').innerHTML = `
+                    <div style="background: #f8d7da; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                        <h4>❌ Error</h4>
+                        <p>Error abriendo chat de Telegram: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Función para probar URL de Telegram
+        function testTelegramUrl() {
+            const orderMessage = generateCartMessage();
+            const telegramUrl = `https://t.me/grlltdc?text=${encodeURIComponent(orderMessage)}`;
+            
+            document.getElementById('results').innerHTML = `
+                <div style="background: #e2e3e5; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                    <h4>🔗 URL de Telegram Generada:</h4>
+                    <p><a href="${telegramUrl}" target="_blank">${telegramUrl}</a></p>
+                    <h4>📝 Mensaje:</h4>
+                    <pre style="background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto;">${orderMessage}</pre>
+                </div>
+            `;
+        }
+        
+        // Función para probar mensaje de pedido
+        function testOrderMessage() {
+            const orderMessage = generateCartMessage();
+            
+            document.getElementById('results').innerHTML = `
+                <div style="background: #e2e3e5; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                    <h4>📝 Mensaje de Pedido:</h4>
+                    <pre style="background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto;">${orderMessage}</pre>
+                </div>
+            `;
+        }
+        
+        // Función para remover item del carrito
+        function removeItem(button) {
+            button.parentElement.remove();
+        }
+        
+        // Configurar botón de proceder al pedido
+        document.addEventListener('DOMContentLoaded', function() {
+            const proceedBtn = document.getElementById('proceedOrderBtn');
+            if (proceedBtn) {
+                proceedBtn.addEventListener('click', openTelegramChat);
+            }
+            
+            // Mostrar info de debug
+            const debugInfo = document.getElementById('debugInfo');
+            debugInfo.innerHTML = `
+                <div><strong>User Agent:</strong> ${navigator.userAgent}</div>
+                <div><strong>URL:</strong> ${window.location.href}</div>
+                <div><strong>Timestamp:</strong> ${new Date().toISOString()}</div>
+                <div><strong>Cart Items:</strong> ${mockCart.length}</div>
+            `;
+        });
+    </script>
+</body>
+</html>
