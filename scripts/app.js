@@ -2,11 +2,96 @@
 class MPApp {
     constructor() {
         this.catalog = null;
-        this.cart = JSON.parse(localStorage.getItem('mp_cart')) || [];
         this.currentCategory = 'all';
         this.searchTerm = '';
         
+        // Obtener ID de usuario de Telegram
+        this.userId = this.getTelegramUserId();
+        console.log('User ID:', this.userId);
+        
+        // Mostrar información del usuario para debug
+        this.logUserInfo();
+        
+        // Cargar carrito específico del usuario
+        this.cart = this.loadUserCart();
+        
         this.init();
+    }
+    
+    getTelegramUserId() {
+        // Intentar obtener el ID del usuario desde Telegram WebApp
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+            const initData = window.Telegram.WebApp.initDataUnsafe;
+            if (initData.user && initData.user.id) {
+                return initData.user.id.toString();
+            }
+        }
+        
+        // Fallback: usar timestamp + random para usuarios sin ID de Telegram
+        const timestamp = Date.now().toString(36);
+        const random = Math.random().toString(36).substr(2, 9);
+        return `temp_${timestamp}_${random}`;
+    }
+    
+    loadUserCart() {
+        try {
+            const userCarts = JSON.parse(localStorage.getItem('mp_user_carts')) || {};
+            return userCarts[this.userId] || [];
+        } catch (error) {
+            console.error('Error cargando carrito de usuario:', error);
+            return [];
+        }
+    }
+    
+    saveUserCart() {
+        try {
+            const userCarts = JSON.parse(localStorage.getItem('mp_user_carts')) || {};
+            userCarts[this.userId] = this.cart;
+            localStorage.setItem('mp_user_carts', JSON.stringify(userCarts));
+            
+            // Limpiar carritos temporales antiguos (más de 24 horas)
+            this.cleanupOldCarts();
+        } catch (error) {
+            console.error('Error guardando carrito de usuario:', error);
+        }
+    }
+    
+    cleanupOldCarts() {
+        try {
+            const userCarts = JSON.parse(localStorage.getItem('mp_user_carts')) || {};
+            const now = Date.now();
+            const oneDay = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+            
+            // Limpiar carritos temporales antiguos
+            Object.keys(userCarts).forEach(userId => {
+                if (userId.startsWith('temp_')) {
+                    // Extraer timestamp del ID temporal
+                    const timestamp = parseInt(userId.split('_')[1], 36);
+                    if (now - timestamp > oneDay) {
+                        delete userCarts[userId];
+                        console.log('Carrito temporal limpiado:', userId);
+                    }
+                }
+            });
+            
+            localStorage.setItem('mp_user_carts', JSON.stringify(userCarts));
+        } catch (error) {
+            console.error('Error limpiando carritos antiguos:', error);
+        }
+    }
+    
+    logUserInfo() {
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+            const initData = window.Telegram.WebApp.initDataUnsafe;
+            console.log('Telegram User Info:', {
+                id: initData.user?.id,
+                username: initData.user?.username,
+                first_name: initData.user?.first_name,
+                last_name: initData.user?.last_name
+            });
+        } else {
+            console.log('No Telegram WebApp data available, using temporary ID');
+        }
     }
     
     async init() {
@@ -523,25 +608,22 @@ class MPApp {
             });
         }
         
-        this.saveCart();
+        this.saveUserCart();
         this.updateCartUI();
     }
     
     removeFromCart(variantId) {
         this.cart = this.cart.filter(item => item.variantId !== variantId);
-        this.saveCart();
+        this.saveUserCart();
         this.updateCartUI();
     }
     
     clearCart() {
         this.cart = [];
-        this.saveCart();
+        this.saveUserCart();
         this.updateCartUI();
     }
     
-    saveCart() {
-        localStorage.setItem('mp_cart', JSON.stringify(this.cart));
-    }
     
     updateCartUI() {
         const cartCount = document.getElementById('cartCount');

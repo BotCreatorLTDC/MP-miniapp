@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Cart Isolation</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .user-info { background: #f0f0f0; padding: 10px; margin: 10px 0; }
+        .cart-info { background: #e8f5e8; padding: 10px; margin: 10px 0; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        .debug { font-family: monospace; font-size: 12px; background: #f9f9f9; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Test de Aislamiento de Carritos</h1>
+    
+    <div class="test-section">
+        <h2>Información del Usuario Actual</h2>
+        <div class="user-info" id="userInfo">
+            Cargando...
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Carrito Actual</h2>
+        <div class="cart-info" id="cartInfo">
+            Cargando...
+        </div>
+        <button onclick="addTestItem()">Agregar Item de Prueba</button>
+        <button onclick="clearCart()">Limpiar Carrito</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Simular Usuario Diferente</h2>
+        <button onclick="simulateDifferentUser()">Simular Usuario Diferente</button>
+        <button onclick="reloadAsCurrentUser()">Recargar como Usuario Actual</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Debug - Todos los Carritos</h2>
+        <div class="debug" id="debugInfo">
+            Cargando...
+        </div>
+        <button onclick="showAllCarts()">Mostrar Todos los Carritos</button>
+        <button onclick="clearAllCarts()">Limpiar Todos los Carritos</button>
+    </div>
+    
+    <script>
+        // Simular la clase MPApp para testing
+        class TestMPApp {
+            constructor() {
+                this.userId = this.getTelegramUserId();
+                this.cart = this.loadUserCart();
+                this.updateDisplay();
+            }
+            
+            getTelegramUserId() {
+                // Intentar obtener el ID del usuario desde Telegram WebApp
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+                    const initData = window.Telegram.WebApp.initDataUnsafe;
+                    if (initData.user && initData.user.id) {
+                        return initData.user.id.toString();
+                    }
+                }
+                
+                // Fallback: usar timestamp + random para usuarios sin ID de Telegram
+                const timestamp = Date.now().toString(36);
+                const random = Math.random().toString(36).substr(2, 9);
+                return `temp_${timestamp}_${random}`;
+            }
+            
+            loadUserCart() {
+                try {
+                    const userCarts = JSON.parse(localStorage.getItem('mp_user_carts')) || {};
+                    return userCarts[this.userId] || [];
+                } catch (error) {
+                    console.error('Error cargando carrito de usuario:', error);
+                    return [];
+                }
+            }
+            
+            saveUserCart() {
+                try {
+                    const userCarts = JSON.parse(localStorage.getItem('mp_user_carts')) || {};
+                    userCarts[this.userId] = this.cart;
+                    localStorage.setItem('mp_user_carts', JSON.stringify(userCarts));
+                } catch (error) {
+                    console.error('Error guardando carrito de usuario:', error);
+                }
+            }
+            
+            updateDisplay() {
+                // Mostrar información del usuario
+                const userInfo = document.getElementById('userInfo');
+                userInfo.innerHTML = `
+                    <strong>User ID:</strong> ${this.userId}<br>
+                    <strong>Tipo:</strong> ${this.userId.startsWith('temp_') ? 'Temporal' : 'Telegram'}<br>
+                    <strong>Items en carrito:</strong> ${this.cart.length}
+                `;
+                
+                // Mostrar carrito
+                const cartInfo = document.getElementById('cartInfo');
+                if (this.cart.length === 0) {
+                    cartInfo.innerHTML = 'Carrito vacío';
+                } else {
+                    cartInfo.innerHTML = this.cart.map(item => 
+                        `${item.name} (${item.selectedQuantity || '1'} por ${item.selectedAmount || item.price}) x${item.quantity}`
+                    ).join('<br>');
+                }
+                
+                // Mostrar debug
+                this.showAllCarts();
+            }
+            
+            showAllCarts() {
+                const debugInfo = document.getElementById('debugInfo');
+                const userCarts = JSON.parse(localStorage.getItem('mp_user_carts')) || {};
+                debugInfo.innerHTML = JSON.stringify(userCarts, null, 2);
+            }
+        }
+        
+        // Inicializar app de test
+        let testApp = new TestMPApp();
+        
+        function addTestItem() {
+            const testItem = {
+                variantId: `test_${Date.now()}`,
+                name: `Item de Prueba ${testApp.cart.length + 1}`,
+                price: '100€',
+                selectedQuantity: '1',
+                selectedAmount: '100€',
+                quantity: 1
+            };
+            
+            testApp.cart.push(testItem);
+            testApp.saveUserCart();
+            testApp.updateDisplay();
+        }
+        
+        function clearCart() {
+            testApp.cart = [];
+            testApp.saveUserCart();
+            testApp.updateDisplay();
+        }
+        
+        function simulateDifferentUser() {
+            // Cambiar a un usuario temporal diferente
+            testApp.userId = `temp_${Date.now().toString(36)}_${Math.random().toString(36).substr(2, 9)}`;
+            testApp.cart = testApp.loadUserCart();
+            testApp.updateDisplay();
+        }
+        
+        function reloadAsCurrentUser() {
+            // Recargar como usuario actual
+            testApp = new TestMPApp();
+        }
+        
+        function showAllCarts() {
+            testApp.showAllCarts();
+        }
+        
+        function clearAllCarts() {
+            localStorage.removeItem('mp_user_carts');
+            testApp = new TestMPApp();
+        }
+    </script>
+</body>
+</html>
