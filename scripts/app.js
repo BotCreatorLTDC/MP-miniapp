@@ -576,7 +576,8 @@ class MPApp {
                     quantity: quantity,
                     amount: pricePerUnit,
                     totalPrice: totalPrice,
-                    pricePerUnit: pricePerUnit
+                    pricePerUnit: pricePerUnit,
+                    pricePer100: pricePerUnit // Precio por cada 100@
                 });
             }
         });
@@ -590,8 +591,17 @@ class MPApp {
         const priceNum = this.extractNumber(pricePerUnit);
         
         if (quantityNum && priceNum) {
-            const total = quantityNum * priceNum;
-            return `${total}#`;
+            // Verificar si la cantidad usa "@" (aplicar lógica de "por cada 100@")
+            if (quantity.includes('@')) {
+                // El precio es por cada 100@, así que calculamos cuántos grupos de 100@ hay
+                const groupsOf100 = quantityNum / 100;
+                const total = groupsOf100 * priceNum;
+                return `${total}#`;
+            } else {
+                // Para otras unidades (ud, Oz, Qp, Hp, Lb, etc.), precio por unidad normal
+                const total = quantityNum * priceNum;
+                return `${total}#`;
+            }
         }
         
         return pricePerUnit; // Fallback si no se puede calcular
@@ -643,6 +653,7 @@ class MPApp {
                 selectedQuantity: selectedQuantity,
                 selectedAmount: selectedAmount,
                 totalPrice: totalPrice,
+                pricePer100: selectedAmount, // Precio por cada 100@
                 quantity: 1
             });
         }
@@ -705,7 +716,7 @@ class MPApp {
                         <div class="cart-item-quantity">Cantidad: ${item.quantity}</div>
                     </div>
                     <div class="cart-item-price">
-                        <div class="price-per-unit">${item.selectedAmount} c/u</div>
+                        <div class="price-per-unit">${item.selectedAmount} ${item.selectedQuantity.includes('@') ? 'por cada 100@' : 'c/u'}</div>
                         <div class="price-total">${item.totalPrice || item.selectedAmount} total</div>
                     </div>
                     <button class="cart-item-remove" data-variant-id="${item.variantId}" data-index="${index}">

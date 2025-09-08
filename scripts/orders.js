@@ -388,7 +388,8 @@ Enviado desde la Miniapp MP Global Corp`;
         const cartItems = this.app.cart.map(item => {
             if (item.selectedQuantity && item.selectedAmount) {
                 const totalPrice = item.totalPrice || item.selectedAmount;
-                return `• ${item.name} (${item.selectedQuantity} por ${item.selectedAmount}) x${item.quantity} = ${totalPrice}`;
+                const unitText = item.selectedQuantity.includes('@') ? 'cada 100@' : 'c/u';
+                return `• ${item.name} (${item.selectedQuantity} por ${item.selectedAmount} ${unitText}) x${item.quantity} = ${totalPrice}`;
             } else {
                 return `• ${item.name} x${item.quantity}`;
             }

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Price Calculation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-item {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .price-breakdown {
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .result {
+            font-weight: bold;
+            color: #2d5016;
+        }
+        .explanation {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧮 Test de Cálculo de Precios</h1>
+        <p>Verificando que el cálculo de precios por cada 100@ funcione correctamente.</p>
+        
+        <div id="test-results"></div>
+        
+        <div class="test-item">
+            <h3>📋 Ejemplo del Producto Real:</h3>
+            <p><strong>Commercial Mousse:</strong> "100@ / 320# | 300@ / 290# | 500@ / 270# | 1k@ / 250#"</p>
+            <div class="explanation">
+                Esto significa: 100@ cuestan 320# (por cada 100@), 300@ cuestan 290# (por cada 100@), etc.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simular las funciones de la miniapp
+        function extractNumber(str) {
+            const match = str.match(/(\d+)/);
+            if (match) {
+                let num = parseInt(match[1]);
+                if (str.toLowerCase().includes('k')) {
+                    num *= 1000;
+                }
+                return num;
+            }
+            return null;
+        }
+
+        function calculateTotalPrice(quantity, pricePerUnit) {
+            const quantityNum = extractNumber(quantity);
+            const priceNum = extractNumber(pricePerUnit);
+            
+            if (quantityNum && priceNum) {
+                // Verificar si la cantidad usa "@" (aplicar lógica de "por cada 100@")
+                if (quantity.includes('@')) {
+                    // El precio es por cada 100@, así que calculamos cuántos grupos de 100@ hay
+                    const groupsOf100 = quantityNum / 100;
+                    const total = groupsOf100 * priceNum;
+                    return `${total}#`;
+                } else {
+                    // Para otras unidades (Oz, Qp, etc.), precio por unidad normal
+                    const total = quantityNum * priceNum;
+                    return `${total}#`;
+                }
+            }
+            
+            return pricePerUnit;
+        }
+
+        function parsePrices(priceString) {
+            const prices = [];
+            const priceParts = priceString.split(' | ');
+            
+            priceParts.forEach(part => {
+                const match = part.match(/(\d+[a-zA-Z@#]*)\s*\/\s*(\d+[a-zA-Z@#]*)/);
+                if (match) {
+                    const quantity = match[1].trim();
+                    const pricePerUnit = match[2].trim();
+                    const totalPrice = calculateTotalPrice(quantity, pricePerUnit);
+                    
+                    prices.push({
+                        quantity: quantity,
+                        amount: pricePerUnit,
+                        totalPrice: totalPrice
+                    });
+                }
+            });
+            
+            return prices;
+        }
+
+        // Test con el producto real
+        const testProduct = "100@ / 320# | 300@ / 290# | 500@ / 270# | 1k@ / 250#";
+        const parsedPrices = parsePrices(testProduct);
+
+        // Generar HTML de resultados
+        let resultsHTML = '<h2>🔍 Resultados del Test:</h2>';
+        
+        parsedPrices.forEach(price => {
+            const quantityNum = extractNumber(price.quantity);
+            const priceNum = extractNumber(price.amount);
+            const groupsOf100 = quantityNum / 100;
+            
+            resultsHTML += `
+                <div class="test-item">
+                    <h3>${price.quantity} por ${price.amount}</h3>
+                    <div class="price-breakdown">
+                        <div><strong>Cantidad:</strong> ${quantityNum}@</div>
+                        <div><strong>Precio por cada 100@:</strong> ${priceNum}#</div>
+                        <div><strong>Grupos de 100@:</strong> ${groupsOf100}</div>
+                        <div class="result"><strong>Total:</strong> ${price.totalPrice}</div>
+                        <div class="explanation">
+                            Cálculo: ${groupsOf100} × ${priceNum}# = ${price.totalPrice}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Verificaciones específicas
+        resultsHTML += '<h2>✅ Verificaciones - Productos con "@" (por cada 100@):</h2>';
+        
+        // Test 1: 300@ por 290#
+        const test1 = calculateTotalPrice('300@', '290#');
+        const expected1 = '870#'; // 3 grupos de 100@ × 290# = 870#
+        resultsHTML += `
+            <div class="test-item">
+                <h3>Test 1: 300@ por 290#</h3>
+                <div class="price-breakdown">
+                    <div><strong>Resultado:</strong> ${test1}</div>
+                    <div><strong>Esperado:</strong> ${expected1}</div>
+                    <div class="result"><strong>✅ Correcto:</strong> ${test1 === expected1 ? 'SÍ' : 'NO'}</div>
+                </div>
+            </div>
+        `;
+
+        // Test 2: 1k@ por 250#
+        const test2 = calculateTotalPrice('1k@', '250#');
+        const expected2 = '2500#'; // 10 grupos de 100@ × 250# = 2500#
+        resultsHTML += `
+            <div class="test-item">
+                <h3>Test 2: 1k@ por 250#</h3>
+                <div class="price-breakdown">
+                    <div><strong>Resultado:</strong> ${test2}</div>
+                    <div><strong>Esperado:</strong> ${expected2}</div>
+                    <div class="result"><strong>✅ Correcto:</strong> ${test2 === expected2 ? 'SÍ' : 'NO'}</div>
+                </div>
+            </div>
+        `;
+
+        // Test 3: 500@ por 270#
+        const test3 = calculateTotalPrice('500@', '270#');
+        const expected3 = '1350#'; // 5 grupos de 100@ × 270# = 1350#
+        resultsHTML += `
+            <div class="test-item">
+                <h3>Test 3: 500@ por 270#</h3>
+                <div class="price-breakdown">
+                    <div><strong>Resultado:</strong> ${test3}</div>
+                    <div><strong>Esperado:</strong> ${expected3}</div>
+                    <div class="result"><strong>✅ Correcto:</strong> ${test3 === expected3 ? 'SÍ' : 'NO'}</div>
+                </div>
+            </div>
+        `;
+
+        // Verificaciones para productos con "ud" (unidades)
+        resultsHTML += '<h2>✅ Verificaciones - Productos con "ud" (por unidad):</h2>';
+        
+        // Test 4: 5ud por 95#
+        const test4 = calculateTotalPrice('5ud', '95#');
+        const expected4 = '475#'; // 5 unidades × 95# = 475#
+        resultsHTML += `
+            <div class="test-item">
+                <h3>Test 4: 5ud por 95#</h3>
+                <div class="price-breakdown">
+                    <div><strong>Resultado:</strong> ${test4}</div>
+                    <div><strong>Esperado:</strong> ${expected4}</div>
+                    <div class="result"><strong>✅ Correcto:</strong> ${test4 === expected4 ? 'SÍ' : 'NO'}</div>
+                </div>
+            </div>
+        `;
+
+        // Test 5: 10ud por 90#
+        const test5 = calculateTotalPrice('10ud', '90#');
+        const expected5 = '900#'; // 10 unidades × 90# = 900#
+        resultsHTML += `
+            <div class="test-item">
+                <h3>Test 5: 10ud por 90#</h3>
+                <div class="price-breakdown">
+                    <div><strong>Resultado:</strong> ${test5}</div>
+                    <div><strong>Esperado:</strong> ${expected5}</div>
+                    <div class="result"><strong>✅ Correcto:</strong> ${test5 === expected5 ? 'SÍ' : 'NO'}</div>
+                </div>
+            </div>
+        `;
+
+        // Verificaciones para productos con "Oz" (onzas)
+        resultsHTML += '<h2>✅ Verificaciones - Productos con "Oz" (por onza):</h2>';
+        
+        // Test 6: 1Oz por 260#
+        const test6 = calculateTotalPrice('1Oz', '260#');
+        const expected6 = '260#'; // 1 onza × 260# = 260#
+        resultsHTML += `
+            <div class="test-item">
+                <h3>Test 6: 1Oz por 260#</h3>
+                <div class="price-breakdown">
+                    <div><strong>Resultado:</strong> ${test6}</div>
+                    <div><strong>Esperado:</strong> ${expected6}</div>
+                    <div class="result"><strong>✅ Correcto:</strong> ${test6 === expected6 ? 'SÍ' : 'NO'}</div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('test-results').innerHTML = resultsHTML;
+    </script>
+</body>
+</html>
