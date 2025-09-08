@@ -100,6 +100,12 @@ class MPApp {
             this.setupEventListeners();
             this.renderProducts();
             this.updateCartUI();
+            
+            // Inicializar gestor de pedidos
+            console.log('Inicializando OrderManager...');
+            this.orderManager = new OrderManager(this);
+            console.log('OrderManager inicializado:', this.orderManager);
+            
             this.hideLoading();
         } catch (error) {
             console.error('Error inicializando la app:', error);
@@ -705,6 +711,82 @@ class MPApp {
         this.showToast('Carrito limpiado', 'info');
     }
     
+    setupProceedButtonFallback() {
+        console.log('Configurando botón de proceder al pedido (fallback)');
+        const proceedBtn = document.getElementById('proceedOrderBtn');
+        if (proceedBtn) {
+            // Remover event listeners anteriores
+            proceedBtn.replaceWith(proceedBtn.cloneNode(true));
+            const newProceedBtn = document.getElementById('proceedOrderBtn');
+            
+            newProceedBtn.addEventListener('click', () => {
+                console.log('Botón proceder al pedido clickeado (fallback)');
+                this.openTelegramChatFallback();
+            });
+            
+            console.log('Event listener agregado al botón (fallback)');
+        } else {
+            console.error('No se encontró el botón proceedOrderBtn (fallback)');
+        }
+    }
+    
+    openTelegramChatFallback() {
+        console.log('openTelegramChatFallback llamada');
+        console.log('Carrito:', this.cart);
+        
+        if (this.cart.length === 0) {
+            console.log('Carrito vacío, mostrando toast de error');
+            this.showToast('Tu carrito está vacío', 'error');
+            return;
+        }
+        
+        try {
+            // Generar mensaje de pedido para Telegram
+            const orderMessage = this.generateCartMessageFallback();
+            console.log('Mensaje generado:', orderMessage);
+            
+            // Crear URL de Telegram con el mensaje
+            const telegramUrl = `https://t.me/grlltdc?text=${encodeURIComponent(orderMessage)}`;
+            console.log('URL de Telegram:', telegramUrl);
+            
+            // Abrir chat de Telegram
+            console.log('Abriendo ventana de Telegram...');
+            window.open(telegramUrl, '_blank');
+            
+            // Mostrar mensaje de confirmación
+            this.showToast('¡Chat de Telegram abierto!', 'success');
+            console.log('Chat de Telegram abierto exitosamente');
+            
+        } catch (error) {
+            console.error('Error abriendo chat de Telegram:', error);
+            this.showToast('Error abriendo chat de Telegram', 'error');
+        }
+    }
+    
+    generateCartMessageFallback() {
+        const cartItems = this.cart.map(item => {
+            if (item.selectedQuantity && item.selectedAmount) {
+                const totalPrice = item.totalPrice || item.selectedAmount;
+                const unitText = item.selectedQuantity.includes('@') ? 'cada 100@' : 'c/u';
+                return `• ${item.name} (${item.selectedQuantity} por ${item.selectedAmount} ${unitText}) x${item.quantity} = ${totalPrice}`;
+            } else {
+                return `• ${item.name} x${item.quantity}`;
+            }
+        }).join('\n');
+        
+        const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
+        
+        return `🛒 NUEVO PEDIDO - MP Global Corp
+
+🛍️ PRODUCTOS (${totalItems} items):
+${cartItems}
+
+📅 Fecha: ${new Date().toLocaleString('es-ES')}
+
+---
+Enviado desde la Miniapp MP Global Corp`;
+    }
+    
     
     updateCartUI() {
         const cartCount = document.getElementById('cartCount');
@@ -718,8 +800,14 @@ class MPApp {
         const cartTotal = document.getElementById('cartTotal');
         
         // Configurar el botón de proceder al pedido
+        console.log('showCart - OrderManager existe:', !!this.orderManager);
         if (this.orderManager) {
+            console.log('Configurando botón de proceder al pedido...');
             this.orderManager.setupProceedButton();
+        } else {
+            console.error('OrderManager no está inicializado');
+            // Fallback: configurar el botón directamente
+            this.setupProceedButtonFallback();
         }
         
         if (this.cart.length === 0) {
