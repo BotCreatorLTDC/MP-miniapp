@@ -558,8 +558,11 @@ class MPApp {
         const addToCartBtn = document.getElementById('addToCartBtn');
         if (!addToCartBtn) return;
         
-        // Actualizar el texto del botón para mostrar la variante seleccionada
-        addToCartBtn.textContent = `Agregar ${selectedQuantity} por ${selectedAmount}`;
+        // Calcular el precio total para esta variante
+        const totalPrice = this.calculateTotalPrice(selectedQuantity, selectedAmount);
+        
+        // Actualizar el texto del botón para mostrar la variante seleccionada con precio total
+        addToCartBtn.textContent = `Agregar ${selectedQuantity} por ${totalPrice}`;
         addToCartBtn.dataset.selectedQuantity = selectedQuantity;
         addToCartBtn.dataset.selectedAmount = selectedAmount;
         
