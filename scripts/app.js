@@ -312,7 +312,7 @@ class MPApp {
                 </div>
                 <div class="product-image">
                     ${product.images && product.images.length > 0 
-                        ? `<img src="${this.getImageUrl(product.images[0])}" alt="${product.name}" class="gallery-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+                        ? `<img src="${this.getImageUrl(product.images[0])}" alt="${product.name}" class="gallery-image" onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">`
                         : ''
                     }
                     <div class="image-placeholder" style="display: ${product.images && product.images.length > 0 ? 'none' : 'flex'};">
