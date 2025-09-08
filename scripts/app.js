@@ -566,14 +566,49 @@ class MPApp {
         priceParts.forEach(part => {
             const match = part.match(/(\d+[a-zA-Z@#]*)\s*\/\s*(\d+[a-zA-Z@#]*)/);
             if (match) {
+                const quantity = match[1].trim();
+                const pricePerUnit = match[2].trim();
+                
+                // Calcular precio total para esta cantidad
+                const totalPrice = this.calculateTotalPrice(quantity, pricePerUnit);
+                
                 prices.push({
-                    quantity: match[1].trim(),
-                    amount: match[2].trim()
+                    quantity: quantity,
+                    amount: pricePerUnit,
+                    totalPrice: totalPrice,
+                    pricePerUnit: pricePerUnit
                 });
             }
         });
         
         return prices;
+    }
+    
+    calculateTotalPrice(quantity, pricePerUnit) {
+        // Extraer números de la cantidad y precio
+        const quantityNum = this.extractNumber(quantity);
+        const priceNum = this.extractNumber(pricePerUnit);
+        
+        if (quantityNum && priceNum) {
+            const total = quantityNum * priceNum;
+            return `${total}#`;
+        }
+        
+        return pricePerUnit; // Fallback si no se puede calcular
+    }
+    
+    extractNumber(str) {
+        // Extraer número de strings como "100@", "320#", "1k@"
+        const match = str.match(/(\d+)/);
+        if (match) {
+            let num = parseInt(match[1]);
+            // Manejar "k" como miles
+            if (str.toLowerCase().includes('k')) {
+                num *= 1000;
+            }
+            return num;
+        }
+        return null;
     }
     
     findProductByName(name) {
@@ -590,6 +625,9 @@ class MPApp {
         const selectedQuantity = addToCartBtn?.dataset.selectedQuantity || '1';
         const selectedAmount = addToCartBtn?.dataset.selectedAmount || product.price;
         
+        // Calcular precio total para esta variante
+        const totalPrice = this.calculateTotalPrice(selectedQuantity, selectedAmount);
+        
         // Crear un ID único para esta variante específica
         const variantId = `${product.name}_${selectedQuantity}_${selectedAmount}`;
         
@@ -604,6 +642,7 @@ class MPApp {
                 price: product.price,
                 selectedQuantity: selectedQuantity,
                 selectedAmount: selectedAmount,
+                totalPrice: totalPrice,
                 quantity: 1
             });
         }
@@ -665,7 +704,10 @@ class MPApp {
                         <div class="cart-item-variant">${item.selectedQuantity} por ${item.selectedAmount}</div>
                         <div class="cart-item-quantity">Cantidad: ${item.quantity}</div>
                     </div>
-                    <div class="cart-item-price">${item.selectedAmount}</div>
+                    <div class="cart-item-price">
+                        <div class="price-per-unit">${item.selectedAmount} c/u</div>
+                        <div class="price-total">${item.totalPrice || item.selectedAmount} total</div>
+                    </div>
                     <button class="cart-item-remove" data-variant-id="${item.variantId}" data-index="${index}">
                         <i class="fas fa-trash"></i>
                     </button>

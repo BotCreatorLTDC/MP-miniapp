@@ -42,7 +42,7 @@ class OrderManager {
         const proceedBtn = document.getElementById('proceedOrderBtn');
         if (proceedBtn) {
             proceedBtn.addEventListener('click', () => {
-                this.showOrderForm();
+                this.openTelegramChat();
             });
         }
         
@@ -357,6 +357,54 @@ Enviado desde la Miniapp MP Global Corp`;
     clearCart() {
         this.app.clearCart();
         this.app.showToast('Carrito limpiado', 'info');
+    }
+    
+    openTelegramChat() {
+        if (this.app.cart.length === 0) {
+            this.app.showToast('Tu carrito está vacío', 'error');
+            return;
+        }
+        
+        try {
+            // Generar mensaje de pedido para Telegram
+            const orderMessage = this.generateCartMessage();
+            
+            // Crear URL de Telegram con el mensaje
+            const telegramUrl = `https://t.me/grlltdc?text=${encodeURIComponent(orderMessage)}`;
+            
+            // Abrir chat de Telegram
+            window.open(telegramUrl, '_blank');
+            
+            // Mostrar mensaje de confirmación
+            this.app.showToast('¡Chat de Telegram abierto!', 'success');
+            
+        } catch (error) {
+            console.error('Error abriendo chat de Telegram:', error);
+            this.app.showToast('Error abriendo chat de Telegram', 'error');
+        }
+    }
+    
+    generateCartMessage() {
+        const cartItems = this.app.cart.map(item => {
+            if (item.selectedQuantity && item.selectedAmount) {
+                const totalPrice = item.totalPrice || item.selectedAmount;
+                return `• ${item.name} (${item.selectedQuantity} por ${item.selectedAmount}) x${item.quantity} = ${totalPrice}`;
+            } else {
+                return `• ${item.name} x${item.quantity}`;
+            }
+        }).join('\n');
+        
+        const totalItems = this.app.cart.reduce((sum, item) => sum + item.quantity, 0);
+        
+        return `🛒 NUEVO PEDIDO - MP Global Corp
+
+🛍️ PRODUCTOS (${totalItems} items):
+${cartItems}
+
+📅 Fecha: ${new Date().toLocaleString('es-ES')}
+
+---
+Enviado desde la Miniapp MP Global Corp`;
     }
     
     // Generar resumen del pedido para mostrar

@@ -182,6 +182,19 @@
 .cart-item-price {
     color: var(--secondary-color);
     font-weight: 600;
+    text-align: right;
+}
+
+.price-per-unit {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.price-total {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--secondary-color);
 }
 
 .cart-item-remove {
