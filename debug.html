@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Images</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .debug-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .product-card { width: 200px; height: 250px; border: 1px solid #ccc; margin: 10px; display: inline-block; }
+        .product-image { width: 100%; height: 150px; background: #f0f0f0; position: relative; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+        .image-placeholder { width: 100%; height: 100%; background: linear-gradient(45deg, #4a5d23, #2d5016); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; position: absolute; top: 0; left: 0; }
+    </style>
+</head>
+<body>
+    <h1>Debug de Imágenes</h1>
+    
+    <div class="debug-section">
+        <h2>Test 1: Imagen que falla</h2>
+        <div class="product-card">
+            <div class="product-image">
+                <img src="img/nonexistent.jpg" alt="Test" onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">
+                <div class="image-placeholder" style="display: none;">
+                    <i>🌿</i>
+                </div>
+            </div>
+            <div>Producto de prueba</div>
+        </div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>Test 2: Placeholder directo</h2>
+        <div class="product-card">
+            <div class="product-image">
+                <div class="image-placeholder">
+                    <i>🌿</i>
+                </div>
+            </div>
+            <div>Producto sin imagen</div>
+        </div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>Test 3: Imagen externa</h2>
+        <div class="product-card">
+            <div class="product-image">
+                <img src="https://via.placeholder.com/200x150/4a5d23/ffffff?text=TEST" alt="Test">
+            </div>
+            <div>Producto con imagen externa</div>
+        </div>
+    </div>
+    
+    <div class="debug-section">
+        <h2>Test 4: JavaScript Debug</h2>
+        <div id="js-test"></div>
+    </div>
+    
+    <script>
+        // Simular las funciones de la miniapp
+        function getImageUrl(imagePath) {
+            console.log('getImageUrl called with:', imagePath);
+            if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+                return imagePath;
+            }
+            if (imagePath.startsWith('img/')) {
+                return getPlaceholderImage();
+            }
+            return imagePath;
+        }
+        
+        function getPlaceholderImage() {
+            console.log('getPlaceholderImage called');
+            return 'https://via.placeholder.com/200x150/4a5d23/ffffff?text=PLACEHOLDER';
+        }
+        
+        // Test con datos reales
+        const testProduct = {
+            name: 'Test Product',
+            images: ['img/test.jpg'],
+            price: '100€'
+        };
+        
+        const testProduct2 = {
+            name: 'Test Product 2',
+            images: [],
+            price: '200€'
+        };
+        
+        function createProductCard(product) {
+            const isAvailable = true;
+            const categoryClass = 'category-moroccan';
+            
+            return `
+                <div class="product-card">
+                    <div class="product-image">
+                        ${product.images && product.images.length > 0 
+                            ? `<img src="${getImageUrl(product.images[0])}" alt="${product.name}" class="gallery-image" onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">`
+                            : ''
+                        }
+                        <div class="image-placeholder" style="display: ${product.images && product.images.length > 0 ? 'none' : 'flex'};">
+                            <i>🌿</i>
+                        </div>
+                    </div>
+                    <div>${product.name}</div>
+                </div>
+            `;
+        }
+        
+        // Renderizar tests
+        document.getElementById('js-test').innerHTML = 
+            createProductCard(testProduct) + 
+            createProductCard(testProduct2);
+    </script>
+</body>
+</html>
