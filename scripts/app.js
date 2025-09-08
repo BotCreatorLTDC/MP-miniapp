@@ -5,6 +5,9 @@ class MPApp {
         this.currentCategory = 'all';
         this.searchTerm = '';
         
+        // Inicializar sistema de traducciones
+        this.translationManager = new TranslationManager();
+        
         // Obtener ID de usuario de Telegram
         this.userId = this.getTelegramUserId();
         console.log('User ID:', this.userId);
@@ -271,6 +274,15 @@ class MPApp {
         
         // Modales
         this.setupModalListeners();
+        
+        // Image Zoom
+        this.setupImageZoom();
+        
+        // Security & Privacy
+        this.setupSecurity();
+        
+        // Language Selection
+        this.setupLanguageSelection();
     }
     
     setupModalListeners() {
@@ -915,6 +927,274 @@ Enviado desde la Miniapp MP Global Corp`;
             toast.classList.remove('show');
             setTimeout(() => document.body.removeChild(toast), 300);
         }, 3000);
+    }
+    
+    // Image Zoom Functionality
+    setupImageZoom() {
+        // Zoom state
+        this.zoomState = {
+            scale: 1,
+            rotation: 0,
+            isDragging: false,
+            startX: 0,
+            startY: 0,
+            translateX: 0,
+            translateY: 0
+        };
+        
+        // Setup image click listeners
+        this.setupImageClickListeners();
+        
+        // Setup zoom controls
+        this.setupZoomControls();
+    }
+    
+    setupImageClickListeners() {
+        // Add click listeners to all images
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('gallery-image') || 
+                (e.target.classList.contains('product-image') && e.target.tagName === 'IMG')) {
+                e.preventDefault();
+                this.openImageZoom(e.target.src, e.target.alt);
+            }
+        });
+    }
+    
+    setupZoomControls() {
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
+        const zoomResetBtn = document.getElementById('zoomResetBtn');
+        const zoomRotateBtn = document.getElementById('zoomRotateBtn');
+        const closeBtn = document.getElementById('closeImageZoomModal');
+        
+        if (zoomInBtn) {
+            zoomInBtn.addEventListener('click', () => this.zoomIn());
+        }
+        if (zoomOutBtn) {
+            zoomOutBtn.addEventListener('click', () => this.zoomOut());
+        }
+        if (zoomResetBtn) {
+            zoomResetBtn.addEventListener('click', () => this.zoomReset());
+        }
+        if (zoomRotateBtn) {
+            zoomRotateBtn.addEventListener('click', () => this.zoomRotate());
+        }
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => this.closeImageZoom());
+        }
+    }
+    
+    openImageZoom(imageSrc, imageAlt) {
+        const modal = document.getElementById('imageZoomModal');
+        const zoomImage = document.getElementById('zoomImage');
+        const zoomImageTitle = document.getElementById('zoomImageTitle');
+        
+        if (modal && zoomImage) {
+            zoomImage.src = imageSrc;
+            zoomImage.alt = imageAlt;
+            zoomImageTitle.textContent = imageAlt || 'Imagen del Producto';
+            
+            // Reset zoom state
+            this.zoomState = {
+                scale: 1,
+                rotation: 0,
+                isDragging: false,
+                startX: 0,
+                startY: 0,
+                translateX: 0,
+                translateY: 0
+            };
+            
+            this.updateZoomImage();
+            this.showModal(modal);
+            
+            // Setup drag functionality
+            this.setupImageDrag();
+        }
+    }
+    
+    closeImageZoom() {
+        const modal = document.getElementById('imageZoomModal');
+        if (modal) {
+            this.hideModal(modal);
+        }
+    }
+    
+    setupImageDrag() {
+        const zoomImage = document.getElementById('zoomImage');
+        if (!zoomImage) return;
+        
+        zoomImage.addEventListener('mousedown', (e) => {
+            if (this.zoomState.scale > 1) {
+                this.zoomState.isDragging = true;
+                this.zoomState.startX = e.clientX - this.zoomState.translateX;
+                this.zoomState.startY = e.clientY - this.zoomState.translateY;
+                zoomImage.style.cursor = 'grabbing';
+            }
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (this.zoomState.isDragging) {
+                this.zoomState.translateX = e.clientX - this.zoomState.startX;
+                this.zoomState.translateY = e.clientY - this.zoomState.startY;
+                this.updateZoomImage();
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            this.zoomState.isDragging = false;
+            if (zoomImage) {
+                zoomImage.style.cursor = this.zoomState.scale > 1 ? 'grab' : 'default';
+            }
+        });
+        
+        // Touch support
+        zoomImage.addEventListener('touchstart', (e) => {
+            if (this.zoomState.scale > 1 && e.touches.length === 1) {
+                this.zoomState.isDragging = true;
+                this.zoomState.startX = e.touches[0].clientX - this.zoomState.translateX;
+                this.zoomState.startY = e.touches[0].clientY - this.zoomState.translateY;
+            }
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (this.zoomState.isDragging && e.touches.length === 1) {
+                e.preventDefault();
+                this.zoomState.translateX = e.touches[0].clientX - this.zoomState.startX;
+                this.zoomState.translateY = e.touches[0].clientY - this.zoomState.startY;
+                this.updateZoomImage();
+            }
+        });
+        
+        document.addEventListener('touchend', () => {
+            this.zoomState.isDragging = false;
+        });
+    }
+    
+    zoomIn() {
+        this.zoomState.scale = Math.min(this.zoomState.scale * 1.2, 5);
+        this.updateZoomImage();
+    }
+    
+    zoomOut() {
+        this.zoomState.scale = Math.max(this.zoomState.scale / 1.2, 0.5);
+        this.updateZoomImage();
+    }
+    
+    zoomReset() {
+        this.zoomState.scale = 1;
+        this.zoomState.rotation = 0;
+        this.zoomState.translateX = 0;
+        this.zoomState.translateY = 0;
+        this.updateZoomImage();
+    }
+    
+    zoomRotate() {
+        this.zoomState.rotation = (this.zoomState.rotation + 90) % 360;
+        this.updateZoomImage();
+    }
+    
+    updateZoomImage() {
+        const zoomImage = document.getElementById('zoomImage');
+        if (!zoomImage) return;
+        
+        const transform = `scale(${this.zoomState.scale}) rotate(${this.zoomState.rotation}deg) translate(${this.zoomState.translateX}px, ${this.zoomState.translateY}px)`;
+        zoomImage.style.transform = transform;
+        
+        // Update cursor
+        zoomImage.style.cursor = this.zoomState.scale > 1 ? 'grab' : 'default';
+    }
+    
+    // Security & Privacy Functionality
+    setupSecurity() {
+        // Security modal button
+        const securityBtn = document.getElementById('securityBtn');
+        if (securityBtn) {
+            securityBtn.addEventListener('click', () => this.showSecurityModal());
+        }
+        
+        // Security modal close buttons
+        const closeSecurityModal = document.getElementById('closeSecurityModal');
+        const closeSecurityModalBtn = document.getElementById('closeSecurityModalBtn');
+        
+        if (closeSecurityModal) {
+            closeSecurityModal.addEventListener('click', () => this.hideSecurityModal());
+        }
+        if (closeSecurityModalBtn) {
+            closeSecurityModalBtn.addEventListener('click', () => this.hideSecurityModal());
+        }
+        
+        // Clear all data button
+        const clearAllDataBtn = document.getElementById('clearAllDataBtn');
+        if (clearAllDataBtn) {
+            clearAllDataBtn.addEventListener('click', () => this.clearAllData());
+        }
+    }
+    
+    showSecurityModal() {
+        const modal = document.getElementById('securityModal');
+        if (modal) {
+            this.showModal(modal);
+        }
+    }
+    
+    hideSecurityModal() {
+        const modal = document.getElementById('securityModal');
+        if (modal) {
+            this.hideModal(modal);
+        }
+    }
+    
+    clearAllData() {
+        if (confirm('¿Estás seguro de que quieres eliminar todos los datos locales? Esto incluye tu carrito y preferencias.')) {
+            try {
+                // Clear all localStorage data
+                localStorage.clear();
+                
+                // Reset app state
+                this.cart = [];
+                this.currentCategory = 'all';
+                this.searchTerm = '';
+                
+                // Update UI
+                this.updateCartUI();
+                this.renderProducts();
+                
+                // Show success message
+                this.showToast('Todos los datos han sido eliminados', 'success');
+                
+                // Close security modal
+                this.hideSecurityModal();
+                
+                console.log('All data cleared successfully');
+            } catch (error) {
+                console.error('Error clearing data:', error);
+                this.showToast('Error al eliminar los datos', 'error');
+            }
+        }
+    }
+    
+    // Language Selection Functionality
+    setupLanguageSelection() {
+        const languageSelect = document.getElementById('languageSelect');
+        if (languageSelect) {
+            // Establecer idioma actual
+            languageSelect.value = this.translationManager.currentLanguage;
+            
+            // Actualizar UI inicial
+            this.translationManager.updateUI();
+            
+            // Escuchar cambios de idioma
+            languageSelect.addEventListener('change', (e) => {
+                this.translationManager.setLanguage(e.target.value);
+                this.showToast(`Idioma cambiado a ${this.translationManager.getLanguageName(e.target.value)}`, 'info');
+            });
+        }
+    }
+    
+    // Función helper para obtener traducciones
+    t(key) {
+        return this.translationManager.t(key);
     }
 }
 

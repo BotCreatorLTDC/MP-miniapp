@@ -22,6 +22,13 @@
                 </div>
             </div>
             <div class="header-actions">
+                <div class="language-selector">
+                    <select id="languageSelect" class="language-select">
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="fr">🇫🇷 FR</option>
+                    </select>
+                </div>
                 <button class="cart-btn" id="cartBtn">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count" id="cartCount">0</span>
@@ -249,6 +256,105 @@
         </div>
     </div>
 
+    <!-- Image Zoom Modal -->
+    <div class="modal" id="imageZoomModal">
+        <div class="modal-content image-zoom-content">
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                    <h2 id="zoomImageTitle">Imagen del Producto</h2>
+                </div>
+                <button class="close-btn" id="closeImageZoomModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body image-zoom-body">
+                <div class="image-zoom-container">
+                    <img id="zoomImage" src="" alt="Imagen ampliada" class="zoom-image">
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" id="zoomInBtn" title="Acercar">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="zoom-btn" id="zoomOutBtn" title="Alejar">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button class="zoom-btn" id="zoomResetBtn" title="Restablecer">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </button>
+                        <button class="zoom-btn" id="zoomRotateBtn" title="Rotar">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security & Privacy Modal -->
+    <div class="modal" id="securityModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                    <h2>Seguridad y Privacidad</h2>
+                </div>
+                <button class="close-btn" id="closeSecurityModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="security-content">
+                    <div class="security-section">
+                        <h3><i class="fas fa-shield-alt"></i> Seguridad de Datos</h3>
+                        <ul>
+                            <li><strong>Cifrado SSL/TLS:</strong> Todas las comunicaciones están cifradas con protocolos de seguridad de grado bancario.</li>
+                            <li><strong>Datos Locales:</strong> Tu carrito y preferencias se almacenan localmente en tu dispositivo, no en nuestros servidores.</li>
+                            <li><strong>Sin Tracking:</strong> No utilizamos cookies de seguimiento ni recopilamos datos personales sin tu consentimiento.</li>
+                            <li><strong>Comunicación Segura:</strong> Los pedidos se envían directamente a Telegram con cifrado end-to-end.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="security-section">
+                        <h3><i class="fas fa-user-secret"></i> Privacidad</h3>
+                        <ul>
+                            <li><strong>Anonimato:</strong> No requerimos registro ni datos personales para usar la miniapp.</li>
+                            <li><strong>Datos Mínimos:</strong> Solo recopilamos el ID de usuario de Telegram para personalizar tu carrito.</li>
+                            <li><strong>Sin Almacenamiento:</strong> No guardamos información de pedidos en nuestros sistemas.</li>
+                            <li><strong>Control Total:</strong> Puedes limpiar todos los datos locales en cualquier momento.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="security-section">
+                        <h3><i class="fas fa-lock"></i> Cumplimiento Legal</h3>
+                        <ul>
+                            <li><strong>GDPR:</strong> Cumplimos con el Reglamento General de Protección de Datos de la UE.</li>
+                            <li><strong>Edad Mínima:</strong> Solo para usuarios mayores de 18 años.</li>
+                            <li><strong>Uso Responsable:</strong> Promovemos el consumo responsable de productos de cannabis.</li>
+                            <li><strong>Transparencia:</strong> Toda nuestra política de privacidad está disponible públicamente.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="security-section">
+                        <h3><i class="fas fa-mobile-alt"></i> Seguridad Móvil</h3>
+                        <ul>
+                            <li><strong>App Segura:</strong> La miniapp funciona dentro del entorno seguro de Telegram.</li>
+                            <li><strong>Sin Permisos:</strong> No solicitamos acceso a tu cámara, ubicación o contactos.</li>
+                            <li><strong>Actualizaciones:</strong> Las mejoras de seguridad se implementan automáticamente.</li>
+                            <li><strong>Verificación:</strong> Todos los productos son verificados antes de su inclusión en el catálogo.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeSecurityModalBtn">Cerrar</button>
+                <button class="btn btn-primary" id="clearAllDataBtn">
+                    <i class="fas fa-trash"></i>
+                    Limpiar Todos los Datos
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
@@ -262,11 +368,18 @@
             <div class="footer-info">
                 <p>&copy; 2025 MP Global Corp. Todos los derechos reservados.</p>
                 <p>Productos de cannabis premium para adultos.</p>
+                <div class="footer-links">
+                    <button class="footer-link" id="securityBtn">
+                        <i class="fas fa-shield-alt"></i>
+                        Seguridad y Privacidad
+                    </button>
+                </div>
             </div>
         </div>
     </footer>
 
     <!-- Scripts -->
+    <script src="scripts/translations.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/catalog.js"></script>
     <script src="scripts/orders.js"></script>
