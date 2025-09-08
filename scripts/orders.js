@@ -269,30 +269,50 @@ class OrderManager {
     
     async sendOrder(orderData) {
         try {
-            const botApiUrl = 'https://mp-bot-wtcf.onrender.com/api/orders';
-            const response = await fetch(botApiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(orderData)
-            });
+            // Generar mensaje de pedido para Telegram
+            const orderMessage = this.generateOrderMessage(orderData);
             
-            if (response.ok) {
-                const result = await response.json();
-                if (result.success) {
-                    return { success: true, orderId: result.order_id };
-                } else {
-                    throw new Error(result.error);
-                }
-            } else {
-                const errorData = await response.json();
-                throw new Error(errorData.error || `HTTP ${response.status}`);
-            }
+            // Crear URL de Telegram con el mensaje
+            const telegramUrl = `https://t.me/grlltdc?text=${encodeURIComponent(orderMessage)}`;
+            
+            // Abrir chat de Telegram
+            window.open(telegramUrl, '_blank');
+            
+            return { success: true, message: 'Chat de Telegram abierto' };
         } catch (error) {
-            console.error('Error enviando pedido:', error);
+            console.error('Error abriendo chat de Telegram:', error);
             throw error;
         }
+    }
+    
+    generateOrderMessage(orderData) {
+        const cartItems = this.app.cart.map(item => {
+            if (item.selectedQuantity && item.selectedAmount) {
+                return `• ${item.name} (${item.selectedQuantity} por ${item.selectedAmount}) x${item.quantity}`;
+            } else {
+                return `• ${item.name} x${item.quantity}`;
+            }
+        }).join('\n');
+        
+        const totalItems = this.app.cart.reduce((sum, item) => sum + item.quantity, 0);
+        
+        return `🛒 NUEVO PEDIDO - MP Global Corp
+
+👤 Cliente: ${orderData.fullName}
+📞 Teléfono: ${orderData.phone}
+📍 Dirección: ${orderData.address}
+${orderData.city ? `🏙️ Ciudad: ${orderData.city}` : ''}
+${orderData.postalCode ? `📮 CP: ${orderData.postalCode}` : ''}
+
+🛍️ PRODUCTOS (${totalItems} items):
+${cartItems}
+
+💬 Notas: ${orderData.notes || 'Sin notas adicionales'}
+
+📅 Fecha: ${new Date().toLocaleString('es-ES')}
+
+---
+Enviado desde la Miniapp MP Global Corp`;
     }
     
     generateOrderId() {
@@ -326,7 +346,7 @@ class OrderManager {
         this.app.showModal(successModal);
         
         // Mostrar toast
-        this.app.showToast('¡Pedido enviado correctamente!', 'success');
+        this.app.showToast('¡Chat de Telegram abierto! Completa tu pedido allí.', 'success');
     }
     
     hideSuccessModal() {

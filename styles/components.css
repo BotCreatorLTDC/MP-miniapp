@@ -66,6 +66,49 @@
     font-weight: 600;
 }
 
+/* Estilos para botones de precio seleccionables */
+.price-option {
+    margin-bottom: 0.5rem;
+}
+
+.price-button {
+    width: 100%;
+    background: rgba(45, 80, 22, 0.2);
+    border: 2px solid rgba(45, 80, 22, 0.3);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.price-button:hover {
+    background: rgba(45, 80, 22, 0.3);
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.price-button.selected {
+    background: rgba(45, 80, 22, 0.5);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 10px rgba(45, 80, 22, 0.3);
+}
+
+.price-button .price-quantity {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.price-button .price-amount {
+    font-weight: 700;
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+}
+
 /* Description Section */
 .description-section {
     margin-bottom: 2rem;
@@ -121,6 +164,13 @@
 .cart-item-name {
     font-weight: 600;
     color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.cart-item-variant {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    font-weight: 500;
     margin-bottom: 0.25rem;
 }
 

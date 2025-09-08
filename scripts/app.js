@@ -419,14 +419,28 @@ class MPApp {
             productGallery.innerHTML = '<div class="gallery-placeholder"><i class="fas fa-cannabis"></i></div>';
         }
         
-        // Configurar precios
+        // Configurar precios como botones seleccionables
         const prices = this.parsePrices(product.price);
-        priceList.innerHTML = prices.map(price => `
-            <div class="price-item">
-                <span class="price-quantity">${price.quantity}</span>
-                <span class="price-amount">${price.amount}</span>
+        priceList.innerHTML = prices.map((price, index) => `
+            <div class="price-option" data-price-index="${index}">
+                <button class="price-button" data-quantity="${price.quantity}" data-amount="${price.amount}">
+                    <span class="price-quantity">${price.quantity}</span>
+                    <span class="price-amount">${price.amount}</span>
+                </button>
             </div>
         `).join('');
+        
+        // Agregar event listeners a los botones de precio
+        priceList.querySelectorAll('.price-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remover selección anterior
+                priceList.querySelectorAll('.price-button').forEach(btn => btn.classList.remove('selected'));
+                // Seleccionar actual
+                button.classList.add('selected');
+                // Actualizar botón de agregar al carrito
+                this.updateAddToCartButton(product, button.dataset.quantity, button.dataset.amount);
+            });
+        });
         
         // Configurar stock
         const isAvailable = product.stock === 'Disponible';
@@ -444,6 +458,19 @@ class MPApp {
         };
         
         this.showModal(modal);
+    }
+    
+    updateAddToCartButton(product, selectedQuantity, selectedAmount) {
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        if (!addToCartBtn) return;
+        
+        // Actualizar el texto del botón para mostrar la variante seleccionada
+        addToCartBtn.textContent = `Agregar ${selectedQuantity} por ${selectedAmount}`;
+        addToCartBtn.dataset.selectedQuantity = selectedQuantity;
+        addToCartBtn.dataset.selectedAmount = selectedAmount;
+        
+        // Habilitar el botón
+        addToCartBtn.disabled = false;
     }
     
     parsePrices(priceString) {
@@ -473,14 +500,25 @@ class MPApp {
     }
     
     addToCart(product) {
-        const existingItem = this.cart.find(item => item.name === product.name);
+        // Obtener la variante seleccionada del botón
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const selectedQuantity = addToCartBtn?.dataset.selectedQuantity || '1';
+        const selectedAmount = addToCartBtn?.dataset.selectedAmount || product.price;
+        
+        // Crear un ID único para esta variante específica
+        const variantId = `${product.name}_${selectedQuantity}_${selectedAmount}`;
+        
+        const existingItem = this.cart.find(item => item.variantId === variantId);
         
         if (existingItem) {
             existingItem.quantity += 1;
         } else {
             this.cart.push({
+                variantId: variantId,
                 name: product.name,
                 price: product.price,
+                selectedQuantity: selectedQuantity,
+                selectedAmount: selectedAmount,
                 quantity: 1
             });
         }
@@ -489,8 +527,8 @@ class MPApp {
         this.updateCartUI();
     }
     
-    removeFromCart(productName) {
-        this.cart = this.cart.filter(item => item.name !== productName);
+    removeFromCart(variantId) {
+        this.cart = this.cart.filter(item => item.variantId !== variantId);
         this.saveCart();
         this.updateCartUI();
     }
@@ -523,10 +561,11 @@ class MPApp {
                 <div class="cart-item">
                     <div class="cart-item-info">
                         <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-variant">${item.selectedQuantity} por ${item.selectedAmount}</div>
                         <div class="cart-item-quantity">Cantidad: ${item.quantity}</div>
                     </div>
-                    <div class="cart-item-price">${item.price}</div>
-                    <button class="cart-item-remove" onclick="app.removeFromCart('${item.name}')">
+                    <div class="cart-item-price">${item.selectedAmount}</div>
+                    <button class="cart-item-remove" onclick="app.removeFromCart('${item.variantId}')">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
