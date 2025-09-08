@@ -381,7 +381,8 @@ class MPApp {
             'varios': 'https://via.placeholder.com/300x200/654321/ffffff?text=📦+PRODUCTS'
         };
         
-        return placeholders[this.currentCategory] || placeholders['varios'];
+        const category = this.currentCategory || 'varios';
+        return placeholders[category] || placeholders['varios'];
     }
     
     showProductModal(productName) {
