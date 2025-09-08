@@ -6,45 +6,93 @@
 }
 
 :root {
-    /* Colores principales */
+    /* Colores principales - Tema Cannabis Premium */
     --primary-color: #2D5016;
+    --primary-light: #4A5D23;
+    --primary-dark: #1A2F0A;
     --secondary-color: #D4AF37;
+    --secondary-light: #E6C547;
+    --secondary-dark: #B8941F;
     --accent-color: #FF6B35;
-    --background-dark: #1A1A1A;
-    --background-darker: #2D2D2D;
+    --accent-light: #FF8A5B;
+    --accent-dark: #E55A2B;
+    
+    /* Fondos */
+    --background-dark: #0F0F0F;
+    --background-darker: #1A1A1A;
+    --background-card: #1E1E1E;
+    --background-hover: #2A2A2A;
+    --background-glass: rgba(30, 30, 30, 0.8);
+    
+    /* Textos */
     --text-primary: #FFFFFF;
     --text-secondary: #E0E0E0;
     --text-muted: #B0B0B0;
+    --text-accent: #D4AF37;
     
     /* Colores de estado */
     --success-color: #4CAF50;
+    --success-light: #66BB6A;
     --warning-color: #FF9800;
+    --warning-light: #FFB74D;
     --error-color: #F44336;
+    --error-light: #EF5350;
     --info-color: #2196F3;
+    --info-light: #42A5F5;
     
-    /* Sombras */
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
-    --shadow-neon: 0 0 20px rgba(45, 80, 22, 0.3);
+    /* Sombras mejoradas */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.35);
+    --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.45);
+    --shadow-neon: 0 0 30px rgba(45, 80, 22, 0.4);
+    --shadow-gold: 0 0 20px rgba(212, 175, 55, 0.3);
+    --shadow-orange: 0 0 20px rgba(255, 107, 53, 0.3);
     
     /* Transiciones */
-    --transition-fast: 0.2s ease;
-    --transition-normal: 0.3s ease;
-    --transition-slow: 0.5s ease;
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     
     /* Bordes */
-    --border-radius: 8px;
-    --border-radius-lg: 12px;
-    --border-radius-xl: 16px;
+    --border-radius: 12px;
+    --border-radius-lg: 16px;
+    --border-radius-xl: 20px;
+    --border-radius-full: 50px;
+    
+    /* Gradientes */
+    --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-light) 100%);
+    --gradient-accent: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-light) 100%);
+    --gradient-dark: linear-gradient(135deg, var(--background-dark) 0%, var(--background-darker) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-darker) 100%);
+    font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--gradient-dark);
+    background-attachment: fixed;
     color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(45, 80, 22, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 107, 53, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 /* Header */
@@ -365,7 +413,7 @@ body {
     color: var(--text-secondary);
 }
 
-/* Modal */
+/* Modal - Estilo Premium */
 .modal {
     display: none;
     position: fixed;
@@ -373,10 +421,16 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(15px);
     z-index: 2000;
     overflow-y: auto;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .modal.show {
@@ -384,17 +438,43 @@ body {
     align-items: center;
     justify-content: center;
     padding: 2rem;
+    animation: modalShow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalShow {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .modal-content {
-    background: var(--background-darker);
-    border: 1px solid rgba(45, 80, 22, 0.3);
-    border-radius: var(--border-radius-lg);
+    background: var(--background-glass);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-xl);
     max-width: 600px;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-glass);
+    z-index: 0;
 }
 
 .modal-content.large {
@@ -402,79 +482,208 @@ body {
 }
 
 .modal-header {
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid rgba(45, 80, 22, 0.2);
+    padding: 2rem 2.5rem;
+    border-bottom: 2px solid rgba(212, 175, 55, 0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    z-index: 1;
+    background: var(--gradient-primary);
 }
 
 .modal-header h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.5rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
     color: var(--text-primary);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    position: relative;
+}
+
+.modal-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-secondary);
+    border-radius: var(--border-radius-full);
 }
 
 .close-btn {
-    background: none;
-    border: none;
+    background: var(--background-card);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     color: var(--text-muted);
     font-size: 1.5rem;
     cursor: pointer;
-    transition: var(--transition-fast);
+    transition: var(--transition-normal);
+    width: 45px;
+    height: 45px;
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.close-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--error-color);
+    transition: var(--transition-normal);
+    z-index: 0;
 }
 
 .close-btn:hover {
     color: var(--text-primary);
+    border-color: var(--error-color);
+    transform: scale(1.1);
+    box-shadow: var(--shadow-orange);
+}
+
+.close-btn:hover::before {
+    left: 0;
+}
+
+.close-btn i {
+    position: relative;
+    z-index: 1;
 }
 
 .modal-body {
-    padding: 2rem;
+    padding: 2.5rem;
+    position: relative;
+    z-index: 1;
 }
 
 .modal-footer {
-    padding: 1.5rem 2rem;
-    border-top: 1px solid rgba(45, 80, 22, 0.2);
+    padding: 2rem 2.5rem;
+    border-top: 2px solid rgba(212, 175, 55, 0.2);
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
+    position: relative;
+    z-index: 1;
+    background: var(--background-card);
 }
 
-/* Buttons */
+/* Buttons - Estilo Premium */
 .btn {
-    padding: 0.75rem 1.5rem;
+    padding: 1rem 2rem;
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-lg);
     cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 700;
     transition: var(--transition-normal);
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 0.75rem;
     text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-height: 50px;
+    box-shadow: var(--shadow-md);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-glass);
+    transition: var(--transition-normal);
+    z-index: 0;
+}
+
+.btn:hover::before {
+    left: 0;
+}
+
+.btn span, .btn i {
+    position: relative;
+    z-index: 1;
 }
 
 .btn-primary {
-    background: var(--primary-color);
+    background: var(--gradient-primary);
     color: var(--text-primary);
+    border: 2px solid var(--secondary-color);
+    box-shadow: var(--shadow-gold);
 }
 
 .btn-primary:hover {
-    background: #3a6b1f;
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.02);
     box-shadow: var(--shadow-neon);
+    border-color: var(--secondary-light);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px) scale(0.98);
 }
 
 .btn-secondary {
-    background: rgba(45, 45, 45, 0.8);
+    background: var(--background-card);
     color: var(--text-secondary);
-    border: 1px solid rgba(45, 80, 22, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover {
-    background: rgba(45, 45, 45, 1);
+    background: var(--background-hover);
     color: var(--text-primary);
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-success {
+    background: var(--gradient-accent);
+    color: var(--text-primary);
+    border: 2px solid var(--accent-light);
+    box-shadow: var(--shadow-orange);
+}
+
+.btn-success:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: var(--shadow-orange);
+    border-color: var(--accent-light);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--error-color) 0%, var(--error-light) 100%);
+    color: var(--text-primary);
+    border: 2px solid var(--error-light);
+    box-shadow: 0 0 20px rgba(244, 67, 54, 0.3);
+}
+
+.btn-danger:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 0 30px rgba(244, 67, 54, 0.5);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.btn:disabled:hover {
+    transform: none !important;
+    box-shadow: var(--shadow-sm) !important;
 }
 
 /* Success Icon */
