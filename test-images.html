@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Images</title>
+    <style>
+        .test-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+        .test-card {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #ccc;
+            position: relative;
+            overflow: hidden;
+        }
+        .test-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #4a5d23, #2d5016);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test de Imágenes</h1>
+    <div class="test-container">
+        <div class="test-card">
+            <img src="img/test.jpg" alt="Test" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="image-placeholder" style="display: none;">
+                <i>🌿</i>
+            </div>
+        </div>
+        <div class="test-card">
+            <img src="https://via.placeholder.com/200x200/4a5d23/ffffff?text=🇲🇦+MOROCCAN" alt="Placeholder">
+        </div>
+        <div class="test-card">
+            <div class="image-placeholder">
+                <i>🌿</i>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
