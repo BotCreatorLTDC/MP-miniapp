@@ -38,14 +38,6 @@ class OrderManager {
     }
     
     setupOrderButtons() {
-        // Botón de proceder al pedido
-        const proceedBtn = document.getElementById('proceedOrderBtn');
-        if (proceedBtn) {
-            proceedBtn.addEventListener('click', () => {
-                this.openTelegramChat();
-            });
-        }
-        
         // Botón de limpiar carrito
         const clearBtn = document.getElementById('clearCartBtn');
         if (clearBtn) {
@@ -75,6 +67,21 @@ class OrderManager {
         if (closeSuccessBtn) {
             closeSuccessBtn.addEventListener('click', () => {
                 this.hideSuccessModal();
+            });
+        }
+    }
+    
+    setupProceedButton() {
+        // Botón de proceder al pedido - configurar cuando se muestra el carrito
+        const proceedBtn = document.getElementById('proceedOrderBtn');
+        if (proceedBtn) {
+            // Remover event listeners anteriores para evitar duplicados
+            proceedBtn.replaceWith(proceedBtn.cloneNode(true));
+            const newProceedBtn = document.getElementById('proceedOrderBtn');
+            
+            newProceedBtn.addEventListener('click', () => {
+                console.log('Botón proceder al pedido clickeado');
+                this.openTelegramChat();
             });
         }
     }

@@ -527,6 +527,15 @@ class MPApp {
             });
         });
         
+        // Seleccionar la primera opción por defecto y actualizar el botón
+        if (prices.length > 0) {
+            const firstButton = priceList.querySelector('.price-button');
+            if (firstButton) {
+                firstButton.classList.add('selected');
+                this.updateAddToCartButton(product, firstButton.dataset.quantity, firstButton.dataset.amount);
+            }
+        }
+        
         // Configurar stock
         const isAvailable = product.stock === 'Disponible';
         stockBadge.className = `stock-badge ${isAvailable ? 'stock-available' : 'stock-unavailable'}`;
@@ -704,6 +713,11 @@ class MPApp {
         const modal = document.getElementById('cartModal');
         const cartItems = document.getElementById('cartItems');
         const cartTotal = document.getElementById('cartTotal');
+        
+        // Configurar el botón de proceder al pedido
+        if (this.orderManager) {
+            this.orderManager.setupProceedButton();
+        }
         
         if (this.cart.length === 0) {
             cartItems.innerHTML = '<p class="text-center">Tu carrito está vacío</p>';
