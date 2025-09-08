@@ -249,6 +249,26 @@ class MPApp {
             this.toggleMobileMenu();
         });
         
+        // Ocultar menú al hacer clic fuera de él
+        document.addEventListener('click', (e) => {
+            const navigation = document.getElementById('navigation');
+            const menuToggle = document.getElementById('menuToggle');
+            
+            if (navigation && navigation.classList.contains('show') && 
+                !navigation.contains(e.target) && 
+                !menuToggle.contains(e.target)) {
+                navigation.classList.remove('show');
+            }
+        });
+        
+        // Ocultar menú al hacer scroll
+        window.addEventListener('scroll', () => {
+            const navigation = document.getElementById('navigation');
+            if (navigation && navigation.classList.contains('show')) {
+                navigation.classList.remove('show');
+            }
+        });
+        
         // Modales
         this.setupModalListeners();
     }
@@ -290,6 +310,12 @@ class MPApp {
             btn.classList.remove('active');
         });
         document.querySelector(`[data-category="${category}"]`).classList.add('active');
+        
+        // Ocultar menú desplegado en móvil
+        const navigation = document.getElementById('navigation');
+        if (navigation) {
+            navigation.classList.remove('show');
+        }
         
         // Renderizar productos
         this.renderProducts();
@@ -857,7 +883,9 @@ Enviado desde la Miniapp MP Global Corp`;
     
     toggleMobileMenu() {
         const navigation = document.getElementById('navigation');
-        navigation.classList.toggle('show');
+        if (navigation) {
+            navigation.classList.toggle('show');
+        }
     }
     
     hideLoading() {
