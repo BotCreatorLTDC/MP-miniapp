@@ -312,9 +312,12 @@ class MPApp {
                 </div>
                 <div class="product-image">
                     ${product.images && product.images.length > 0 
-                        ? `<img src="${product.images[0]}" alt="${product.name}" class="gallery-image">`
-                        : '<i class="fas fa-cannabis"></i>'
+                        ? `<img src="${this.getImageUrl(product.images[0])}" alt="${product.name}" class="gallery-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+                        : ''
                     }
+                    <div class="image-placeholder" style="display: ${product.images && product.images.length > 0 ? 'none' : 'flex'};">
+                        <i class="fas fa-cannabis"></i>
+                    </div>
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">${product.name}</h3>
@@ -351,6 +354,36 @@ class MPApp {
         return icons[category] || '📦';
     }
     
+    getImageUrl(imagePath) {
+        // Si la imagen es una URL completa, usarla directamente
+        if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+            return imagePath;
+        }
+        
+        // Si es una ruta relativa que empieza con 'img/', usar placeholder
+        if (imagePath.startsWith('img/')) {
+            // Por ahora, usar un placeholder genérico
+            // En el futuro se puede configurar un servidor de imágenes
+            return this.getPlaceholderImage();
+        }
+        
+        // Para otros casos, intentar usar la imagen directamente
+        return imagePath;
+    }
+    
+    getPlaceholderImage() {
+        // Generar un placeholder basado en la categoría
+        const placeholders = {
+            'moroccan_hash': 'https://via.placeholder.com/300x200/4a5d23/ffffff?text=🇲🇦+MOROCCAN',
+            'spanish_flower': 'https://via.placeholder.com/300x200/2d5016/ffffff?text=🇪🇸+SPANISH',
+            'cali_flower': 'https://via.placeholder.com/300x200/1a4d1a/ffffff?text=🇺🇸+CALIFORNIA',
+            'extractions': 'https://via.placeholder.com/300x200/8b4513/ffffff?text=🔬+EXTRACTIONS',
+            'varios': 'https://via.placeholder.com/300x200/654321/ffffff?text=📦+PRODUCTS'
+        };
+        
+        return placeholders[this.currentCategory] || placeholders['varios'];
+    }
+    
     showProductModal(productName) {
         const product = this.findProductByName(productName);
         if (!product) return;
@@ -369,7 +402,7 @@ class MPApp {
         // Configurar galería de imágenes
         if (product.images && product.images.length > 0) {
             productGallery.innerHTML = product.images.map(img => 
-                `<img src="${img}" alt="${product.name}" class="gallery-image">`
+                `<img src="${this.getImageUrl(img)}" alt="${product.name}" class="gallery-image" onerror="this.style.display='none';">`
             ).join('');
         } else {
             productGallery.innerHTML = '<div class="gallery-placeholder"><i class="fas fa-cannabis"></i></div>';
