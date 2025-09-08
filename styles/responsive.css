@@ -308,13 +308,23 @@
         top: 1rem;
         right: 1rem;
         left: 1rem;
-        padding: 0.75rem 1rem;
+        padding: 1rem 1.25rem;
+        min-width: auto;
+        max-width: none;
     }
     
     .toast-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 0.5rem;
+        flex-direction: row;
+        text-align: left;
+        gap: 0.75rem;
+    }
+    
+    .toast-icon {
+        font-size: 1.25rem;
+    }
+    
+    .toast-message {
+        font-size: 0.9rem;
     }
 }
 
