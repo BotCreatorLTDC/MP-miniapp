@@ -360,11 +360,10 @@ class MPApp {
             return imagePath;
         }
         
-        // Si es una ruta relativa que empieza con 'img/', usar placeholder
+        // Si es una ruta relativa que empieza con 'img/', convertir a la ruta correcta
         if (imagePath.startsWith('img/')) {
-            // Por ahora, usar un placeholder genérico
-            // En el futuro se puede configurar un servidor de imágenes
-            return this.getPlaceholderImage();
+            // Convertir img/filename.jpg a assets/images/img/filename.jpg
+            return `assets/images/${imagePath}`;
         }
         
         // Para otros casos, intentar usar la imagen directamente
