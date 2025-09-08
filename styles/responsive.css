@@ -1,0 +1,458 @@
+/* Diseño responsivo para la miniapp */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 1024px) {
+    .header-content {
+        padding: 1rem 1.5rem;
+    }
+    
+    .nav-content {
+        padding: 0 1.5rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .category-tabs {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .search-container {
+        min-width: 250px;
+        max-width: 400px;
+    }
+    
+    .main-content {
+        padding: 1.5rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .modal-content {
+        margin: 1rem;
+        max-height: 95vh;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Móviles grandes */
+@media (max-width: 768px) {
+    .header-content {
+        padding: 1rem;
+    }
+    
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+    
+    .tagline {
+        font-size: 0.8rem;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    .navigation {
+        position: fixed;
+        top: 80px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 80px);
+        background: rgba(26, 26, 26, 0.98);
+        backdrop-filter: blur(10px);
+        transition: var(--transition-normal);
+        z-index: 999;
+        overflow-y: auto;
+    }
+    
+    .navigation.show {
+        left: 0;
+    }
+    
+    .nav-content {
+        flex-direction: column;
+        padding: 2rem 1rem;
+        height: 100%;
+    }
+    
+    .category-tabs {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.75rem;
+    }
+    
+    .tab-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 1rem;
+        font-size: 1rem;
+    }
+    
+    .search-container {
+        width: 100%;
+        min-width: auto;
+        margin-top: 1rem;
+    }
+    
+    .main-content {
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .product-card {
+        margin-bottom: 1rem;
+    }
+    
+    .product-info {
+        padding: 1rem;
+    }
+    
+    .product-name {
+        font-size: 1rem;
+    }
+    
+    .product-price {
+        font-size: 0.9rem;
+    }
+    
+    .modal-content {
+        margin: 0.5rem;
+        max-height: 98vh;
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 1rem;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .gallery-image,
+    .gallery-placeholder {
+        height: 200px;
+    }
+    
+    .price-list {
+        padding: 0.75rem;
+    }
+    
+    .price-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .cart-item-info {
+        width: 100%;
+    }
+    
+    .cart-item-price {
+        align-self: flex-end;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+    .header-content {
+        padding: 0.75rem;
+    }
+    
+    .logo h1 {
+        font-size: 1.3rem;
+    }
+    
+    .tagline {
+        display: none;
+    }
+    
+    .cart-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .main-content {
+        padding: 0.75rem;
+    }
+    
+    .products-grid {
+        gap: 0.75rem;
+    }
+    
+    .product-card {
+        border-radius: var(--border-radius);
+    }
+    
+    .product-image {
+        height: 150px;
+        font-size: 2rem;
+    }
+    
+    .product-info {
+        padding: 0.75rem;
+    }
+    
+    .product-name {
+        font-size: 0.9rem;
+    }
+    
+    .product-price {
+        font-size: 0.8rem;
+    }
+    
+    .modal-content {
+        margin: 0.25rem;
+        border-radius: var(--border-radius);
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 0.75rem;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .gallery-image,
+    .gallery-placeholder {
+        height: 150px;
+    }
+    
+    .price-section h3,
+    .description-section h3,
+    .form-section h3 {
+        font-size: 1rem;
+    }
+    
+    .price-list {
+        padding: 0.5rem;
+    }
+    
+    .price-item {
+        padding: 0.25rem 0;
+        font-size: 0.9rem;
+    }
+    
+    .cart-item {
+        padding: 0.75rem;
+    }
+    
+    .cart-item-name {
+        font-size: 0.9rem;
+    }
+    
+    .cart-item-quantity {
+        font-size: 0.8rem;
+    }
+    
+    .cart-item-price {
+        font-size: 0.9rem;
+    }
+    
+    .cart-total h3 {
+        font-size: 1.2rem;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .form-group label {
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .toast {
+        top: 1rem;
+        right: 1rem;
+        left: 1rem;
+        padding: 0.75rem 1rem;
+    }
+    
+    .toast-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+}
+
+/* Pantallas muy pequeñas (menos de 320px) */
+@media (max-width: 320px) {
+    .header-content {
+        padding: 0.5rem;
+    }
+    
+    .logo h1 {
+        font-size: 1.1rem;
+    }
+    
+    .main-content {
+        padding: 0.5rem;
+    }
+    
+    .products-grid {
+        gap: 0.5rem;
+    }
+    
+    .product-image {
+        height: 120px;
+        font-size: 1.5rem;
+    }
+    
+    .product-info {
+        padding: 0.5rem;
+    }
+    
+    .product-name {
+        font-size: 0.8rem;
+    }
+    
+    .product-price {
+        font-size: 0.7rem;
+    }
+    
+    .modal-content {
+        margin: 0.1rem;
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 0.5rem;
+    }
+    
+    .gallery-image,
+    .gallery-placeholder {
+        height: 120px;
+    }
+}
+
+/* Orientación landscape en móviles */
+@media (max-width: 768px) and (orientation: landscape) {
+    .navigation {
+        top: 60px;
+        height: calc(100vh - 60px);
+    }
+    
+    .nav-content {
+        padding: 1rem;
+    }
+    
+    .category-tabs {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .tab-btn {
+        width: auto;
+        min-width: 120px;
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .search-container {
+        margin-top: 0.5rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    .product-image {
+        height: 100px;
+    }
+    
+    .gallery-image,
+    .gallery-placeholder {
+        height: 150px;
+    }
+}
+
+/* Modo oscuro específico para dispositivos */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-dark: #0A0A0A;
+        --background-darker: #1A1A1A;
+    }
+}
+
+/* Reducir animaciones para usuarios que prefieren menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .spinner,
+    .loading-spinner {
+        animation: none;
+    }
+}
+
+/* Alto contraste para accesibilidad */
+@media (prefers-contrast: high) {
+    :root {
+        --primary-color: #4CAF50;
+        --secondary-color: #FFD700;
+        --accent-color: #FF5722;
+        --text-primary: #FFFFFF;
+        --text-secondary: #E0E0E0;
+        --text-muted: #B0B0B0;
+    }
+    
+    .product-card {
+        border: 2px solid var(--primary-color);
+    }
+    
+    .tab-btn.active {
+        border: 2px solid var(--secondary-color);
+    }
+    
+    .btn {
+        border: 2px solid currentColor;
+    }
+}

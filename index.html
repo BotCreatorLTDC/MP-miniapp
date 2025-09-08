@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP Global Corp® - Catálogo</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>MP Global Corp®</h1>
+                <span class="tagline">Premium Cannabis Products</span>
+            </div>
+            <div class="header-actions">
+                <button class="cart-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navigation" id="navigation">
+        <div class="nav-content">
+            <div class="category-tabs">
+                <button class="tab-btn active" data-category="all">
+                    <i class="fas fa-home"></i>
+                    <span>Todos</span>
+                </button>
+                <button class="tab-btn" data-category="moroccan_hash">
+                    <i class="fas fa-leaf"></i>
+                    <span>🇲🇦 Moroccan</span>
+                </button>
+                <button class="tab-btn" data-category="spanish_flower">
+                    <i class="fas fa-seedling"></i>
+                    <span>🇪🇸 Spanish</span>
+                </button>
+                <button class="tab-btn" data-category="cali_flower">
+                    <i class="fas fa-star"></i>
+                    <span>🇺🇸 California</span>
+                </button>
+                <button class="tab-btn" data-category="extractions">
+                    <i class="fas fa-flask"></i>
+                    <span>🔬 Extractions</span>
+                </button>
+                <button class="tab-btn" data-category="varios">
+                    <i class="fas fa-box"></i>
+                    <span>📦 Otros</span>
+                </button>
+            </div>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Buscar productos...">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Loading Spinner -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Cargando catálogo...</p>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-container" id="productsContainer">
+            <div class="products-grid" id="productsGrid">
+                <!-- Los productos se cargarán dinámicamente aquí -->
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <i class="fas fa-search"></i>
+            <h3>No se encontraron productos</h3>
+            <p>Intenta con otros términos de búsqueda</p>
+        </div>
+    </main>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalProductName"></h2>
+                <button class="close-btn" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="product-gallery" id="productGallery">
+                    <!-- Imágenes del producto -->
+                </div>
+                <div class="product-details">
+                    <div class="price-section">
+                        <h3>Precios</h3>
+                        <div class="price-list" id="priceList">
+                            <!-- Precios por cantidad -->
+                        </div>
+                    </div>
+                    <div class="description-section">
+                        <h3>Descripción</h3>
+                        <p id="productDescription"></p>
+                    </div>
+                    <div class="stock-section">
+                        <span class="stock-badge" id="stockBadge"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="addToCartBtn">
+                    <i class="fas fa-cart-plus"></i>
+                    Agregar al Pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Mi Pedido</h2>
+                <button class="close-btn" id="closeCartModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="cart-items" id="cartItems">
+                    <!-- Items del carrito -->
+                </div>
+                <div class="cart-total">
+                    <h3>Total: <span id="cartTotal">0€</span></h3>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="clearCartBtn">Limpiar</button>
+                <button class="btn btn-primary" id="proceedOrderBtn">Proceder al Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Form Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Formulario de Pedido</h2>
+                <button class="close-btn" id="closeOrderModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm">
+                    <div class="form-section">
+                        <h3>Datos de Envío</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="fullName">Nombre Completo *</label>
+                                <input type="text" id="fullName" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Teléfono *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Dirección *</label>
+                                <input type="text" id="address" name="address" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">Ciudad *</label>
+                                <input type="text" id="city" name="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="province">Provincia *</label>
+                                <input type="text" id="province" name="province" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="postalCode">Código Postal *</label>
+                                <input type="text" id="postalCode" name="postalCode" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h3>Detalles del Pedido</h3>
+                        <div class="form-group">
+                            <label for="orderContent">Contenido del Pedido *</label>
+                            <textarea id="orderContent" name="orderContent" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Nombre de Usuario</label>
+                            <input type="text" id="username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentMethod">Método de Pago *</label>
+                            <select id="paymentMethod" name="paymentMethod" required>
+                                <option value="">Seleccionar método</option>
+                                <option value="crypto">Criptomonedas</option>
+                                <option value="bank_transfer">Transferencia Bancaria</option>
+                                <option value="other">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="comments">Comentarios/Sugerencias</label>
+                            <textarea id="comments" name="comments" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelOrderBtn">Cancelar</button>
+                <button class="btn btn-primary" id="submitOrderBtn">Enviar Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h2>¡Pedido Enviado!</h2>
+                <p>Tu pedido ha sido enviado correctamente. Te contactaremos pronto.</p>
+                <button class="btn btn-primary" id="closeSuccessModal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/catalog.js"></script>
+    <script src="scripts/orders.js"></script>
+</body>
+</html>

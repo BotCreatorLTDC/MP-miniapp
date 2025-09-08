@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP Global Corp® - Demo Miniapp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .logo {
+            font-size: 2.5rem;
+            color: #D4AF37;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #B0B0B0;
+            margin-bottom: 2rem;
+        }
+        .demo-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .btn {
+            background: #2D5016;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #3a6b1f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .btn.primary {
+            background: #D4AF37;
+            color: #1A1A1A;
+        }
+        .btn.primary:hover {
+            background: #e6c547;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .feature {
+            background: rgba(45, 45, 45, 0.8);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(45, 80, 22, 0.3);
+        }
+        .feature h3 {
+            color: #D4AF37;
+            margin-bottom: 1rem;
+        }
+        .feature p {
+            color: #E0E0E0;
+            line-height: 1.6;
+        }
+        .instructions {
+            background: rgba(45, 80, 22, 0.2);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(45, 80, 22, 0.3);
+            margin-top: 2rem;
+            text-align: left;
+        }
+        .instructions h3 {
+            color: #D4AF37;
+            margin-bottom: 1rem;
+        }
+        .instructions ol {
+            color: #E0E0E0;
+            line-height: 1.8;
+        }
+        .instructions code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: #FF6B35;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="logo">MP Global Corp®</h1>
+        <p class="subtitle">Miniapp de Catálogo - Demostración</p>
+        
+        <div class="demo-buttons">
+            <a href="index.html" class="btn primary">🚀 Ver Miniapp</a>
+            <button onclick="showFeatures()" class="btn">✨ Características</button>
+            <button onclick="showInstructions()" class="btn">📖 Instrucciones</button>
+        </div>
+        
+        <div id="content">
+            <div class="features">
+                <div class="feature">
+                    <h3>🛍️ Catálogo Interactivo</h3>
+                    <p>Navega por las 5 categorías de productos con filtros en tiempo real y búsqueda avanzada.</p>
+                </div>
+                <div class="feature">
+                    <h3>🛒 Carrito Inteligente</h3>
+                    <p>Gestiona tus productos seleccionados con persistencia local y cálculo automático de totales.</p>
+                </div>
+                <div class="feature">
+                    <h3>📱 Diseño Responsivo</h3>
+                    <p>Optimizado para móviles, tablets y desktop con una interfaz moderna y fluida.</p>
+                </div>
+                <div class="feature">
+                    <h3>📝 Formulario de Pedidos</h3>
+                    <p>Validación completa con datos de envío, pago y envío automático al bot de Telegram.</p>
+                </div>
+                <div class="feature">
+                    <h3>🎨 Tema Oscuro</h3>
+                    <p>Interfaz moderna con colores temáticos del cannabis y efectos neon sutiles.</p>
+                </div>
+                <div class="feature">
+                    <h3>⚡ Rendimiento</h3>
+                    <p>Carga rápida, animaciones suaves y optimización para dispositivos móviles.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="instructions" class="instructions" style="display: none;">
+            <h3>📖 Instrucciones de Uso</h3>
+            <ol>
+                <li><strong>Navegación:</strong> Usa los botones de categoría para filtrar productos por tipo (Moroccan, Spanish, California, etc.)</li>
+                <li><strong>Búsqueda:</strong> Escribe en el campo de búsqueda para encontrar productos específicos por nombre o descripción</li>
+                <li><strong>Ver Productos:</strong> Haz clic en cualquier tarjeta de producto para ver detalles, precios y galería de imágenes</li>
+                <li><strong>Agregar al Carrito:</strong> En la vista de detalles, haz clic en "Agregar al Pedido" para añadir productos al carrito</li>
+                <li><strong>Gestionar Carrito:</strong> Haz clic en el icono del carrito para ver, editar o eliminar productos</li>
+                <li><strong>Realizar Pedido:</strong> Haz clic en "Proceder al Pedido" para llenar el formulario de envío y enviar tu pedido</li>
+                <li><strong>Validación:</strong> El formulario valida automáticamente los campos requeridos y muestra errores en tiempo real</li>
+            </ol>
+            
+            <h3>🔧 Para Desarrolladores</h3>
+            <ol>
+                <li><strong>Servidor Local:</strong> Ejecuta <code>python -m http.server 8000</code> en la carpeta de la miniapp</li>
+                <li><strong>Modificar Catálogo:</strong> Edita <code>data/catalog.json</code> para cambiar productos</li>
+                <li><strong>Personalizar Estilos:</strong> Modifica las variables CSS en <code>styles/main.css</code></li>
+                <li><strong>Debug:</strong> Abre la consola del navegador para ver logs y errores</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        function showFeatures() {
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('instructions').style.display = 'none';
+        }
+        
+        function showInstructions() {
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('instructions').style.display = 'block';
+        }
+        
+        // Mostrar mensaje de bienvenida
+        setTimeout(() => {
+            console.log('🌿 MP Global Corp® Miniapp - Cargada correctamente');
+            console.log('📱 Navega a index.html para ver la miniapp completa');
+        }, 1000);
+    </script>
+</body>
+</html>
