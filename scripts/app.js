@@ -613,15 +613,34 @@ class MPApp {
     }
     
     removeFromCart(variantId) {
+        console.log('Eliminando del carrito:', variantId);
+        console.log('Carrito antes:', this.cart);
+        
         this.cart = this.cart.filter(item => item.variantId !== variantId);
+        
+        console.log('Carrito después:', this.cart);
+        
         this.saveUserCart();
         this.updateCartUI();
+        
+        // Recargar la vista del carrito si está abierto
+        if (document.getElementById('cartModal').style.display !== 'none') {
+            this.showCart();
+        }
     }
     
     clearCart() {
+        console.log('Limpiando carrito completo');
         this.cart = [];
         this.saveUserCart();
         this.updateCartUI();
+        
+        // Recargar la vista del carrito si está abierto
+        if (document.getElementById('cartModal').style.display !== 'none') {
+            this.showCart();
+        }
+        
+        this.showToast('Carrito limpiado', 'info');
     }
     
     
@@ -639,7 +658,7 @@ class MPApp {
         if (this.cart.length === 0) {
             cartItems.innerHTML = '<p class="text-center">Tu carrito está vacío</p>';
         } else {
-            cartItems.innerHTML = this.cart.map(item => `
+            cartItems.innerHTML = this.cart.map((item, index) => `
                 <div class="cart-item">
                     <div class="cart-item-info">
                         <div class="cart-item-name">${item.name}</div>
@@ -647,11 +666,19 @@ class MPApp {
                         <div class="cart-item-quantity">Cantidad: ${item.quantity}</div>
                     </div>
                     <div class="cart-item-price">${item.selectedAmount}</div>
-                    <button class="cart-item-remove" onclick="app.removeFromCart('${item.variantId}')">
+                    <button class="cart-item-remove" data-variant-id="${item.variantId}" data-index="${index}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
             `).join('');
+            
+            // Agregar event listeners a los botones de eliminar
+            cartItems.querySelectorAll('.cart-item-remove').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const variantId = e.target.closest('button').dataset.variantId;
+                    this.removeFromCart(variantId);
+                });
+            });
         }
         
         // Calcular total (simplificado)

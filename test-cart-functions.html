@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Cart Functions</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 1px solid #ddd; margin: 5px 0; }
+        .cart-item-remove { background: #ff4444; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+        .cart-item-remove:hover { background: #cc0000; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+        .debug { font-family: monospace; font-size: 12px; background: #f9f9f9; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Test de Funciones del Carrito</h1>
+    
+    <div class="test-section">
+        <h2>Agregar Items de Prueba</h2>
+        <button onclick="addTestItems()">Agregar 3 Items de Prueba</button>
+        <button onclick="addSingleItem()">Agregar 1 Item</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Carrito Actual</h2>
+        <div id="cartDisplay">
+            Cargando...
+        </div>
+        <button onclick="clearCart()">Limpiar Carrito Completo</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Debug Info</h2>
+        <div class="debug" id="debugInfo">
+            Cargando...
+        </div>
+        <button onclick="updateDebug()">Actualizar Debug</button>
+    </div>
+    
+    <script>
+        // Simular la clase MPApp para testing
+        class TestMPApp {
+            constructor() {
+                this.userId = 'test_user_' + Date.now();
+                this.cart = this.loadUserCart();
+                this.updateDisplay();
+            }
+            
+            loadUserCart() {
+                try {
+                    const userCarts = JSON.parse(localStorage.getItem('mp_user_carts')) || {};
+                    return userCarts[this.userId] || [];
+                } catch (error) {
+                    console.error('Error cargando carrito:', error);
+                    return [];
+                }
+            }
+            
+            saveUserCart() {
+                try {
+                    const userCarts = JSON.parse(localStorage.getItem('mp_user_carts')) || {};
+                    userCarts[this.userId] = this.cart;
+                    localStorage.setItem('mp_user_carts', JSON.stringify(userCarts));
+                    console.log('Carrito guardado:', this.cart);
+                } catch (error) {
+                    console.error('Error guardando carrito:', error);
+                }
+            }
+            
+            removeFromCart(variantId) {
+                console.log('Eliminando del carrito:', variantId);
+                console.log('Carrito antes:', this.cart);
+                
+                this.cart = this.cart.filter(item => item.variantId !== variantId);
+                
+                console.log('Carrito después:', this.cart);
+                
+                this.saveUserCart();
+                this.updateDisplay();
+            }
+            
+            clearCart() {
+                console.log('Limpiando carrito completo');
+                this.cart = [];
+                this.saveUserCart();
+                this.updateDisplay();
+                alert('Carrito limpiado');
+            }
+            
+            updateDisplay() {
+                const cartDisplay = document.getElementById('cartDisplay');
+                
+                if (this.cart.length === 0) {
+                    cartDisplay.innerHTML = '<p>Carrito vacío</p>';
+                } else {
+                    cartDisplay.innerHTML = this.cart.map((item, index) => `
+                        <div class="cart-item">
+                            <div>
+                                <strong>${item.name}</strong><br>
+                                <small>${item.selectedQuantity || '1'} por ${item.selectedAmount || item.price} x${item.quantity}</small>
+                            </div>
+                            <button class="cart-item-remove" onclick="testApp.removeFromCart('${item.variantId}')">
+                                Eliminar
+                            </button>
+                        </div>
+                    `).join('');
+                }
+                
+                this.updateDebug();
+            }
+            
+            updateDebug() {
+                const debugInfo = document.getElementById('debugInfo');
+                debugInfo.innerHTML = `
+                    <strong>User ID:</strong> ${this.userId}<br>
+                    <strong>Items en carrito:</strong> ${this.cart.length}<br>
+                    <strong>Carrito:</strong><br>
+                    <pre>${JSON.stringify(this.cart, null, 2)}</pre>
+                `;
+            }
+        }
+        
+        // Inicializar app de test
+        let testApp = new TestMPApp();
+        
+        function addTestItems() {
+            const testItems = [
+                {
+                    variantId: 'test_1_100',
+                    name: 'Producto Test 1',
+                    price: '100€',
+                    selectedQuantity: '1',
+                    selectedAmount: '100€',
+                    quantity: 1
+                },
+                {
+                    variantId: 'test_2_200',
+                    name: 'Producto Test 2',
+                    price: '200€',
+                    selectedQuantity: '2',
+                    selectedAmount: '200€',
+                    quantity: 1
+                },
+                {
+                    variantId: 'test_3_300',
+                    name: 'Producto Test 3',
+                    price: '300€',
+                    selectedQuantity: '3',
+                    selectedAmount: '300€',
+                    quantity: 2
+                }
+            ];
+            
+            testApp.cart = [...testApp.cart, ...testItems];
+            testApp.saveUserCart();
+            testApp.updateDisplay();
+        }
+        
+        function addSingleItem() {
+            const testItem = {
+                variantId: 'single_' + Date.now(),
+                name: 'Item Individual ' + Date.now(),
+                price: '50€',
+                selectedQuantity: '1',
+                selectedAmount: '50€',
+                quantity: 1
+            };
+            
+            testApp.cart.push(testItem);
+            testApp.saveUserCart();
+            testApp.updateDisplay();
+        }
+        
+        function clearCart() {
+            testApp.clearCart();
+        }
+        
+        function updateDebug() {
+            testApp.updateDebug();
+        }
+    </script>
+</body>
+</html>
