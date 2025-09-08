@@ -15,8 +15,11 @@
     <header class="header">
         <div class="header-content">
             <div class="logo">
-                <h1>MP Global Corp®</h1>
-                <span class="tagline">Premium Cannabis Products</span>
+                <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="logo-image">
+                <div class="logo-text">
+                    <h1>MP Global Corp®</h1>
+                    <span class="tagline">Premium Cannabis Products</span>
+                </div>
             </div>
             <div class="header-actions">
                 <button class="cart-btn" id="cartBtn">
@@ -93,7 +96,10 @@
     <div class="modal" id="productModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalProductName"></h2>
+                <div class="modal-header-content">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                    <h2 id="modalProductName"></h2>
+                </div>
                 <button class="close-btn" id="closeModal">
                     <i class="fas fa-times"></i>
                 </button>
@@ -131,7 +137,10 @@
     <div class="modal" id="cartModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Mi Pedido</h2>
+                <div class="modal-header-content">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                    <h2>Mi Pedido</h2>
+                </div>
                 <button class="close-btn" id="closeCartModal">
                     <i class="fas fa-times"></i>
                 </button>
@@ -228,6 +237,9 @@
     <div class="modal" id="successModal">
         <div class="modal-content">
             <div class="modal-body text-center">
+                <div class="success-logo">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="success-logo-image">
+                </div>
                 <i class="fab fa-telegram success-icon" style="color: #0088cc;"></i>
                 <h2>¡Chat de Telegram Abierto!</h2>
                 <p>Se ha abierto un chat con @grlltdc con los detalles de tu pedido. Completa tu pedido allí para finalizar la compra.</p>
@@ -236,6 +248,23 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="footer-logo-image">
+                <div class="footer-text">
+                    <h3>MP Global Corp®</h3>
+                    <p>Premium Cannabis Products</p>
+                </div>
+            </div>
+            <div class="footer-info">
+                <p>&copy; 2025 MP Global Corp. Todos los derechos reservados.</p>
+                <p>Productos de cannabis premium para adultos.</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- Scripts -->
     <script src="scripts/app.js"></script>

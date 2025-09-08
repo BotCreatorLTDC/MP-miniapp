@@ -88,9 +88,12 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
+        url('assets/images/logo.jpg') center/cover no-repeat,
         radial-gradient(circle at 20% 80%, rgba(45, 80, 22, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 40% 40%, rgba(255, 107, 53, 0.05) 0%, transparent 50%);
+    background-blend-mode: overlay;
+    opacity: 0.03;
     pointer-events: none;
     z-index: -1;
 }
@@ -115,18 +118,41 @@ body::before {
     align-items: center;
 }
 
-.logo h1 {
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-image {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--border-radius-lg);
+    object-fit: cover;
+    border: 2px solid var(--secondary-color);
+    box-shadow: var(--shadow-gold);
+    transition: var(--transition-normal);
+}
+
+.logo-image:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-neon);
+}
+
+.logo-text h1 {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--secondary-color);
     text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    margin: 0;
 }
 
 .tagline {
     font-size: 0.9rem;
     color: var(--text-muted);
     font-weight: 300;
+    margin: 0;
 }
 
 .header-actions {
@@ -492,6 +518,27 @@ body::before {
     background: var(--gradient-primary);
 }
 
+.modal-header-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.modal-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border-radius-lg);
+    object-fit: cover;
+    border: 2px solid var(--secondary-color);
+    box-shadow: var(--shadow-gold);
+    transition: var(--transition-normal);
+}
+
+.modal-logo:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-neon);
+}
+
 .modal-header h2 {
     font-family: 'Inter', sans-serif;
     font-size: 1.8rem;
@@ -686,6 +733,32 @@ body::before {
     box-shadow: var(--shadow-sm) !important;
 }
 
+/* Success Logo */
+.success-logo {
+    margin-bottom: 1.5rem;
+}
+
+.success-logo-image {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--border-radius-xl);
+    object-fit: cover;
+    border: 3px solid var(--secondary-color);
+    box-shadow: var(--shadow-gold);
+    animation: logoPulse 2s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: var(--shadow-gold);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-neon);
+    }
+}
+
 /* Success Icon */
 .success-icon {
     font-size: 4rem;
@@ -695,6 +768,83 @@ body::before {
 
 .text-center {
     text-align: center;
+}
+
+/* Footer */
+.footer {
+    background: var(--background-glass);
+    backdrop-filter: blur(10px);
+    border-top: 2px solid rgba(212, 175, 55, 0.2);
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.footer-logo-image {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--border-radius-xl);
+    object-fit: cover;
+    border: 2px solid var(--secondary-color);
+    box-shadow: var(--shadow-gold);
+    transition: var(--transition-normal);
+}
+
+.footer-logo-image:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-neon);
+}
+
+.footer-text h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    margin: 0 0 0.5rem 0;
+}
+
+.footer-text p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.footer-info {
+    text-align: right;
+}
+
+.footer-info p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 0.25rem 0;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-info {
+        text-align: center;
+    }
 }
 
 /* Scrollbar personalizado */
