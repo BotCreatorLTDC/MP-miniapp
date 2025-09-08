@@ -302,8 +302,17 @@ class MPApp {
     }
     
     createProductCard(product) {
+        console.log('createProductCard called for:', product.name, 'with images:', product.images);
+        
         const isAvailable = product.stock === 'Disponible';
         const categoryClass = this.getCategoryClass(this.currentCategory);
+        
+        let imageHtml = '';
+        if (product.images && product.images.length > 0) {
+            const imageUrl = this.getImageUrl(product.images[0]);
+            console.log('Generated image URL:', imageUrl);
+            imageHtml = `<img src="${imageUrl}" alt="${product.name}" class="gallery-image" onload="console.log('Image loaded:', this.src)" onerror="console.log('Image error:', this.src); this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">`;
+        }
         
         return `
             <div class="product-card fade-in" data-product-name="${product.name}">
@@ -311,10 +320,7 @@ class MPApp {
                     ${this.getCategoryIcon(this.currentCategory)}
                 </div>
                 <div class="product-image">
-                    ${product.images && product.images.length > 0 
-                        ? `<img src="${this.getImageUrl(product.images[0])}" alt="${product.name}" class="gallery-image" onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">`
-                        : ''
-                    }
+                    ${imageHtml}
                     <div class="image-placeholder" style="display: ${product.images && product.images.length > 0 ? 'none' : 'flex'};">
                         <i class="fas fa-cannabis"></i>
                     </div>
@@ -355,18 +361,23 @@ class MPApp {
     }
     
     getImageUrl(imagePath) {
+        console.log('getImageUrl called with:', imagePath);
+        
         // Si la imagen es una URL completa, usarla directamente
         if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+            console.log('Using full URL:', imagePath);
             return imagePath;
         }
         
         // Si es una ruta relativa que empieza con 'img/', convertir a la ruta correcta
         if (imagePath.startsWith('img/')) {
-            // Convertir img/filename.jpg a assets/images/img/filename.jpg
-            return `assets/images/${imagePath}`;
+            const newPath = `assets/images/${imagePath}`;
+            console.log('Converting img/ path:', imagePath, '->', newPath);
+            return newPath;
         }
         
         // Para otros casos, intentar usar la imagen directamente
+        console.log('Using path as-is:', imagePath);
         return imagePath;
     }
     
