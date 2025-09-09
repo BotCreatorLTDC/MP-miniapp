@@ -17,8 +17,8 @@
             <div class="logo">
                 <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="logo-image">
                 <div class="logo-text">
-                    <h1>MP Global Corp®</h1>
-                    <span class="tagline">Premium Cannabis Products</span>
+                    <h1 data-i18n="app_title">MP Global Corp®</h1>
+                    <span class="tagline" data-i18n="app_tagline">Premium Cannabis Products</span>
                 </div>
             </div>
             <div class="header-actions">
@@ -46,31 +46,31 @@
             <div class="category-tabs">
                 <button class="tab-btn active" data-category="all">
                     <i class="fas fa-home"></i>
-                    <span>Todos</span>
+                    <span data-i18n="all_products">Todos</span>
                 </button>
                 <button class="tab-btn" data-category="moroccan_hash">
                     <i class="fas fa-leaf"></i>
-                    <span>🇲🇦 Moroccan</span>
+                    <span data-i18n="moroccan_hash">🇲🇦 Moroccan</span>
                 </button>
                 <button class="tab-btn" data-category="spanish_flower">
                     <i class="fas fa-seedling"></i>
-                    <span>🇪🇸 Spanish</span>
+                    <span data-i18n="spanish_flower">🇪🇸 Spanish</span>
                 </button>
                 <button class="tab-btn" data-category="cali_flower">
                     <i class="fas fa-star"></i>
-                    <span>🇺🇸 California</span>
+                    <span data-i18n="cali_flower">🇺🇸 California</span>
                 </button>
                 <button class="tab-btn" data-category="extractions">
                     <i class="fas fa-flask"></i>
-                    <span>🔬 Extractions</span>
+                    <span data-i18n="extractions">🔬 Extractions</span>
                 </button>
                 <button class="tab-btn" data-category="varios">
                     <i class="fas fa-box"></i>
-                    <span>📦 Otros</span>
+                    <span data-i18n="varios">📦 Otros</span>
                 </button>
             </div>
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Buscar productos...">
+                <input type="text" id="searchInput" data-i18n="search_placeholder" placeholder="Buscar productos...">
                 <i class="fas fa-search"></i>
             </div>
         </div>
@@ -81,7 +81,7 @@
         <!-- Loading Spinner -->
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p>Cargando catálogo...</p>
+            <p data-i18n="loading_catalog">Cargando catálogo...</p>
         </div>
 
         <!-- Products Grid -->
@@ -94,8 +94,8 @@
         <!-- Empty State -->
         <div class="empty-state" id="emptyState" style="display: none;">
             <i class="fas fa-search"></i>
-            <h3>No se encontraron productos</h3>
-            <p>Intenta con otros términos de búsqueda</p>
+            <h3 data-i18n="no_products_found">No se encontraron productos</h3>
+            <p data-i18n="try_different_terms">Intenta con otros términos de búsqueda</p>
         </div>
     </main>
 
@@ -117,13 +117,13 @@
                 </div>
                 <div class="product-details">
                     <div class="price-section">
-                        <h3>Precios</h3>
+                        <h3 data-i18n="price_options">Precios</h3>
                         <div class="price-list" id="priceList">
                             <!-- Precios por cantidad -->
                         </div>
                     </div>
                     <div class="description-section">
-                        <h3>Descripción</h3>
+                        <h3 data-i18n="description">Descripción</h3>
                         <p id="productDescription"></p>
                     </div>
                     <div class="stock-section">
@@ -134,7 +134,7 @@
             <div class="modal-footer">
                 <button class="btn btn-primary" id="addToCartBtn">
                     <i class="fas fa-cart-plus"></i>
-                    Agregar al Pedido
+                    <span data-i18n="add_to_cart">Agregar al Pedido</span>
                 </button>
             </div>
         </div>
@@ -146,7 +146,7 @@
             <div class="modal-header">
                 <div class="modal-header-content">
                     <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
-                    <h2>Mi Pedido</h2>
+                    <h2 data-i18n="my_order">Mi Pedido</h2>
                 </div>
                 <button class="close-btn" id="closeCartModal">
                     <i class="fas fa-times"></i>
@@ -157,12 +157,12 @@
                     <!-- Items del carrito -->
                 </div>
                 <div class="cart-total">
-                    <h3>Total: <span id="cartTotal">0€</span></h3>
+                    <h3><span data-i18n="total">Total</span>: <span id="cartTotal">0€</span></h3>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" id="clearCartBtn">Limpiar</button>
-                <button class="btn btn-primary" id="proceedOrderBtn">Proceder al Pedido</button>
+                <button class="btn btn-secondary" id="clearCartBtn" data-i18n="clear_cart">Limpiar</button>
+                <button class="btn btn-primary" id="proceedOrderBtn" data-i18n="proceed_order">Proceder al Pedido</button>
             </div>
         </div>
     </div>
@@ -171,7 +171,7 @@
     <div class="modal" id="orderModal">
         <div class="modal-content large">
             <div class="modal-header">
-                <h2>Formulario de Pedido</h2>
+                <h2 data-i18n="order_form">Formulario de Pedido</h2>
                 <button class="close-btn" id="closeOrderModal">
                     <i class="fas fa-times"></i>
                 </button>
@@ -179,63 +179,63 @@
             <div class="modal-body">
                 <form id="orderForm">
                     <div class="form-section">
-                        <h3>Datos de Envío</h3>
+                        <h3 data-i18n="customer_info">Datos de Envío</h3>
                         <div class="form-grid">
                             <div class="form-group">
-                                <label for="fullName">Nombre Completo *</label>
-                                <input type="text" id="fullName" name="fullName" required>
+                                <label for="fullName" data-i18n="full_name">Nombre Completo *</label>
+                                <input type="text" id="fullName" name="fullName" required placeholder="Nombre Completo">
                             </div>
                             <div class="form-group">
-                                <label for="phone">Teléfono *</label>
-                                <input type="tel" id="phone" name="phone" required>
+                                <label for="phone" data-i18n="phone">Teléfono *</label>
+                                <input type="tel" id="phone" name="phone" required placeholder="Teléfono">
                             </div>
                             <div class="form-group">
-                                <label for="address">Dirección *</label>
-                                <input type="text" id="address" name="address" required>
+                                <label for="address" data-i18n="address">Dirección *</label>
+                                <input type="text" id="address" name="address" required placeholder="Dirección">
                             </div>
                             <div class="form-group">
-                                <label for="city">Ciudad *</label>
-                                <input type="text" id="city" name="city" required>
+                                <label for="city" data-i18n="city">Ciudad *</label>
+                                <input type="text" id="city" name="city" required placeholder="Ciudad">
                             </div>
                             <div class="form-group">
-                                <label for="province">Provincia *</label>
-                                <input type="text" id="province" name="province" required>
+                                <label for="province" data-i18n="province">Provincia *</label>
+                                <input type="text" id="province" name="province" required placeholder="Provincia">
                             </div>
                             <div class="form-group">
-                                <label for="postalCode">Código Postal *</label>
-                                <input type="text" id="postalCode" name="postalCode" required>
+                                <label for="postalCode" data-i18n="postal_code">Código Postal *</label>
+                                <input type="text" id="postalCode" name="postalCode" required placeholder="Código Postal">
                             </div>
                         </div>
                     </div>
                     <div class="form-section">
-                        <h3>Detalles del Pedido</h3>
+                        <h3 data-i18n="order_details">Detalles del Pedido</h3>
                         <div class="form-group">
-                            <label for="orderContent">Contenido del Pedido *</label>
-                            <textarea id="orderContent" name="orderContent" rows="4" required></textarea>
+                            <label for="orderContent" data-i18n="order_content">Contenido del Pedido *</label>
+                            <textarea id="orderContent" name="orderContent" rows="4" required placeholder="Contenido del Pedido"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="username">Nombre de Usuario</label>
-                            <input type="text" id="username" name="username">
+                            <label for="username" data-i18n="username">Nombre de Usuario</label>
+                            <input type="text" id="username" name="username" placeholder="Nombre de Usuario">
                         </div>
                         <div class="form-group">
-                            <label for="paymentMethod">Método de Pago *</label>
+                            <label for="paymentMethod" data-i18n="payment_method">Método de Pago *</label>
                             <select id="paymentMethod" name="paymentMethod" required>
-                                <option value="">Seleccionar método</option>
-                                <option value="crypto">Criptomonedas</option>
-                                <option value="bank_transfer">Transferencia Bancaria</option>
-                                <option value="other">Otro</option>
+                                <option value="" data-i18n="select_payment_method">Seleccionar método</option>
+                                <option value="crypto" data-i18n="crypto">Criptomonedas</option>
+                                <option value="bank_transfer" data-i18n="bank_transfer">Transferencia Bancaria</option>
+                                <option value="other" data-i18n="other">Otro</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="comments">Comentarios/Sugerencias</label>
-                            <textarea id="comments" name="comments" rows="3"></textarea>
+                            <label for="comments" data-i18n="comments_suggestions">Comentarios/Sugerencias</label>
+                            <textarea id="comments" name="comments" rows="3" placeholder="Comentarios/Sugerencias"></textarea>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" id="cancelOrderBtn">Cancelar</button>
-                <button class="btn btn-primary" id="submitOrderBtn">Enviar Pedido</button>
+                <button class="btn btn-secondary" id="cancelOrderBtn" data-i18n="cancel">Cancelar</button>
+                <button class="btn btn-primary" id="submitOrderBtn"><span data-i18n="submit_order">Enviar Pedido</span></button>
             </div>
         </div>
     </div>
@@ -248,10 +248,10 @@
                     <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="success-logo-image">
                 </div>
                 <i class="fab fa-telegram success-icon" style="color: #0088cc;"></i>
-                <h2>¡Chat de Telegram Abierto!</h2>
-                <p>Se ha abierto un chat con @grlltdc con los detalles de tu pedido. Completa tu pedido allí para finalizar la compra.</p>
-                <p><strong>Nota:</strong> Si no se abrió automáticamente, busca @grlltdc en Telegram.</p>
-                <button class="btn btn-primary" id="closeSuccessModal">Cerrar</button>
+                <h2 data-i18n="telegram_opened">¡Chat de Telegram Abierto!</h2>
+                <p data-i18n="telegram_message">Se ha abierto un chat con @grlltdc con los detalles de tu pedido. Completa tu pedido allí para finalizar la compra.</p>
+                <p><strong data-i18n="note_label">Nota:</strong> <span data-i18n="telegram_note">Si no se abrió automáticamente, busca @grlltdc en Telegram.</span></p>
+                <button class="btn btn-primary" id="closeSuccessModal" data-i18n="close">Cerrar</button>
             </div>
         </div>
     </div>
@@ -262,7 +262,7 @@
             <div class="modal-header">
                 <div class="modal-header-content">
                     <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
-                    <h2 id="zoomImageTitle">Imagen del Producto</h2>
+                    <h2 id="zoomImageTitle" data-i18n="image_zoom">Imagen del Producto</h2>
                 </div>
                 <button class="close-btn" id="closeImageZoomModal">
                     <i class="fas fa-times"></i>
@@ -272,16 +272,16 @@
                 <div class="image-zoom-container">
                     <img id="zoomImage" src="" alt="Imagen ampliada" class="zoom-image">
                     <div class="zoom-controls">
-                        <button class="zoom-btn" id="zoomInBtn" title="Acercar">
+                        <button class="zoom-btn" id="zoomInBtn" title="Acercar" data-i18n-title="zoom_in">
                             <i class="fas fa-plus"></i>
                         </button>
-                        <button class="zoom-btn" id="zoomOutBtn" title="Alejar">
+                        <button class="zoom-btn" id="zoomOutBtn" title="Alejar" data-i18n-title="zoom_out">
                             <i class="fas fa-minus"></i>
                         </button>
-                        <button class="zoom-btn" id="zoomResetBtn" title="Restablecer">
+                        <button class="zoom-btn" id="zoomResetBtn" title="Restablecer" data-i18n-title="zoom_reset">
                             <i class="fas fa-expand-arrows-alt"></i>
                         </button>
-                        <button class="zoom-btn" id="zoomRotateBtn" title="Rotar">
+                        <button class="zoom-btn" id="zoomRotateBtn" title="Rotar" data-i18n-title="zoom_rotate">
                             <i class="fas fa-redo"></i>
                         </button>
                     </div>
@@ -296,7 +296,7 @@
             <div class="modal-header">
                 <div class="modal-header-content">
                     <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
-                    <h2>Seguridad y Privacidad</h2>
+                    <h2 data-i18n="security_privacy">Seguridad y Privacidad</h2>
                 </div>
                 <button class="close-btn" id="closeSecurityModal">
                     <i class="fas fa-times"></i>
@@ -305,7 +305,7 @@
             <div class="modal-body">
                 <div class="security-content">
                     <div class="security-section">
-                        <h3><i class="fas fa-shield-alt"></i> Seguridad de Datos</h3>
+                        <h3><i class="fas fa-shield-alt"></i> <span data-i18n="data_security">Seguridad de Datos</span></h3>
                         <ul>
                             <li><strong>Cifrado SSL/TLS:</strong> Todas las comunicaciones están cifradas con protocolos de seguridad de grado bancario.</li>
                             <li><strong>Datos Locales:</strong> Tu carrito y preferencias se almacenan localmente en tu dispositivo, no en nuestros servidores.</li>
@@ -315,7 +315,7 @@
                     </div>
                     
                     <div class="security-section">
-                        <h3><i class="fas fa-user-secret"></i> Privacidad</h3>
+                        <h3><i class="fas fa-user-secret"></i> <span data-i18n="privacy">Privacidad</span></h3>
                         <ul>
                             <li><strong>Anonimato:</strong> No requerimos registro ni datos personales para usar la miniapp.</li>
                             <li><strong>Datos Mínimos:</strong> Solo recopilamos el ID de usuario de Telegram para personalizar tu carrito.</li>
@@ -325,7 +325,7 @@
                     </div>
                     
                     <div class="security-section">
-                        <h3><i class="fas fa-lock"></i> Cumplimiento Legal</h3>
+                        <h3><i class="fas fa-lock"></i> <span data-i18n="legal_compliance">Cumplimiento Legal</span></h3>
                         <ul>
                             <li><strong>GDPR:</strong> Cumplimos con el Reglamento General de Protección de Datos de la UE.</li>
                             <li><strong>Edad Mínima:</strong> Solo para usuarios mayores de 18 años.</li>
@@ -335,7 +335,7 @@
                     </div>
                     
                     <div class="security-section">
-                        <h3><i class="fas fa-mobile-alt"></i> Seguridad Móvil</h3>
+                        <h3><i class="fas fa-mobile-alt"></i> <span data-i18n="mobile_security">Seguridad Móvil</span></h3>
                         <ul>
                             <li><strong>App Segura:</strong> La miniapp funciona dentro del entorno seguro de Telegram.</li>
                             <li><strong>Sin Permisos:</strong> No solicitamos acceso a tu cámara, ubicación o contactos.</li>
@@ -346,10 +346,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" id="closeSecurityModalBtn">Cerrar</button>
+                <button class="btn btn-secondary" id="closeSecurityModalBtn" data-i18n="close">Cerrar</button>
                 <button class="btn btn-primary" id="clearAllDataBtn">
                     <i class="fas fa-trash"></i>
-                    Limpiar Todos los Datos
+                    <span data-i18n="clear_all_data">Limpiar Todos los Datos</span>
                 </button>
             </div>
         </div>
@@ -361,17 +361,17 @@
             <div class="footer-logo">
                 <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="footer-logo-image">
                 <div class="footer-text">
-                    <h3>MP Global Corp®</h3>
-                    <p>Premium Cannabis Products</p>
+                    <h3 data-i18n="app_title">MP Global Corp®</h3>
+                    <p data-i18n="app_tagline">Premium Cannabis Products</p>
                 </div>
             </div>
             <div class="footer-info">
-                <p>&copy; 2025 MP Global Corp. Todos los derechos reservados.</p>
-                <p>Productos de cannabis premium para adultos.</p>
+                <p data-i18n="copyright">© 2025 MP Global Corp. Todos los derechos reservados.</p>
+                <p data-i18n="adult_only">Productos de cannabis premium para adultos.</p>
                 <div class="footer-links">
                     <button class="footer-link" id="securityBtn">
                         <i class="fas fa-shield-alt"></i>
-                        Seguridad y Privacidad
+                        <span data-i18n="security_privacy_link">Seguridad y Privacidad</span>
                     </button>
                 </div>
             </div>

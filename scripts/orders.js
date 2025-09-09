@@ -222,12 +222,12 @@ class OrderManager {
     
     async submitOrder() {
         if (!this.validateForm()) {
-            this.app.showToast('Por favor, corrige los errores en el formulario', 'error');
+            this.app.showToast(this.app.t('form_errors'), 'error');
             return;
         }
         
         if (this.app.cart.length === 0) {
-            this.app.showToast('Tu carrito está vacío', 'error');
+            this.app.showToast(this.app.t('cart_empty_error'), 'error');
             return;
         }
         
@@ -249,7 +249,7 @@ class OrderManager {
             
         } catch (error) {
             console.error('Error enviando pedido:', error);
-            this.app.showToast('Error enviando el pedido. Inténtalo de nuevo.', 'error');
+            this.app.showToast(this.app.t('error_sending_order'), 'error');
         } finally {
             this.hideLoading();
         }
@@ -293,7 +293,7 @@ class OrderManager {
             // Abrir chat de Telegram
             window.open(telegramUrl, '_blank');
             
-            return { success: true, message: 'Chat de Telegram abierto' };
+            return { success: true, message: this.app.t('telegram_opened_success') };
         } catch (error) {
             console.error('Error abriendo chat de Telegram:', error);
             throw error;
@@ -322,9 +322,9 @@ ${orderData.postalCode ? `📮 CP: ${orderData.postalCode}` : ''}
 🛍️ PRODUCTOS (${totalItems} items):
 ${cartItems}
 
-💬 Notas: ${orderData.notes || 'Sin notas adicionales'}
+💬 Notas: ${orderData.notes || ''}
 
-📅 Fecha: ${new Date().toLocaleString('es-ES')}
+📅 Fecha: ${new Date().toLocaleString(this.app.translationManager.getLocale())}
 
 ---
 Enviado desde la Miniapp MP Global Corp`;
@@ -340,7 +340,7 @@ Enviado desde la Miniapp MP Global Corp`;
         const submitBtn = document.getElementById('submitOrderBtn');
         if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${this.app.t('sending')}`;
         }
     }
     
@@ -348,7 +348,7 @@ Enviado desde la Miniapp MP Global Corp`;
         const submitBtn = document.getElementById('submitOrderBtn');
         if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Pedido';
+            submitBtn.innerHTML = `<i class="fas fa-paper-plane"></i> ${this.app.t('submit_order')}`;
         }
     }
     
@@ -361,7 +361,7 @@ Enviado desde la Miniapp MP Global Corp`;
         this.app.showModal(successModal);
         
         // Mostrar toast
-        this.app.showToast('¡Chat de Telegram abierto! Completa tu pedido allí.', 'success');
+        this.app.showToast(this.app.t('telegram_opened_success'), 'success');
     }
     
     hideSuccessModal() {
@@ -371,7 +371,7 @@ Enviado desde la Miniapp MP Global Corp`;
     
     clearCart() {
         this.app.clearCart();
-        this.app.showToast('Carrito limpiado', 'info');
+        this.app.showToast(this.app.t('cart_cleared'), 'info');
     }
     
     openTelegramChat() {
@@ -434,7 +434,7 @@ Enviado desde la Miniapp MP Global Corp`;
     // Generar resumen del pedido para mostrar
     generateOrderSummary() {
         if (this.app.cart.length === 0) {
-            return 'No hay productos en el carrito';
+            return this.app.t('cart_empty');
         }
         
         const summary = this.app.cart.map(item => 
@@ -443,7 +443,7 @@ Enviado desde la Miniapp MP Global Corp`;
         
         const totalItems = this.app.cart.reduce((sum, item) => sum + item.quantity, 0);
         
-        return `${summary}\n\nTotal: ${totalItems} productos`;
+        return `${summary}\n\n${this.app.t('total')}: ${totalItems} ${this.app.t('products')}`;
     }
     
     // Exportar pedido a diferentes formatos

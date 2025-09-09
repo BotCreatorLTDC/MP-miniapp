@@ -103,6 +103,8 @@ class MPApp {
             this.setupEventListeners();
             this.renderProducts();
             this.updateCartUI();
+            // Aplicar traducciones iniciales
+            this.translationManager.updateUI();
             
             // Inicializar gestor de pedidos
             console.log('Inicializando OrderManager...');
@@ -112,7 +114,7 @@ class MPApp {
             this.hideLoading();
         } catch (error) {
             console.error('Error inicializando la app:', error);
-            this.showError('Error cargando el catálogo');
+            this.showError(this.t('error_loading_catalog'));
         }
     }
     
@@ -386,7 +388,7 @@ class MPApp {
         const emptyState = document.getElementById('emptyState');
         
         if (!this.catalog) {
-            productsGrid.innerHTML = '<p>Error cargando productos</p>';
+            productsGrid.innerHTML = `<p>${this.t('error_loading_catalog')}</p>`;
             return;
         }
         
@@ -433,7 +435,7 @@ class MPApp {
     createProductCard(product) {
         console.log('createProductCard called for:', product.name, 'with images:', product.images);
         
-        const isAvailable = product.stock === 'Disponible';
+        const isAvailable = product.stock === 'Disponible' || product.stock === this.t('available');
         const categoryClass = this.getCategoryClass(this.currentCategory);
         
         let imageHtml = '';
@@ -458,7 +460,7 @@ class MPApp {
                     <h3 class="product-name">${product.name}</h3>
                     <p class="product-price">${product.price}</p>
                     <span class="product-stock ${isAvailable ? 'stock-available' : 'stock-unavailable'}">
-                        ${isAvailable ? 'Disponible' : 'No Disponible'}
+                        ${isAvailable ? this.t('available') : this.t('unavailable')}
                     </span>
                 </div>
             </div>
@@ -581,9 +583,9 @@ class MPApp {
         }
         
         // Configurar stock
-        const isAvailable = product.stock === 'Disponible';
+        const isAvailable = product.stock === 'Disponible' || product.stock === this.t('available');
         stockBadge.className = `stock-badge ${isAvailable ? 'stock-available' : 'stock-unavailable'}`;
-        stockBadge.textContent = isAvailable ? 'Disponible' : 'No Disponible';
+        stockBadge.textContent = isAvailable ? this.t('available') : this.t('unavailable');
         
         // Configurar botón de agregar al carrito
         const addToCartBtn = document.getElementById('addToCartBtn');
@@ -591,7 +593,7 @@ class MPApp {
         addToCartBtn.onclick = () => {
             if (isAvailable) {
                 this.addToCart(product);
-                this.showToast('Producto agregado al carrito', 'success');
+                this.showToast(this.t('product_added'), 'success');
             }
         };
         
@@ -606,7 +608,7 @@ class MPApp {
         const totalPrice = this.calculateTotalPrice(selectedQuantity, selectedAmount);
         
         // Actualizar el texto del botón para mostrar la variante seleccionada con precio total
-        addToCartBtn.textContent = `Agregar ${selectedQuantity} por ${totalPrice}`;
+        addToCartBtn.textContent = `${this.t('add')} ${selectedQuantity} ${this.t('for')} ${totalPrice}`;
         addToCartBtn.dataset.selectedQuantity = selectedQuantity;
         addToCartBtn.dataset.selectedAmount = selectedAmount;
         
@@ -774,7 +776,7 @@ class MPApp {
         
         if (this.cart.length === 0) {
             console.log('Carrito vacío, mostrando toast de error');
-            this.showToast('Tu carrito está vacío', 'error');
+            this.showToast(this.t('cart_empty_error'), 'error');
             return;
         }
         
@@ -792,12 +794,12 @@ class MPApp {
             window.open(telegramUrl, '_blank');
             
             // Mostrar mensaje de confirmación
-            this.showToast('¡Chat de Telegram abierto!', 'success');
+            this.showToast(this.t('telegram_opened_success'), 'success');
             console.log('Chat de Telegram abierto exitosamente');
             
         } catch (error) {
             console.error('Error abriendo chat de Telegram:', error);
-            this.showToast('Error abriendo chat de Telegram', 'error');
+            this.showToast(this.t('telegram_error'), 'error');
         }
     }
     
@@ -805,8 +807,8 @@ class MPApp {
         const cartItems = this.cart.map(item => {
             if (item.selectedQuantity && item.selectedAmount) {
                 const totalPrice = item.totalPrice || item.selectedAmount;
-                const unitText = item.selectedQuantity.includes('@') ? 'cada 100@' : 'c/u';
-                return `• ${item.name} (${item.selectedQuantity} por ${item.selectedAmount} ${unitText}) x${item.quantity} = ${totalPrice}`;
+                const unitText = item.selectedQuantity.includes('@') ? this.t('per_100') : this.t('per_unit');
+                return `• ${item.name} (${item.selectedQuantity} ${this.t('for')} ${item.selectedAmount} ${unitText}) x${item.quantity} = ${totalPrice}`;
             } else {
                 return `• ${item.name} x${item.quantity}`;
             }
@@ -819,7 +821,7 @@ class MPApp {
 🛍️ PRODUCTOS (${totalItems} items):
 ${cartItems}
 
-📅 Fecha: ${new Date().toLocaleString('es-ES')}
+📅 Fecha: ${new Date().toLocaleString(this.translationManager.getLocale())}
 
 ---
 Enviado desde la Miniapp MP Global Corp`;
@@ -849,18 +851,18 @@ Enviado desde la Miniapp MP Global Corp`;
         }
         
         if (this.cart.length === 0) {
-            cartItems.innerHTML = '<p class="text-center">Tu carrito está vacío</p>';
+            cartItems.innerHTML = `<p class="text-center">${this.t('cart_empty')}</p>`;
         } else {
             cartItems.innerHTML = this.cart.map((item, index) => `
                 <div class="cart-item">
                     <div class="cart-item-info">
                         <div class="cart-item-name">${item.name}</div>
-                        <div class="cart-item-variant">${item.selectedQuantity} por ${item.selectedAmount}</div>
-                        <div class="cart-item-quantity">Cantidad: ${item.quantity}</div>
+                        <div class="cart-item-variant">${item.selectedQuantity} ${this.t('for')} ${item.selectedAmount}</div>
+                        <div class="cart-item-quantity">${this.t('quantity')}: ${item.quantity}</div>
                     </div>
                     <div class="cart-item-price">
-                        <div class="price-per-unit">${item.selectedAmount} ${item.selectedQuantity.includes('@') ? 'por cada 100@' : 'c/u'}</div>
-                        <div class="price-total">${item.totalPrice || item.selectedAmount} total</div>
+                        <div class="price-per-unit">${item.selectedAmount} ${item.selectedQuantity.includes('@') ? this.t('per_100') : this.t('per_unit')}</div>
+                        <div class="price-total">${item.totalPrice || item.selectedAmount} ${this.t('total')}</div>
                     </div>
                     <button class="cart-item-remove" data-variant-id="${item.variantId}" data-index="${index}">
                         <i class="fas fa-trash"></i>
@@ -878,7 +880,7 @@ Enviado desde la Miniapp MP Global Corp`;
         }
         
         // Calcular total (simplificado)
-        cartTotal.textContent = `${this.cart.length} productos`;
+        cartTotal.textContent = `${this.cart.length} ${this.t('products')}`;
         
         this.showModal(modal);
     }
@@ -992,7 +994,7 @@ Enviado desde la Miniapp MP Global Corp`;
         if (modal && zoomImage) {
             zoomImage.src = imageSrc;
             zoomImage.alt = imageAlt;
-            zoomImageTitle.textContent = imageAlt || 'Imagen del Producto';
+            zoomImageTitle.textContent = imageAlt || this.t('image_zoom');
             
             // Reset zoom state
             this.zoomState = {
@@ -1187,7 +1189,7 @@ Enviado desde la Miniapp MP Global Corp`;
             // Escuchar cambios de idioma
             languageSelect.addEventListener('change', (e) => {
                 this.translationManager.setLanguage(e.target.value);
-                this.showToast(`Idioma cambiado a ${this.translationManager.getLanguageName(e.target.value)}`, 'info');
+                this.showToast(`${this.t('language_changed')} ${this.translationManager.getLanguageName(e.target.value)}`, 'info');
             });
         }
     }
