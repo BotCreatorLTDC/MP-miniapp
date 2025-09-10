@@ -1190,6 +1190,14 @@ Enviado desde la Miniapp MP Global Corp`;
             languageSelect.addEventListener('change', (e) => {
                 this.translationManager.setLanguage(e.target.value);
                 this.showToast(`${this.t('language_changed')} ${this.translationManager.getLanguageName(e.target.value)}`, 'info');
+                // Recargar para asegurar que todo el contenido refleje el idioma
+                setTimeout(() => {
+                    if (window.Telegram && window.Telegram.WebApp) {
+                        // En el contexto de miniapps, usar close/reloadAnimation puede ser intrusivo;
+                        // preferimos recargar la vista si está embebida en web.
+                    }
+                    window.location.reload();
+                }, 300);
             });
         }
     }
