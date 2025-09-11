@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Debug de Imágenes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .image-test {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        .image-test img {
+            max-width: 300px;
+            height: auto;
+            margin: 10px;
+            border: 2px solid #444;
+        }
+        .debug-info {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .error {
+            color: #ff6b6b;
+        }
+        .success {
+            color: #51cf66;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Test - Debug de Imágenes</h1>
+
+        <div id="loading" class="debug-info">
+            🔄 Cargando catálogo desde la API...
+        </div>
+
+        <div id="results"></div>
+
+        <div id="debug" class="debug-info">
+            <h3>Debug Info:</h3>
+            <div id="debug-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Simular las funciones de la miniapp
+        function getImageUrl(imagePath) {
+            console.log('getImageUrl called with:', imagePath);
+
+            // Si la imagen es una URL completa, usarla directamente
+            if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+                console.log('Using full URL:', imagePath);
+                return imagePath;
+            }
+
+            // Si es una URL de Telegram API, usarla directamente
+            if (imagePath.includes('api.telegram.org/file/bot')) {
+                console.log('Using Telegram API URL:', imagePath);
+                return imagePath;
+            }
+
+            // Si es una ruta relativa que empieza con 'img/', convertir a la ruta correcta
+            if (imagePath.startsWith('img/')) {
+                const newPath = `assets/images/${imagePath}`;
+                console.log('Converting img/ path:', imagePath, '->', newPath);
+                return newPath;
+            }
+
+            // Si parece ser un file_id de Telegram, intentar construir la URL
+            if (imagePath.length > 20 && !imagePath.includes('/') && !imagePath.includes('\\')) {
+                // Esto podría ser un file_id, pero no tenemos el token aquí
+                // Devolver un placeholder por ahora
+                console.log('Detected potential file_id, using placeholder:', imagePath);
+                return getPlaceholderImage();
+            }
+
+            // Para otros casos, intentar usar la imagen directamente
+            console.log('Using path as-is:', imagePath);
+            return imagePath;
+        }
+
+        function getPlaceholderImage() {
+            return 'https://via.placeholder.com/300x200/4a5d23/ffffff?text=PLACEHOLDER';
+        }
+
+        async function testImages() {
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const debug = document.getElementById('debug-content');
+
+            try {
+                // Cargar catálogo desde la API
+                const response = await fetch('https://mp-bot-wtcf.onrender.com/api/catalog');
+                const data = await response.json();
+
+                if (data.success) {
+                    const catalog = data.data;
+                    loading.innerHTML = '<span class="success">✅ Catálogo cargado exitosamente</span>';
+
+                    let html = '<h2>🖼️ Test de Imágenes por Categoría</h2>';
+                    let debugInfo = '';
+
+                    for (const categoryName in catalog.categories) {
+                        const category = catalog.categories[categoryName];
+                        html += `<div class="image-test">`;
+                        html += `<h3>📁 ${category.name}</h3>`;
+
+                        if (category.products && category.products.length > 0) {
+                            for (const product of category.products) {
+                                if (product.images && product.images.length > 0) {
+                                    html += `<h4>🛍️ ${product.name}</h4>`;
+                                    html += `<p><strong>Precio:</strong> ${product.price}</p>`;
+                                    html += `<p><strong>Imágenes originales:</strong> ${JSON.stringify(product.images)}</p>`;
+
+                                    for (let i = 0; i < product.images.length; i++) {
+                                        const originalImage = product.images[i];
+                                        const convertedImage = getImageUrl(originalImage);
+
+                                        html += `<div style="margin: 10px 0;">`;
+                                        html += `<p><strong>Imagen ${i + 1}:</strong></p>`;
+                                        html += `<p><strong>Original:</strong> ${originalImage}</p>`;
+                                        html += `<p><strong>Convertida:</strong> ${convertedImage}</p>`;
+                                        html += `<img src="${convertedImage}" alt="${product.name} - Imagen ${i + 1}" onerror="this.style.border='2px solid red'; this.alt='ERROR: No se pudo cargar la imagen'; console.error('Error cargando imagen:', this.src);">`;
+                                        html += `</div>`;
+
+                                        debugInfo += `Producto: ${product.name}\n`;
+                                        debugInfo += `  Imagen ${i + 1}: ${originalImage} -> ${convertedImage}\n`;
+                                    }
+                                }
+                            }
+                        } else {
+                            html += `<p>No hay productos en esta categoría</p>`;
+                        }
+
+                        html += `</div>`;
+                    }
+
+                    results.innerHTML = html;
+                    debug.textContent = debugInfo;
+                } else {
+                    loading.innerHTML = '<span class="error">❌ Error cargando catálogo: ' + data.error + '</span>';
+                }
+            } catch (error) {
+                loading.innerHTML = '<span class="error">❌ Error: ' + error.message + '</span>';
+                console.error('Error:', error);
+            }
+        }
+
+        // Ejecutar test al cargar la página
+        testImages();
+    </script>
+</body>
+</html>
