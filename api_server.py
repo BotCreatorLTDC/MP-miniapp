@@ -28,7 +28,7 @@ class DatabaseManager:
     def __init__(self):
         self.connection = None
         self.connect()
-    
+
     def connect(self):
         """Conectar a la base de datos PostgreSQL"""
         try:
@@ -38,41 +38,45 @@ class DatabaseManager:
         except Exception as e:
             logger.error(f"❌ Error conectando a PostgreSQL: {e}")
             self.connection = None
-    
+
     def get_connection(self):
         """Obtener conexión a la base de datos"""
         if not self.connection or self.connection.closed:
             self.connect()
         return self.connection
-    
+
     def get_catalog(self):
         """Obtener catálogo completo desde la base de datos"""
         try:
             conn = self.get_connection()
             if not conn:
                 return self.get_fallback_catalog()
-            
+
             cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-            
-            # Obtener categorías
+
+            # Obtener categorías desde la tabla de categorías
             cursor.execute("""
-                SELECT DISTINCT category FROM products 
-                WHERE category IS NOT NULL AND category != ''
-                ORDER BY category
+                SELECT c.category_key, c.category_name, c.description
+                FROM categories c
+                ORDER BY c.category_key
             """)
-            categories = [row['category'] for row in cursor.fetchall()]
-            
+            categories_data = cursor.fetchall()
+
             catalog = {"categories": {}}
-            
-            for category in categories:
+
+            for category_row in categories_data:
+                category_key = category_row['category_key']
+                category_name = category_row['category_name']
+                category_description = category_row['description']
+
                 # Obtener productos de la categoría
                 cursor.execute("""
                     SELECT name, price, description, stock, images, created_at, updated_at
-                    FROM products 
+                    FROM products
                     WHERE category = %s
                     ORDER BY name
-                """, (category,))
-                
+                """, (category_key,))
+
                 products = []
                 for row in cursor.fetchall():
                     product = {
@@ -85,20 +89,20 @@ class DatabaseManager:
                         "updated_at": row['updated_at'].isoformat() if row['updated_at'] else None
                     }
                     products.append(product)
-                
-                # Mapear nombres de categorías
-                category_name = self.get_category_display_name(category)
-                catalog["categories"][category] = {
+
+                # Usar nombre de la base de datos
+                catalog["categories"][category_key] = {
                     "name": category_name,
+                    "description": category_description or f"Productos de {category_name}",
                     "products": products
                 }
-            
+
             return catalog
-            
+
         except Exception as e:
             logger.error(f"Error obteniendo catálogo: {e}")
             return self.get_fallback_catalog()
-    
+
     def get_category_display_name(self, category):
         """Obtener nombre de visualización de la categoría"""
         category_names = {
@@ -109,7 +113,7 @@ class DatabaseManager:
             'varios': '📦 OTHER PRODUCTS'
         }
         return category_names.get(category, category.upper())
-    
+
     def get_fallback_catalog(self):
         """Catálogo de fallback si no hay conexión a BD"""
         try:
@@ -118,20 +122,20 @@ class DatabaseManager:
         except Exception as e:
             logger.error(f"Error cargando catálogo de fallback: {e}")
             return {"categories": {}}
-    
+
     def add_order(self, order_data):
         """Agregar pedido a la base de datos"""
         try:
             conn = self.get_connection()
             if not conn:
                 return {"success": False, "error": "No hay conexión a la base de datos"}
-            
+
             cursor = conn.cursor()
-            
+
             # Insertar pedido
             cursor.execute("""
                 INSERT INTO orders (
-                    user_id, full_name, phone, address, city, province, 
+                    user_id, full_name, phone, address, city, province,
                     postal_code, order_content, payment_method, comments,
                     order_data, status, created_at
                 ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
@@ -151,42 +155,42 @@ class DatabaseManager:
                 'pending',
                 datetime.now()
             ))
-            
+
             order_id = cursor.fetchone()[0]
             conn.commit()
-            
+
             logger.info(f"Pedido {order_id} creado exitosamente")
             return {"success": True, "order_id": order_id}
-            
+
         except Exception as e:
             logger.error(f"Error agregando pedido: {e}")
             return {"success": False, "error": str(e)}
-    
+
     def get_orders(self, user_id=None, limit=50):
         """Obtener pedidos"""
         try:
             conn = self.get_connection()
             if not conn:
                 return []
-            
+
             cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-            
+
             if user_id:
                 cursor.execute("""
-                    SELECT * FROM orders 
-                    WHERE user_id = %s 
-                    ORDER BY created_at DESC 
+                    SELECT * FROM orders
+                    WHERE user_id = %s
+                    ORDER BY created_at DESC
                     LIMIT %s
                 """, (user_id, limit))
             else:
                 cursor.execute("""
-                    SELECT * FROM orders 
-                    ORDER BY created_at DESC 
+                    SELECT * FROM orders
+                    ORDER BY created_at DESC
                     LIMIT %s
                 """, (limit,))
-            
+
             return cursor.fetchall()
-            
+
         except Exception as e:
             logger.error(f"Error obteniendo pedidos: {e}")
             return []
@@ -254,20 +258,20 @@ def search_products():
                 "success": False,
                 "error": "Parámetro de búsqueda requerido"
             }), 400
-        
+
         catalog = db.get_catalog()
         results = []
-        
+
         for category_id, category in catalog["categories"].items():
             for product in category["products"]:
-                if (query in product["name"].lower() or 
+                if (query in product["name"].lower() or
                     query in product["description"].lower() or
                     query in product["price"].lower()):
                     product_with_category = product.copy()
                     product_with_category["category"] = category_id
                     product_with_category["category_name"] = category["name"]
                     results.append(product_with_category)
-        
+
         return jsonify({
             "success": True,
             "data": results,
@@ -275,7 +279,7 @@ def search_products():
             "count": len(results),
             "timestamp": datetime.now().isoformat()
         })
-        
+
     except Exception as e:
         logger.error(f"Error en búsqueda: {e}")
         return jsonify({
@@ -293,9 +297,9 @@ def create_order():
                 "success": False,
                 "error": "Datos del pedido requeridos"
             }), 400
-        
+
         result = db.add_order(order_data)
-        
+
         if result["success"]:
             return jsonify({
                 "success": True,
@@ -307,7 +311,7 @@ def create_order():
                 "success": False,
                 "error": result["error"]
             }), 500
-            
+
     except Exception as e:
         logger.error(f"Error creando pedido: {e}")
         return jsonify({
@@ -321,16 +325,16 @@ def get_orders():
     try:
         user_id = request.args.get('user_id')
         limit = int(request.args.get('limit', 50))
-        
+
         orders = db.get_orders(user_id, limit)
-        
+
         return jsonify({
             "success": True,
             "data": orders,
             "count": len(orders),
             "timestamp": datetime.now().isoformat()
         })
-        
+
     except Exception as e:
         logger.error(f"Error obteniendo pedidos: {e}")
         return jsonify({
@@ -344,7 +348,7 @@ def health_check():
     try:
         conn = db.get_connection()
         db_status = "connected" if conn and not conn.closed else "disconnected"
-        
+
         return jsonify({
             "status": "healthy",
             "database": db_status,
@@ -374,8 +378,8 @@ def internal_error(error):
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
     debug = os.getenv('DEBUG', 'False').lower() == 'true'
-    
+
     logger.info(f"🚀 Iniciando servidor API en puerto {port}")
     logger.info(f"📊 Base de datos: {'Conectada' if db.get_connection() else 'Desconectada'}")
-    
+
     app.run(host='0.0.0.0', port=port, debug=debug)
