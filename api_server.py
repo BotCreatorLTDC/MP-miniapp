@@ -30,37 +30,37 @@ class DatabaseManager:
         self.connection = None
         self.bot_token = os.getenv('BOT_TOKEN')
         self.connect()
-    
+
     def convert_file_id_to_url(self, file_id):
         """Convertir file_id de Telegram a URL de la API"""
         if not self.bot_token:
             logger.warning("BOT_TOKEN no configurado, no se pueden convertir file_id")
             return file_id
-        
+
         try:
             # Si ya es una URL completa, devolverla
             if file_id.startswith('http'):
                 return file_id
-            
+
             # Si es un file_id, convertir a URL
             url = f"https://api.telegram.org/file/bot{self.bot_token}/{file_id}"
             return url
         except Exception as e:
             logger.error(f"Error convirtiendo file_id {file_id}: {e}")
             return file_id
-    
+
     def convert_images_to_urls(self, images):
         """Convertir lista de imágenes de file_id a URLs"""
         if not images:
             return []
-        
+
         converted_images = []
         for image in images:
             if isinstance(image, str):
                 converted_images.append(self.convert_file_id_to_url(image))
             else:
                 converted_images.append(image)
-        
+
         return converted_images
 
     def connect(self):
@@ -116,7 +116,7 @@ class DatabaseManager:
                     # Procesar imágenes
                     images = json.loads(row['images']) if row['images'] else []
                     converted_images = self.convert_images_to_urls(images)
-                    
+
                     product = {
                         "name": row['name'],
                         "price": row['price'] or "",
