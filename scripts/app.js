@@ -130,6 +130,8 @@ class MPApp {
                     console.log('✅ Catálogo cargado desde la API del bot');
                     // Convertir imágenes después de cargar el catálogo
                     this.convertCatalogImages();
+                    // Actualizar visualización de categorías
+                    this.updateCategoryDisplay();
                 } else {
                     throw new Error(result.error);
                 }
@@ -146,6 +148,8 @@ class MPApp {
                     console.log('✅ Catálogo cargado desde archivo local');
                     // Convertir imágenes después de cargar el catálogo
                     this.convertCatalogImages();
+                    // Actualizar visualización de categorías
+                    this.updateCategoryDisplay();
                 } else {
                     throw new Error('Archivo local no encontrado');
                 }
@@ -154,6 +158,8 @@ class MPApp {
                 this.catalog = this.getFallbackCatalog();
                 // Convertir imágenes después de cargar el catálogo
                 this.convertCatalogImages();
+                // Actualizar visualización de categorías
+                this.updateCategoryDisplay();
             }
         }
     }
@@ -197,6 +203,37 @@ class MPApp {
             console.log(`✅ Conversión completada: ${totalProducts} productos procesados, ${totalImages} imágenes convertidas`);
         } catch (error) {
             console.error('❌ Error convirtiendo imágenes del catálogo:', error);
+        }
+    }
+
+    updateCategoryDisplay() {
+        // Actualizar la visualización de categorías dinámicamente
+        try {
+            console.log('🔄 Actualizando visualización de categorías...');
+            
+            if (!this.catalog || !this.catalog.categories) {
+                console.warn('⚠️ No hay catálogo o categorías disponibles');
+                return;
+            }
+            
+            // Actualizar el menú de categorías si existe
+            const categoryMenu = document.getElementById('category-menu');
+            if (categoryMenu) {
+                categoryMenu.innerHTML = '';
+                
+                for (const categoryKey in this.catalog.categories) {
+                    const category = this.catalog.categories[categoryKey];
+                    const categoryButton = document.createElement('button');
+                    categoryButton.className = 'category-btn';
+                    categoryButton.textContent = category.name;
+                    categoryButton.onclick = () => this.showCategory(categoryKey);
+                    categoryMenu.appendChild(categoryButton);
+                }
+            }
+            
+            console.log('✅ Visualización de categorías actualizada');
+        } catch (error) {
+            console.error('❌ Error actualizando visualización de categorías:', error);
         }
     }
     
