@@ -128,6 +128,8 @@ class MPApp {
                 if (result.success) {
                     this.catalog = result.data;
                     console.log('✅ Catálogo cargado desde la API del bot');
+                    // Convertir imágenes después de cargar el catálogo
+                    this.convertCatalogImages();
                 } else {
                     throw new Error(result.error);
                 }
@@ -142,13 +144,59 @@ class MPApp {
                 if (response.ok) {
                     this.catalog = await response.json();
                     console.log('✅ Catálogo cargado desde archivo local');
+                    // Convertir imágenes después de cargar el catálogo
+                    this.convertCatalogImages();
                 } else {
                     throw new Error('Archivo local no encontrado');
                 }
             } catch (fallbackError) {
                 console.warn('Error en fallback, usando datos hardcodeados:', fallbackError);
                 this.catalog = this.getFallbackCatalog();
+                // Convertir imágenes después de cargar el catálogo
+                this.convertCatalogImages();
             }
+        }
+    }
+    
+    convertCatalogImages() {
+        // Convertir todas las imágenes del catálogo para la miniapp
+        try {
+            console.log('🔄 Convirtiendo imágenes del catálogo...');
+            console.log('📚 Catálogo actual:', this.catalog);
+            
+            if (!this.catalog || !this.catalog.categories) {
+                console.warn('⚠️ No hay catálogo o categorías disponibles');
+                return;
+            }
+            
+            let totalProducts = 0;
+            let totalImages = 0;
+            
+            for (const categoryName in this.catalog.categories) {
+                const category = this.catalog.categories[categoryName];
+                console.log(`📁 Procesando categoría: ${categoryName}`);
+                
+                if (category.products) {
+                    category.products.forEach(product => {
+                        totalProducts++;
+                        if (product.images && product.images.length > 0) {
+                            console.log(`🖼️ Convirtiendo imágenes para "${product.name}":`, product.images);
+                            const originalImages = [...product.images];
+                            product.images = product.images.map(img => {
+                                const converted = this.getImageUrl(img);
+                                console.log(`  ${img} -> ${converted}`);
+                                return converted;
+                            });
+                            totalImages += product.images.length;
+                            console.log(`✅ Imágenes convertidas para "${product.name}":`, product.images);
+                        }
+                    });
+                }
+            }
+            
+            console.log(`✅ Conversión completada: ${totalProducts} productos procesados, ${totalImages} imágenes convertidas`);
+        } catch (error) {
+            console.error('❌ Error convirtiendo imágenes del catálogo:', error);
         }
     }
     
@@ -500,11 +548,25 @@ class MPApp {
             return imagePath;
         }
         
+        // Si es una URL de Telegram API, usarla directamente
+        if (imagePath.includes('api.telegram.org/file/bot')) {
+            console.log('Using Telegram API URL:', imagePath);
+            return imagePath;
+        }
+        
         // Si es una ruta relativa que empieza con 'img/', convertir a la ruta correcta
         if (imagePath.startsWith('img/')) {
             const newPath = `assets/images/${imagePath}`;
             console.log('Converting img/ path:', imagePath, '->', newPath);
             return newPath;
+        }
+        
+        // Si parece ser un file_id de Telegram, intentar construir la URL
+        if (imagePath.length > 20 && !imagePath.includes('/') && !imagePath.includes('\\')) {
+            // Esto podría ser un file_id, pero no tenemos el token aquí
+            // Devolver un placeholder por ahora
+            console.log('Detected potential file_id, using placeholder:', imagePath);
+            return this.getPlaceholderImage();
         }
         
         // Para otros casos, intentar usar la imagen directamente
