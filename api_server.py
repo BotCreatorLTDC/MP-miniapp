@@ -42,9 +42,28 @@ class DatabaseManager:
             if file_id.startswith('http'):
                 return file_id
 
-            # Si es un file_id, convertir a URL
-            url = f"https://api.telegram.org/file/bot{self.bot_token}/{file_id}"
-            return url
+            # Si es una ruta relativa, mantenerla
+            if file_id.startswith('img/'):
+                return file_id
+
+            # Si es un file_id, obtener el file_path real de la API de Telegram
+            api_url = f"https://api.telegram.org/bot{self.bot_token}/getFile"
+            response = requests.get(api_url, params={'file_id': file_id})
+
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('ok'):
+                    file_path = data['result']['file_path']
+                    url = f"https://api.telegram.org/file/bot{self.bot_token}/{file_path}"
+                    logger.info(f"✅ Convertido file_id {file_id} a URL: {url}")
+                    return url
+                else:
+                    logger.error(f"Error en API de Telegram: {data.get('description', 'Unknown error')}")
+                    return file_id
+            else:
+                logger.error(f"Error HTTP {response.status_code} obteniendo file_path para {file_id}")
+                return file_id
+
         except Exception as e:
             logger.error(f"Error convirtiendo file_id {file_id}: {e}")
             return file_id
