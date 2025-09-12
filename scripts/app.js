@@ -434,7 +434,11 @@ class MPApp {
             return;
         }
 
+        // Mostrar indicador de búsqueda
+        this.showSearchIndicator();
+
         try {
+            // Intentar búsqueda en la API del bot primero
             const botApiUrl = `https://mp-bot-wtcf.onrender.com/api/products/search?q=${encodeURIComponent(this.searchTerm)}`;
             const response = await fetch(botApiUrl);
             if (response.ok) {
@@ -442,17 +446,65 @@ class MPApp {
                 if (result.success) {
                     this.searchResults = result.data;
                     this.renderSearchResults();
+                    return;
                 } else {
-                    console.error('Error en búsqueda:', result.error);
-                    this.renderProducts();
+                    console.error('Error en búsqueda API:', result.error);
                 }
             } else {
                 throw new Error(`HTTP ${response.status}`);
             }
         } catch (error) {
             console.warn('Error en búsqueda API, usando búsqueda local:', error);
-            this.renderProducts();
         }
+
+        // Fallback: búsqueda local
+        this.performLocalSearch();
+    }
+
+    showSearchIndicator() {
+        const productsGrid = document.getElementById('productsGrid');
+        const emptyState = document.getElementById('emptyState');
+        
+        emptyState.style.display = 'none';
+        productsGrid.innerHTML = `
+            <div class="search-indicator">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Buscando productos...</p>
+            </div>
+        `;
+    }
+
+    performLocalSearch() {
+        if (!this.catalog || !this.catalog.categories) {
+            console.error('No hay catálogo disponible para búsqueda local');
+            this.renderProducts();
+            return;
+        }
+
+        const searchTerm = this.searchTerm.toLowerCase();
+        const results = [];
+
+        // Buscar en todas las categorías
+        for (const categoryId in this.catalog.categories) {
+            const category = this.catalog.categories[categoryId];
+            if (category.products) {
+                for (const product of category.products) {
+                    // Buscar en nombre, descripción y categoría
+                    const productName = (product.name || '').toLowerCase();
+                    const productDescription = (product.description || '').toLowerCase();
+                    const categoryName = (category.name || '').toLowerCase();
+                    
+                    if (productName.includes(searchTerm) || 
+                        productDescription.includes(searchTerm) || 
+                        categoryName.includes(searchTerm)) {
+                        results.push(product);
+                    }
+                }
+            }
+        }
+
+        this.searchResults = results;
+        this.renderSearchResults();
     }
 
     renderSearchResults() {
@@ -462,6 +514,17 @@ class MPApp {
         if (this.searchResults.length === 0) {
             productsGrid.innerHTML = '';
             emptyState.style.display = 'block';
+            
+            // Mostrar mensaje específico para búsqueda sin resultados
+            const emptyStateContent = emptyState.querySelector('.empty-state-content');
+            if (emptyStateContent) {
+                emptyStateContent.innerHTML = `
+                    <i class="fas fa-search"></i>
+                    <h3>No se encontraron productos</h3>
+                    <p>No hay productos que coincidan con "${this.searchTerm}"</p>
+                    <p>Intenta con otros términos de búsqueda</p>
+                `;
+            }
         } else {
             emptyState.style.display = 'none';
             productsGrid.innerHTML = this.searchResults.map(product => this.createProductCard(product)).join('');

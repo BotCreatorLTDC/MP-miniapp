@@ -904,3 +904,25 @@ body::before {
 ::-webkit-scrollbar-thumb:hover {
     background: #3a6b1f;
 }
+
+/* Indicador de búsqueda */
+.search-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.search-indicator i {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+.search-indicator p {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
