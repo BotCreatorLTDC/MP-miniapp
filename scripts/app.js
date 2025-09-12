@@ -599,6 +599,13 @@ class MPApp {
             return imagePath;
         }
 
+        // Si es una referencia a imagen de base de datos, usar el endpoint de la API
+        if (imagePath.startsWith('db_image_')) {
+            const apiUrl = `/api/image/${imagePath}`;
+            console.log('Using database image:', imagePath, '->', apiUrl);
+            return apiUrl;
+        }
+
         // Si es una ruta relativa que empieza con 'img/', convertir a la ruta correcta
         if (imagePath.startsWith('img/')) {
             const newPath = `assets/images/${imagePath}`;

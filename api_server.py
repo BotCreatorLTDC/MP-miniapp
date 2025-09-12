@@ -418,6 +418,50 @@ def health_check():
             "timestamp": datetime.now().isoformat()
         }), 500
 
+@app.route('/api/image/<image_id>')
+def get_image(image_id):
+    """Servir imagen desde la base de datos"""
+    try:
+        # Si es una referencia a imagen de base de datos
+        if image_id.startswith('db_image_'):
+            actual_id = image_id.replace('db_image_', '')
+            
+            conn = db.get_connection()
+            if not conn:
+                return "Database not connected", 500
+                
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT image_data, filename FROM images WHERE id = %s
+            """, (actual_id,))
+            
+            result = cursor.fetchone()
+            cursor.close()
+            
+            if result:
+                image_data, filename = result
+                # Decodificar base64
+                import base64
+                image_bytes = base64.b64decode(image_data)
+                
+                # Determinar content type basado en la extensión
+                if filename.lower().endswith('.png'):
+                    content_type = 'image/png'
+                elif filename.lower().endswith('.gif'):
+                    content_type = 'image/gif'
+                else:
+                    content_type = 'image/jpeg'
+                
+                return image_bytes, 200, {'Content-Type': content_type}
+            else:
+                return "Image not found", 404
+        else:
+            return "Invalid image ID format", 400
+            
+    except Exception as e:
+        logger.error(f"Error obteniendo imagen {image_id}: {e}")
+        return f"Error: {str(e)}", 500
+
 @app.errorhandler(404)
 def not_found(error):
     return jsonify({

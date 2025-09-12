@@ -429,15 +429,6 @@
       "description": "Productos de Pruebas",
       "products": [
         {
-          "name": "Imagen",
-          "price": "Imagen",
-          "description": "Imagen",
-          "stock": "Imagen",
-          "images": [
-            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgQAAxkBAAIGVmjD1BBaBiK5ts0gnZXe6IsSICszAALazDEbFhwgUobsSOB-SNCEAQADAgADeQADNgQ"
-          ]
-        },
-        {
           "name": "Prueba IMG precio",
           "price": "100@ / 320# | 300@ / 290# | 500@ / 270# | 1k@ / 250#",
           "description": "Top",
@@ -462,25 +453,6 @@
           "stock": "Prueba",
           "images": [
             "AgACAgQAAxkBAAIGVmjD1BBaBiK5ts0gnZXe6IsSICszAALazDEbFhwgUobsSOB-SNCEAQADAgADeQADNgQ"
-          ]
-        },
-        {
-          "name": "Producto Test Imágenes",
-          "price": "100@ / 200# | 200@ / 180#",
-          "description": "Producto de prueba para imágenes",
-          "stock": "Disponible",
-          "images": [
-            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1234567890abcdef",
-            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB0987654321fedcba"
-          ]
-        },
-        {
-          "name": "Producto Test Nueva Imagen",
-          "price": "150@ / 300# | 300@ / 280#",
-          "description": "Producto de prueba con nuevo sistema de imágenes",
-          "stock": "Disponible",
-          "images": [
-            "img/admin_20250912_132718_AgACAgQAAx.jpg"
           ]
         }
       ]

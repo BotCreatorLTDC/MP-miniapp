@@ -473,15 +473,6 @@
             "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1234567890abcdef",
             "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB0987654321fedcba"
           ]
-        },
-        {
-          "name": "Producto Test Nueva Imagen",
-          "price": "150@ / 300# | 300@ / 280#",
-          "description": "Producto de prueba con nuevo sistema de imágenes",
-          "stock": "Disponible",
-          "images": [
-            "img/admin_20250912_132718_AgACAgQAAx.jpg"
-          ]
         }
       ]
     }
