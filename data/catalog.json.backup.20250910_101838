@@ -59,13 +59,6 @@
           "description": "Este es un producto de prueba para verificar que funciona",
           "stock": "Disponible",
           "images": []
-        },
-        {
-          "name": "PRODUCTO TEST CURL 101803",
-          "price": "50@ / 150#",
-          "description": "Producto de prueba para verificar sincronización con miniapp",
-          "stock": "Disponible",
-          "images": []
         }
       ]
     },
