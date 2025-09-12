@@ -9,14 +9,19 @@
           "price": "150@ / 400# | 300@ / 350#",
           "description": "Producto para probar integración completa",
           "stock": "Disponible",
-          "images": []
+          "images": [
+            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1757674772"
+          ]
         },
         {
           "name": "Producto Test 12:55:04",
           "price": "100@ / 350# | 300@ / 320# | 500@ / 300#",
           "description": "Producto de prueba con imágenes y precios segmentados",
           "stock": "Disponible",
-          "images": []
+          "images": [
+            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1757674504",
+            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1757674504"
+          ]
         },
         {
           "name": "Static Sift",
@@ -72,7 +77,9 @@
           "price": "150@ / 400# | 300@ / 350#",
           "description": "Producto para probar integración completa",
           "stock": "Disponible",
-          "images": []
+          "images": [
+            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1757675002"
+          ]
         }
       ]
     },
@@ -355,7 +362,9 @@
           "price": "200@ / 400# | 500@ / 350#",
           "description": "Producto de prueba en producción",
           "stock": "Disponible",
-          "images": []
+          "images": [
+            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB999999999999999999"
+          ]
         },
         {
           "name": "Prerolls & Donuts - Exotic Terps x Genetics By G - LA Kush Cake X Pop Rocks [2G Flower]",
@@ -420,60 +429,59 @@
       "description": "Productos de Pruebas",
       "products": [
         {
-          "name": "Imageneess",
-          "price": "Img",
-          "description": "Img",
-          "stock": "Img",
-          "images": []
-        },
-        {
           "name": "Imagen",
           "price": "Imagen",
           "description": "Imagen",
           "stock": "Imagen",
-          "images": []
+          "images": [
+            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgQAAxkBAAIGVmjD1BBaBiK5ts0gnZXe6IsSICszAALazDEbFhwgUobsSOB-SNCEAQADAgADeQADNgQ"
+          ]
         },
         {
           "name": "Prueba IMG precio",
           "price": "100@ / 320# | 300@ / 290# | 500@ / 270# | 1k@ / 250#",
           "description": "Top",
           "stock": "Disponible",
-          "images": []
+          "images": [
+            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgQAAxkBAAIGVmjD1BBaBiK5ts0gnZXe6IsSICszAALazDEbFhwgUobsSOB-SNCEAQADAgADeQADNgQ"
+          ]
         },
         {
           "name": "Img",
           "price": "Img",
           "description": "Img",
           "stock": "Img",
-          "images": []
+          "images": [
+            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgQAAxkBAAIGVmjD1BBaBiK5ts0gnZXe6IsSICszAALazDEbFhwgUobsSOB-SNCEAQADAgADeQADNgQ"
+          ]
         },
         {
           "name": "Prueba",
           "price": "Prueba",
           "description": "Prueba",
           "stock": "Prueba",
-          "images": []
+          "images": [
+            "AgACAgQAAxkBAAIGVmjD1BBaBiK5ts0gnZXe6IsSICszAALazDEbFhwgUobsSOB-SNCEAQADAgADeQADNgQ"
+          ]
         },
         {
           "name": "Producto Test Imágenes",
           "price": "100@ / 200# | 200@ / 180#",
           "description": "Producto de prueba para imágenes",
           "stock": "Disponible",
-          "images": []
+          "images": [
+            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1234567890abcdef",
+            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB0987654321fedcba"
+          ]
         },
         {
           "name": "Producto Test Nueva Imagen",
           "price": "150@ / 300# | 300@ / 280#",
           "description": "Producto de prueba con nuevo sistema de imágenes",
           "stock": "Disponible",
-          "images": []
-        },
-        {
-          "name": "Producto Test Render",
-          "price": "200@ / 400# | 500@ / 350#",
-          "description": "Producto de prueba para Render con imagen en base de datos",
-          "stock": "Disponible",
-          "images": []
+          "images": [
+            "img/admin_20250912_132718_AgACAgQAAx.jpg"
+          ]
         }
       ]
     }

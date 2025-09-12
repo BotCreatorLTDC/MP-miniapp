@@ -1068,9 +1068,13 @@ Enviado desde la Miniapp MP Global Corp`;
     setupImageClickListeners() {
         // Add click listeners to all images
         document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('gallery-image') ||
-                (e.target.classList.contains('product-image') && e.target.tagName === 'IMG')) {
+            // Solo activar zoom si el usuario hace clic explícitamente en la imagen
+            // y no es un clic automático o de carga
+            if ((e.target.classList.contains('gallery-image') ||
+                (e.target.classList.contains('product-image') && e.target.tagName === 'IMG')) &&
+                e.type === 'click' && e.isTrusted) {
                 e.preventDefault();
+                e.stopPropagation();
                 this.openImageZoom(e.target.src, e.target.alt);
             }
         });
