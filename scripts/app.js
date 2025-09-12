@@ -4,6 +4,7 @@ class MPApp {
         this.catalog = null;
         this.currentCategory = 'all';
         this.searchTerm = '';
+        this.lastImageLoadTime = 0;
 
         // Inicializar sistema de traducciones
         this.translationManager = new TranslationManager();
@@ -617,7 +618,8 @@ class MPApp {
         if (product.images && product.images.length > 0) {
             const imageUrl = this.getImageUrl(product.images[0]);
             console.log('Generated image URL:', imageUrl);
-            imageHtml = `<img src="${imageUrl}" alt="${product.name}" class="gallery-image" onload="console.log('Image loaded:', this.src)" onerror="console.log('Image error:', this.src); this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">`;
+            this.lastImageLoadTime = Date.now();
+            imageHtml = `<img src="${imageUrl}" alt="${product.name}" class="gallery-image" onload="console.log('Image loaded:', this.src); window.mpApp.lastImageLoadTime = Date.now();" onerror="console.log('Image error:', this.src); this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">`;
         }
 
         return `
@@ -739,8 +741,9 @@ class MPApp {
 
         // Configurar galería de imágenes
         if (product.images && product.images.length > 0) {
+            this.lastImageLoadTime = Date.now();
             productGallery.innerHTML = product.images.map(img =>
-                `<img src="${this.getImageUrl(img)}" alt="${product.name}" class="gallery-image" onerror="this.style.display='none';">`
+                `<img src="${this.getImageUrl(img)}" alt="${product.name}" class="gallery-image" onerror="this.style.display='none';" onload="window.mpApp.lastImageLoadTime = Date.now();">`
             ).join('');
         } else {
             productGallery.innerHTML = '<div class="gallery-placeholder"><i class="fas fa-cannabis"></i></div>';
@@ -1155,6 +1158,13 @@ Enviado desde la Miniapp MP Global Corp`;
             if ((e.target.classList.contains('gallery-image') ||
                 (e.target.classList.contains('product-image') && e.target.tagName === 'IMG')) &&
                 e.type === 'click' && e.isTrusted && e.detail > 0) {
+                
+                // Verificar que no sea un clic automático durante la carga
+                if (e.timeStamp - this.lastImageLoadTime < 1000) {
+                    console.log('🔍 DEBUG: Ignorando clic automático durante carga de imagen');
+                    return;
+                }
+                
                 e.preventDefault();
                 e.stopPropagation();
                 this.openImageZoom(e.target.src, e.target.alt);
