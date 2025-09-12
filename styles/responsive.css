@@ -76,6 +76,18 @@
         left: 0;
     }
     
+    /* Evitar que se cierre la barra lateral cuando se abre el teclado */
+    .navigation.show {
+        position: fixed !important;
+        height: 100vh !important;
+        overflow-y: auto !important;
+    }
+    
+    /* Mantener la barra lateral abierta durante la búsqueda */
+    .search-container input:focus + .navigation {
+        display: block !important;
+    }
+    
     .nav-content {
         flex-direction: column;
         padding: 2rem 1rem;

@@ -336,6 +336,25 @@ class MPApp {
                 this.performSearch();
             }, 300);
         });
+        
+        // Evitar que se cierre la barra lateral cuando se hace foco en el input
+        searchInput.addEventListener('focus', (e) => {
+            const navigation = document.getElementById('navigation');
+            if (navigation) {
+                navigation.classList.add('show');
+            }
+        });
+        
+        // Evitar que se cierre la barra lateral cuando se pierde el foco
+        searchInput.addEventListener('blur', (e) => {
+            // Solo cerrar si no hay texto en el input
+            if (!this.searchTerm || this.searchTerm.trim() === '') {
+                const navigation = document.getElementById('navigation');
+                if (navigation) {
+                    navigation.classList.remove('show');
+                }
+            }
+        });
 
         // Carrito
         document.getElementById('cartBtn').addEventListener('click', () => {
@@ -1135,7 +1154,7 @@ Enviado desde la Miniapp MP Global Corp`;
             // y no es un clic automático o de carga
             if ((e.target.classList.contains('gallery-image') ||
                 (e.target.classList.contains('product-image') && e.target.tagName === 'IMG')) &&
-                e.type === 'click' && e.isTrusted) {
+                e.type === 'click' && e.isTrusted && e.detail > 0) {
                 e.preventDefault();
                 e.stopPropagation();
                 this.openImageZoom(e.target.src, e.target.alt);
