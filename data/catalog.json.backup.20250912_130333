@@ -71,15 +71,6 @@
           "description": "Fresh Frozen - Currently Not Available!",
           "stock": "No Disponible",
           "images": []
-        },
-        {
-          "name": "Producto Integración Test 13:03:22",
-          "price": "150@ / 400# | 300@ / 350#",
-          "description": "Producto para probar integración completa",
-          "stock": "Disponible",
-          "images": [
-            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1757675002"
-          ]
         }
       ]
     },

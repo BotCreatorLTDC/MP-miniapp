@@ -5,25 +5,6 @@
       "description": "Productos de hash marroquí",
       "products": [
         {
-          "name": "Producto Integración Test 12:59:32",
-          "price": "150@ / 400# | 300@ / 350#",
-          "description": "Producto para probar integración completa",
-          "stock": "Disponible",
-          "images": [
-            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1757674772"
-          ]
-        },
-        {
-          "name": "Producto Test 12:55:04",
-          "price": "100@ / 350# | 300@ / 320# | 500@ / 300#",
-          "description": "Producto de prueba con imágenes y precios segmentados",
-          "stock": "Disponible",
-          "images": [
-            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1757674504",
-            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1757674504"
-          ]
-        },
-        {
           "name": "Static Sift",
           "price": "Currently Not Available!",
           "description": "Static Sift - Currently Not Available!",
@@ -71,15 +52,6 @@
           "description": "Fresh Frozen - Currently Not Available!",
           "stock": "No Disponible",
           "images": []
-        },
-        {
-          "name": "Producto Integración Test 13:03:22",
-          "price": "150@ / 400# | 300@ / 350#",
-          "description": "Producto para probar integración completa",
-          "stock": "Disponible",
-          "images": [
-            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1757675002"
-          ]
         }
       ]
     },
@@ -288,6 +260,71 @@
       "description": "Otros productos",
       "products": [
         {
+          "name": "Producto Test Producción",
+          "price": "200@ / 400# | 500@ / 350#",
+          "description": "Producto de prueba en producción",
+          "stock": "Disponible",
+          "images": [
+            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB999999999999999999"
+          ]
+        },
+        {
+          "name": "Prerolls & Donuts - Exotic Terps x Genetics By G - LA Kush Cake X Pop Rocks [2G Flower]",
+          "price": "1ud / 60# | 5ud / 55# | 10ud / 50#",
+          "description": "Prerolls & Donuts - Exotic Terps x Genetics By G - LA Kush Cake X Pop Rocks [2G Flower] - 1ud / 60# | 5ud / 55# | 10ud / 50#",
+          "stock": "Disponible",
+          "images": [
+            "img/prerroll_donut_wizard_trees_0.jpg",
+            "img/prerroll_donut_wizard_trees_1.jpg",
+            "img/prerroll_donut_wizard_trees_2.jpg"
+          ]
+        },
+        {
+          "name": "Prerolls & Donuts - Exotic Terps x Genetics By G - Zkittlez (2@ Flower)",
+          "price": "1ud / 60# | 5ud / 55# | 10ud / 50#",
+          "description": "Prerolls & Donuts - Exotic Terps x Genetics By G - Zkittlez (2@ Flower) - 1ud / 60# | 5ud / 55# | 10ud / 50#",
+          "stock": "Disponible",
+          "images": [
+            "img/prerroll_donut_zushi_0.jpg",
+            "img/prerroll_donut_zushi_1.jpg"
+          ]
+        },
+        {
+          "name": "Moonrocks",
+          "price": "Currently Available! - MOQ: 1oz — DM for prices",
+          "description": "Moonrocks - Currently Available! - MOQ: 1oz — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Live Resin Diamonds [2@] - SuperDope",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Live Resin Diamonds [2@] - SuperDope - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Lemon Popperz",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Lemon Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Bubblegum Popperz",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Bubblegum Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Cherry Popperz",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Cherry Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
           "name": "Disposables - Party Popperz",
           "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
           "description": "Disposables - Party Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
@@ -354,71 +391,6 @@
           "name": "Shrooms",
           "price": "Currently Available! - MOQ: 10g — DM for prices",
           "description": "Shrooms - Currently Available! - MOQ: 10g — DM for prices",
-          "stock": "Disponible",
-          "images": []
-        },
-        {
-          "name": "Producto Test Producción",
-          "price": "200@ / 400# | 500@ / 350#",
-          "description": "Producto de prueba en producción",
-          "stock": "Disponible",
-          "images": [
-            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB999999999999999999"
-          ]
-        },
-        {
-          "name": "Prerolls & Donuts - Exotic Terps x Genetics By G - LA Kush Cake X Pop Rocks [2G Flower]",
-          "price": "1ud / 60# | 5ud / 55# | 10ud / 50#",
-          "description": "Prerolls & Donuts - Exotic Terps x Genetics By G - LA Kush Cake X Pop Rocks [2G Flower] - 1ud / 60# | 5ud / 55# | 10ud / 50#",
-          "stock": "Disponible",
-          "images": [
-            "img/prerroll_donut_wizard_trees_0.jpg",
-            "img/prerroll_donut_wizard_trees_1.jpg",
-            "img/prerroll_donut_wizard_trees_2.jpg"
-          ]
-        },
-        {
-          "name": "Prerolls & Donuts - Exotic Terps x Genetics By G - Zkittlez (2@ Flower)",
-          "price": "1ud / 60# | 5ud / 55# | 10ud / 50#",
-          "description": "Prerolls & Donuts - Exotic Terps x Genetics By G - Zkittlez (2@ Flower) - 1ud / 60# | 5ud / 55# | 10ud / 50#",
-          "stock": "Disponible",
-          "images": [
-            "img/prerroll_donut_zushi_0.jpg",
-            "img/prerroll_donut_zushi_1.jpg"
-          ]
-        },
-        {
-          "name": "Moonrocks",
-          "price": "Currently Available! - MOQ: 1oz — DM for prices",
-          "description": "Moonrocks - Currently Available! - MOQ: 1oz — DM for prices",
-          "stock": "Disponible",
-          "images": []
-        },
-        {
-          "name": "Disposables - Live Resin Diamonds [2@] - SuperDope",
-          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
-          "description": "Disposables - Live Resin Diamonds [2@] - SuperDope - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
-          "stock": "Disponible",
-          "images": []
-        },
-        {
-          "name": "Disposables - Lemon Popperz",
-          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
-          "description": "Disposables - Lemon Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
-          "stock": "Disponible",
-          "images": []
-        },
-        {
-          "name": "Disposables - Bubblegum Popperz",
-          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
-          "description": "Disposables - Bubblegum Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
-          "stock": "Disponible",
-          "images": []
-        },
-        {
-          "name": "Disposables - Cherry Popperz",
-          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
-          "description": "Disposables - Cherry Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
           "stock": "Disponible",
           "images": []
         }
@@ -663,10 +635,10 @@
       "images": [
         "AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
       ],
-      "deleted_at": "2025-09-12T08:04:44.774708",
       "description": "Dkkddk",
-      "deleted_from_index": 7,
-      "deleted_from_category": "moroccan_hash"
+      "deleted_at": "2025-09-12T08:04:44.774708",
+      "deleted_from_category": "moroccan_hash",
+      "deleted_from_index": 7
     },
     {
       "name": "Hooooo",
@@ -675,10 +647,10 @@
       "images": [
         "AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
       ],
-      "deleted_at": "2025-09-12T08:04:53.043406",
       "description": "Goooo",
-      "deleted_from_index": 7,
-      "deleted_from_category": "moroccan_hash"
+      "deleted_at": "2025-09-12T08:04:53.043406",
+      "deleted_from_category": "moroccan_hash",
+      "deleted_from_index": 7
     },
     {
       "name": "Profppdpd",
@@ -687,10 +659,10 @@
       "images": [
         "AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
       ],
-      "deleted_at": "2025-09-12T08:04:59.820286",
       "description": "Ododpdpd",
-      "deleted_from_index": 7,
-      "deleted_from_category": "moroccan_hash"
+      "deleted_at": "2025-09-12T08:04:59.820286",
+      "deleted_from_category": "moroccan_hash",
+      "deleted_from_index": 7
     },
     {
       "name": "Jjjjg",
@@ -699,10 +671,10 @@
       "images": [
         "AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
       ],
-      "deleted_at": "2025-09-12T08:05:07.098253",
       "description": "Ffff",
-      "deleted_from_index": 7,
-      "deleted_from_category": "moroccan_hash"
+      "deleted_at": "2025-09-12T08:05:07.098253",
+      "deleted_from_category": "moroccan_hash",
+      "deleted_from_index": 7
     }
   ]
 }

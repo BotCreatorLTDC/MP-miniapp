@@ -5,15 +5,6 @@
       "description": "Productos de hash marroquí",
       "products": [
         {
-          "name": "Producto Integración Test 12:59:32",
-          "price": "150@ / 400# | 300@ / 350#",
-          "description": "Producto para probar integración completa",
-          "stock": "Disponible",
-          "images": [
-            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1757674772"
-          ]
-        },
-        {
           "name": "Producto Test 12:55:04",
           "price": "100@ / 350# | 300@ / 320# | 500@ / 300#",
           "description": "Producto de prueba con imágenes y precios segmentados",
@@ -71,15 +62,6 @@
           "description": "Fresh Frozen - Currently Not Available!",
           "stock": "No Disponible",
           "images": []
-        },
-        {
-          "name": "Producto Integración Test 13:03:22",
-          "price": "150@ / 400# | 300@ / 350#",
-          "description": "Producto para probar integración completa",
-          "stock": "Disponible",
-          "images": [
-            "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgIAAxkBAAIB1757675002"
-          ]
         }
       ]
     },

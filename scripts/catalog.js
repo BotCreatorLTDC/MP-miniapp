@@ -272,6 +272,24 @@ class CatalogManager {
     }
 }
 
+// Función para cargar el catálogo desde la API
+async function loadCatalog() {
+    try {
+        const response = await fetch('/api/catalog');
+        const data = await response.json();
+        
+        if (data.success) {
+            return data.data;
+        } else {
+            console.error('Error cargando catálogo:', data.error);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error de red cargando catálogo:', error);
+        return null;
+    }
+}
+
 // Funciones de utilidad para el catálogo
 const CatalogUtils = {
     // Formatear precio para mostrar
