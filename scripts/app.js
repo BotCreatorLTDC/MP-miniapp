@@ -958,6 +958,7 @@ class MPApp {
 
         // Configurar galería de imágenes
         if (product.images && product.images.length > 0) {
+            console.log(`Modal: Producto ${product.name} tiene ${product.images.length} imágenes`);
             this.lastImageLoadTime = Date.now();
 
             // Mostrar máximo 2 imágenes en el modal
@@ -971,10 +972,13 @@ class MPApp {
 
             // Si hay más de 2 imágenes, añadir botón para ver todas
             if (product.images.length > 2) {
+                console.log(`Modal: Añadiendo botón de galería para ${product.images.length} imágenes`);
                 galleryHtml += `<div class="view-all-images" onclick="window.mpApp.showImageGallery('${product.name}', ${JSON.stringify(product.images).replace(/"/g, '&quot;')})">
                     <i class="fas fa-images"></i>
                     <span>+${product.images.length - 2}</span>
                 </div>`;
+            } else {
+                console.log(`Modal: No se añade botón de galería - solo ${product.images.length} imágenes`);
             }
 
             productGallery.innerHTML = galleryHtml;
