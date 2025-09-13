@@ -724,10 +724,16 @@ class MPApp {
             return apiUrl;
         }
 
-        // Si es una ruta relativa que empieza con 'img/', convertir a la ruta correcta
+        // Si es una ruta relativa que empieza con 'img/'
         if (imagePath.startsWith('img/')) {
-            const base = location.hostname.endsWith('github.io') ? 'https://mp-bot-wtcf.onrender.com' : '';
-            const apiUrl = `${base}/api/image/${imagePath}`;
+            // Cuando la miniapp se sirve desde GitHub Pages, usar directamente los assets estáticos
+            if (location.hostname.endsWith('github.io')) {
+                const cdnUrl = `${location.origin}/assets/images/${imagePath}`;
+                console.log('Serving img/ from GitHub Pages:', imagePath, '->', cdnUrl);
+                return cdnUrl;
+            }
+            // En otros entornos, proxy vía backend
+            const apiUrl = `/api/image/${imagePath}`;
             console.log('Converting img/ path via API:', imagePath, '->', apiUrl);
             return apiUrl;
         }

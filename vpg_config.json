@@ -1,0 +1,37 @@
+{
+  "group_chat_id": "-4921825947",
+  "schedule_time": "15:32",
+  "messages": [
+    "Aqui ira la lista/mensaje legit"
+  ],
+  "is_active": true,
+  "timezone": "Europe/Madrid",
+  "max_messages": 50,
+  "notification_settings": {
+    "send_on_weekdays": true,
+    "send_on_weekends": true,
+    "send_on_holidays": true,
+    "retry_on_failure": true,
+    "max_retries": 3,
+    "delay_between_retries": 60
+  },
+  "custom_schedules": {
+    "monday": "15:32",
+    "tuesday": "15:32",
+    "wednesday": "15:32",
+    "thursday": "15:32",
+    "friday": "15:32",
+    "saturday": "15:32",
+    "sunday": "15:32"
+  },
+  "message_templates": {
+    "weekday": "Aqui ira la lista/mensaje legit",
+    "weekend": "Aqui ira la lista/mensaje legit",
+    "monday": "Aqui ira la lista/mensaje legit",
+    "friday": "Aqui ira la lista/mensaje legit"
+  },
+  "last_updated": "2025-09-13T17:49:55.450266",
+  "description": "Configuración completa del bot VPG para notificaciones automáticas",
+  "version": "1.0",
+  "notes": "Chat ID configurado: -4921825947 (Grupo VPG) - Zona horaria: España (Europe/Madrid) - Horario: 15:32 PM"
+}
