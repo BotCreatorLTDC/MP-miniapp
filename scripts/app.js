@@ -610,6 +610,7 @@ class MPApp {
 
     createProductCard(product) {
         console.log('createProductCard called for:', product.name, 'with images:', product.images);
+        console.log('Number of images:', product.images ? product.images.length : 0);
 
         const isAvailable = product.stock === 'Disponible' || product.stock === this.t('available');
         const categoryClass = this.getCategoryClass(this.currentCategory);
@@ -628,11 +629,15 @@ class MPApp {
             }).join('');
 
             // Si hay más de 2 imágenes, añadir botón para ver todas
+            console.log('Checking if should show gallery button. Images count:', product.images.length);
             if (product.images.length > 2) {
+                console.log('Adding gallery button for product:', product.name);
                 imageHtml += `<div class="view-all-images" onclick="window.mpApp.showImageGallery('${product.name}', ${JSON.stringify(product.images).replace(/"/g, '&quot;')})">
                     <i class="fas fa-images"></i>
                     <span>+${product.images.length - 2}</span>
                 </div>`;
+            } else {
+                console.log('Not adding gallery button. Only', product.images.length, 'images');
             }
         }
 
