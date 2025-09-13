@@ -718,24 +718,27 @@ class MPApp {
 
         // Si es una referencia a imagen de base de datos, usar el endpoint de la API
         if (imagePath.startsWith('db_image_')) {
-            const apiUrl = `/api/image/${imagePath}`;
+            const base = location.hostname.endsWith('github.io') ? 'https://mp-bot-wtcf.onrender.com' : '';
+            const apiUrl = `${base}/api/image/${imagePath}`;
             console.log('Using database image:', imagePath, '->', apiUrl);
             return apiUrl;
         }
 
         // Si es una ruta relativa que empieza con 'img/', convertir a la ruta correcta
         if (imagePath.startsWith('img/')) {
-            const newPath = `assets/images/${imagePath}`;
-            console.log('Converting img/ path:', imagePath, '->', newPath);
-            return newPath;
+            const base = location.hostname.endsWith('github.io') ? 'https://mp-bot-wtcf.onrender.com' : '';
+            const apiUrl = `${base}/api/image/${imagePath}`;
+            console.log('Converting img/ path via API:', imagePath, '->', apiUrl);
+            return apiUrl;
         }
 
         // Si parece ser un file_id de Telegram, intentar construir la URL
         if (imagePath.length > 20 && !imagePath.includes('/') && !imagePath.includes('\\')) {
-            // Esto podría ser un file_id, pero no tenemos el token aquí
-            // Devolver un placeholder por ahora
-            console.log('Detected potential file_id, using placeholder:', imagePath);
-            return this.getPlaceholderImage();
+            // Es muy probable que sea un file_id: construir un proxy a través del backend del bot
+            const base = location.hostname.endsWith('github.io') ? 'https://mp-bot-wtcf.onrender.com' : '';
+            const apiUrl = `${base}/api/file/${imagePath}`;
+            console.log('Detected file_id, proxying via:', apiUrl);
+            return apiUrl;
         }
 
         // Para otros casos, intentar usar la imagen directamente
