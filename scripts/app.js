@@ -119,26 +119,43 @@ class MPApp {
         }
     }
 
+    getApiBases() {
+        const bases = [];
+        // 1) Mismo origen (cuando la miniapp se sirve embebida desde el bot)
+        bases.push('');
+        // 2) Dominio de Render (servicio del bot)
+        bases.push('https://mp-bot-wtcf.onrender.com');
+        // 3) Local dev (por si se abre el HTML en local con el bot en 5000)
+        bases.push('http://127.0.0.1:5000');
+        return bases;
+    }
+
     async loadCatalog() {
         try {
-            // Intentar cargar desde la API del bot primero
-            const botApiUrl = 'https://mp-bot-wtcf.onrender.com/api/catalog';
-            const response = await fetch(botApiUrl);
-            if (response.ok) {
-                const result = await response.json();
-                if (result.success) {
+            // Probar múltiples bases de API en orden hasta conseguir catálogo
+            let loaded = false;
+            for (const base of this.getApiBases()) {
+                try {
+                    const url = `${base}/api/catalog`;
+                    console.log('🔎 Intentando cargar catálogo desde:', url);
+                    const response = await fetch(url, { cache: 'no-store' });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const result = await response.json();
+                    if (!result.success) throw new Error(result.error || 'error_api');
                     this.catalog = result.data;
-                    console.log('✅ Catálogo cargado desde la API del bot');
-                    // Convertir imágenes después de cargar el catálogo
-                    this.convertCatalogImages();
-                    // Actualizar visualización de categorías
-                    this.updateCategoryDisplay();
-                } else {
-                    throw new Error(result.error);
+                    console.log('✅ Catálogo cargado desde:', url);
+                    loaded = true;
+                    break;
+                } catch (e) {
+                    console.warn('⚠️ Falla fuente API:', e.message);
                 }
-            } else {
-                throw new Error(`HTTP ${response.status}`);
             }
+
+            if (!loaded) throw new Error('no_api_source');
+
+            // Convertir imágenes y sincronizar categorías
+            this.convertCatalogImages();
+            this.updateCategoryDisplay();
         } catch (error) {
             console.warn('Error cargando desde API del bot, intentando fallback:', error);
             try {
@@ -458,20 +475,21 @@ class MPApp {
         this.showSearchIndicator();
 
         try {
-            // Intentar búsqueda en la API del bot primero
-            const botApiUrl = `https://mp-bot-wtcf.onrender.com/api/products/search?q=${encodeURIComponent(this.searchTerm)}`;
-            const response = await fetch(botApiUrl);
-            if (response.ok) {
-                const result = await response.json();
-                if (result.success) {
-                    this.searchResults = result.data;
-                    this.renderSearchResults();
-                    return;
-                } else {
-                    console.error('Error en búsqueda API:', result.error);
+            // Intentar búsqueda contra múltiples bases
+            for (const base of this.getApiBases()) {
+                try {
+                    const url = `${base}/api/products/search?q=${encodeURIComponent(this.searchTerm)}`;
+                    const response = await fetch(url, { cache: 'no-store' });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const result = await response.json();
+                    if (result.success) {
+                        this.searchResults = result.data;
+                        this.renderSearchResults();
+                        return;
+                    }
+                } catch (e) {
+                    // probar siguiente base
                 }
-            } else {
-                throw new Error(`HTTP ${response.status}`);
             }
         } catch (error) {
             console.warn('Error en búsqueda API, usando búsqueda local:', error);
