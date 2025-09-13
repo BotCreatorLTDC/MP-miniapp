@@ -655,6 +655,29 @@ class MPApp {
             </div>`;
         }
 
+        // Variantes de precio (máximo 4 en tarjeta)
+        let priceVariantsHtml = '';
+        try {
+            const parsedPrices = this.parsePrices(product.price);
+            if (Array.isArray(parsedPrices) && parsedPrices.length > 0) {
+                const limited = parsedPrices.slice(0, 4);
+                priceVariantsHtml = `
+                    <div class="price-variants">
+                        ${limited.map(p => `
+                            <span class="price-variant">
+                                <span class="variant-qty">${p.quantity}</span>
+                                <span class="variant-sep">/</span>
+                                <span class="variant-amt">${p.amount}</span>
+                            </span>
+                        `).join('')}
+                        ${parsedPrices.length > 4 ? `<span class="price-variant more">+${parsedPrices.length - 4}</span>` : ''}
+                    </div>
+                `;
+            }
+        } catch (e) {
+            console.warn('Precio no parseable para tarjeta:', product.price, e);
+        }
+
         return `
             <div class="product-card fade-in" data-product-name="${product.name}">
                 <div class="category-indicator ${categoryClass}">
@@ -669,6 +692,7 @@ class MPApp {
                 <div class="product-info">
                     <h3 class="product-name">${product.name}</h3>
                     <p class="product-price">${product.price}</p>
+                    ${priceVariantsHtml}
                     <span class="product-stock ${isAvailable ? 'stock-available' : 'stock-unavailable'}">
                         ${isAvailable ? this.t('available') : this.t('unavailable')}
                     </span>
@@ -1089,13 +1113,15 @@ class MPApp {
     parsePrices(priceString) {
         // Parsear precios del formato "100@ / 320# | 300@ / 290#"
         const prices = [];
-        const priceParts = priceString.split(' | ');
+        // Permitir separadores con espacios variables alrededor de |
+        const priceParts = priceString.split(/\s*\|\s*/);
 
         priceParts.forEach(part => {
-            const match = part.match(/(\d+[a-zA-Z@#]*)\s*\/\s*(\d+[a-zA-Z@#]*)/);
+            // Aceptar espacios entre número y unidad (p.ej. "2 Oz"), y símbolos como @, #, €
+            const match = part.match(/(\d+\s*[a-zA-Z@#]*)\s*\/\s*(\d+[\.,]?\d*\s*[a-zA-Z@#€]*)/);
             if (match) {
-                const quantity = match[1].trim();
-                const pricePerUnit = match[2].trim();
+                const quantity = match[1].replace(/\s+/g, ' ').trim();
+                const pricePerUnit = match[2].replace(/\s+/g, ' ').trim();
 
                 // Calcular precio total para esta cantidad
                 const totalPrice = this.calculateTotalPrice(quantity, pricePerUnit);
