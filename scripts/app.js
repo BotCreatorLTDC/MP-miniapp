@@ -724,18 +724,11 @@ class MPApp {
             return apiUrl;
         }
 
-        // Si es una ruta relativa que empieza con 'img/'
+        // Si es una ruta relativa que empieza con 'img/': SIEMPRE usar GitHub Pages
         if (imagePath.startsWith('img/')) {
-            // Cuando la miniapp se sirve desde GitHub Pages, usar directamente los assets estáticos
-            if (location.hostname.endsWith('github.io')) {
-                const cdnUrl = `${location.origin}/assets/images/${imagePath}`;
-                console.log('Serving img/ from GitHub Pages:', imagePath, '->', cdnUrl);
-                return cdnUrl;
-            }
-            // En otros entornos, proxy vía backend
-            const apiUrl = `/api/image/${imagePath}`;
-            console.log('Converting img/ path via API:', imagePath, '->', apiUrl);
-            return apiUrl;
+            const cdnUrl = `https://botcreatorltdc.github.io/MP-miniapp/assets/images/${imagePath}`;
+            console.log('Forcing img/ to GitHub Pages CDN:', imagePath, '->', cdnUrl);
+            return cdnUrl;
         }
 
         // Si parece ser un file_id de Telegram, intentar construir la URL
