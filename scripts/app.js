@@ -616,7 +616,6 @@ class MPApp {
         const categoryClass = this.getCategoryClass(this.currentCategory);
 
         let imageHtml = '';
-        let galleryButton = '';
 
         if (product.images && product.images.length > 0) {
             // Mostrar máximo 2 imágenes
@@ -630,19 +629,7 @@ class MPApp {
                 return `<img src="${imageUrl}" alt="${product.name}" class="gallery-image ${index > 0 ? 'secondary-image' : ''}" onload="console.log('Image loaded:', this.src); window.mpApp.lastImageLoadTime = Date.now();" onerror="console.log('Image error:', this.src); this.style.display='none';">`;
             }).join('');
 
-            // Si hay más de 2 imágenes, crear botón para ver todas (se mostrará entre imágenes y precio)
-            console.log('Checking if should show gallery button. Images count:', product.images.length);
-            if (product.images.length > 2) {
-                console.log('Adding gallery button for product:', product.name);
-                galleryButton = `<div class="gallery-button-container">
-                    <button class="gallery-button" onclick="window.mpApp.showImageGallery('${product.name}', ${JSON.stringify(product.images).replace(/"/g, '&quot;')})">
-                        <i class="fas fa-images"></i>
-                        <span>Ver galería (+${product.images.length - 2} más)</span>
-                    </button>
-                </div>`;
-            } else {
-                console.log('Not adding gallery button. Only', product.images.length, 'images');
-            }
+            // El botón de galería solo se muestra en el modal del producto, no en las tarjetas de categoría
         }
 
         return `
@@ -656,7 +643,6 @@ class MPApp {
                         <i class="fas fa-cannabis"></i>
                     </div>
                 </div>
-                ${galleryButton}
                 <div class="product-info">
                     <h3 class="product-name">${product.name}</h3>
                     <p class="product-price">${product.price}</p>
