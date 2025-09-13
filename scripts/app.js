@@ -968,9 +968,25 @@ class MPApp {
         // Configurar galería de imágenes
         if (product.images && product.images.length > 0) {
             this.lastImageLoadTime = Date.now();
-            productGallery.innerHTML = product.images.map(img =>
-                `<img src="${this.getImageUrl(img)}" alt="${product.name}" class="gallery-image" onerror="this.style.display='none';" onload="window.mpApp.lastImageLoadTime = Date.now();">`
-            ).join('');
+            
+            // Mostrar máximo 2 imágenes en el modal
+            const maxImages = Math.min(2, product.images.length);
+            const images = product.images.slice(0, maxImages);
+            
+            let galleryHtml = images.map((image, index) => {
+                const imageUrl = this.getImageUrl(image);
+                return `<img src="${imageUrl}" alt="${product.name}" class="gallery-image ${index > 0 ? 'secondary-image' : ''}" onerror="this.style.display='none';" onload="window.mpApp.lastImageLoadTime = Date.now();">`;
+            }).join('');
+            
+            // Si hay más de 2 imágenes, añadir botón para ver todas
+            if (product.images.length > 2) {
+                galleryHtml += `<div class="view-all-images" onclick="window.mpApp.showImageGallery('${product.name}', ${JSON.stringify(product.images).replace(/"/g, '&quot;')})">
+                    <i class="fas fa-images"></i>
+                    <span>+${product.images.length - 2}</span>
+                </div>`;
+            }
+            
+            productGallery.innerHTML = galleryHtml;
         } else {
             productGallery.innerHTML = '<div class="gallery-placeholder"><i class="fas fa-cannabis"></i></div>';
         }
