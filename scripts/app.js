@@ -616,10 +616,24 @@ class MPApp {
 
         let imageHtml = '';
         if (product.images && product.images.length > 0) {
-            const imageUrl = this.getImageUrl(product.images[0]);
-            console.log('Generated image URL:', imageUrl);
-            this.lastImageLoadTime = Date.now();
-            imageHtml = `<img src="${imageUrl}" alt="${product.name}" class="gallery-image" onload="console.log('Image loaded:', this.src); window.mpApp.lastImageLoadTime = Date.now();" onerror="console.log('Image error:', this.src); this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">`;
+            // Mostrar máximo 2 imágenes
+            const maxImages = Math.min(2, product.images.length);
+            const images = product.images.slice(0, maxImages);
+            
+            imageHtml = images.map((image, index) => {
+                const imageUrl = this.getImageUrl(image);
+                console.log(`Generated image URL ${index + 1}:`, imageUrl);
+                this.lastImageLoadTime = Date.now();
+                return `<img src="${imageUrl}" alt="${product.name}" class="gallery-image ${index > 0 ? 'secondary-image' : ''}" onload="console.log('Image loaded:', this.src); window.mpApp.lastImageLoadTime = Date.now();" onerror="console.log('Image error:', this.src); this.style.display='none';">`;
+            }).join('');
+            
+            // Si hay más de 2 imágenes, añadir botón para ver todas
+            if (product.images.length > 2) {
+                imageHtml += `<div class="view-all-images" onclick="window.mpApp.showImageGallery('${product.name}', ${JSON.stringify(product.images).replace(/"/g, '&quot;')})">
+                    <i class="fas fa-images"></i>
+                    <span>+${product.images.length - 2}</span>
+                </div>`;
+            }
         }
 
         return `
@@ -708,6 +722,213 @@ class MPApp {
         // Para otros casos, intentar usar la imagen directamente
         console.log('Using path as-is:', imagePath);
         return imagePath;
+    }
+
+    showImageGallery(productName, images) {
+        console.log('showImageGallery called for:', productName, 'with', images.length, 'images');
+        
+        // Crear modal para galería de imágenes
+        const modal = document.createElement('div');
+        modal.className = 'image-gallery-modal';
+        modal.innerHTML = `
+            <div class="gallery-overlay" onclick="this.parentElement.remove()">
+                <div class="gallery-container" onclick="event.stopPropagation()">
+                    <div class="gallery-header">
+                        <h3>${productName}</h3>
+                        <button class="close-gallery" onclick="this.closest('.image-gallery-modal').remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="gallery-images">
+                        ${images.map((image, index) => `
+                            <div class="gallery-item">
+                                <img src="${this.getImageUrl(image)}" alt="${productName} - Imagen ${index + 1}" 
+                                     onclick="this.classList.toggle('fullscreen')">
+                                <div class="image-counter">${index + 1} / ${images.length}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="gallery-nav">
+                        <button class="nav-btn prev-btn" onclick="this.parentElement.parentElement.querySelector('.gallery-images').scrollBy(-300, 0)">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="nav-btn next-btn" onclick="this.parentElement.parentElement.querySelector('.gallery-images').scrollBy(300, 0)">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Añadir estilos si no existen
+        if (!document.getElementById('gallery-styles')) {
+            const styles = document.createElement('style');
+            styles.id = 'gallery-styles';
+            styles.textContent = `
+                .image-gallery-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 10000;
+                }
+                
+                .gallery-overlay {
+                    background: rgba(0, 0, 0, 0.9);
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                }
+                
+                .gallery-container {
+                    background: #1a1a1a;
+                    border-radius: 15px;
+                    max-width: 90vw;
+                    max-height: 90vh;
+                    overflow: hidden;
+                    position: relative;
+                }
+                
+                .gallery-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 20px;
+                    border-bottom: 1px solid #333;
+                }
+                
+                .gallery-header h3 {
+                    color: #fff;
+                    margin: 0;
+                    font-size: 1.2em;
+                }
+                
+                .close-gallery {
+                    background: none;
+                    border: none;
+                    color: #fff;
+                    font-size: 1.5em;
+                    cursor: pointer;
+                    padding: 5px;
+                }
+                
+                .gallery-images {
+                    display: flex;
+                    overflow-x: auto;
+                    padding: 20px;
+                    gap: 15px;
+                    scroll-behavior: smooth;
+                }
+                
+                .gallery-item {
+                    position: relative;
+                    min-width: 300px;
+                    height: 300px;
+                }
+                
+                .gallery-item img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    transition: transform 0.3s ease;
+                }
+                
+                .gallery-item img.fullscreen {
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 90vw;
+                    height: 90vh;
+                    z-index: 10001;
+                    object-fit: contain;
+                }
+                
+                .image-counter {
+                    position: absolute;
+                    bottom: 10px;
+                    right: 10px;
+                    background: rgba(0, 0, 0, 0.7);
+                    color: #fff;
+                    padding: 5px 10px;
+                    border-radius: 15px;
+                    font-size: 0.9em;
+                }
+                
+                .gallery-nav {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    pointer-events: none;
+                }
+                
+                .nav-btn {
+                    background: rgba(0, 0, 0, 0.7);
+                    border: none;
+                    color: #fff;
+                    font-size: 1.5em;
+                    padding: 15px;
+                    cursor: pointer;
+                    pointer-events: all;
+                    transition: background 0.3s ease;
+                }
+                
+                .nav-btn:hover {
+                    background: rgba(0, 0, 0, 0.9);
+                }
+                
+                .prev-btn {
+                    border-radius: 0 10px 10px 0;
+                }
+                
+                .next-btn {
+                    border-radius: 10px 0 0 10px;
+                }
+                
+                .secondary-image {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 8px;
+                    border: 2px solid #fff;
+                    object-fit: cover;
+                }
+                
+                .view-all-images {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background: rgba(0, 0, 0, 0.8);
+                    color: #fff;
+                    padding: 8px 12px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    font-size: 0.9em;
+                    transition: background 0.3s ease;
+                }
+                
+                .view-all-images:hover {
+                    background: rgba(0, 0, 0, 0.9);
+                }
+            `;
+            document.head.appendChild(styles);
+        }
     }
 
     getPlaceholderImage() {
