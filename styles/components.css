@@ -930,6 +930,43 @@
     background: rgba(0, 0, 0, 0.9);
 }
 
+/* Gallery Button Container */
+.gallery-button-container {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.gallery-button {
+    background: var(--gradient-primary);
+    color: var(--text-primary);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.gallery-button:hover {
+    background: var(--gradient-secondary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.gallery-button i {
+    font-size: 1.1em;
+}
+
+.gallery-button span {
+    white-space: nowrap;
+}
+
 .product-image img:hover {
     transform: scale(1.05);
     box-shadow: var(--shadow-md);

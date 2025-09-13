@@ -616,6 +616,8 @@ class MPApp {
         const categoryClass = this.getCategoryClass(this.currentCategory);
 
         let imageHtml = '';
+        let galleryButton = '';
+        
         if (product.images && product.images.length > 0) {
             // Mostrar máximo 2 imágenes
             const maxImages = Math.min(2, product.images.length);
@@ -628,13 +630,15 @@ class MPApp {
                 return `<img src="${imageUrl}" alt="${product.name}" class="gallery-image ${index > 0 ? 'secondary-image' : ''}" onload="console.log('Image loaded:', this.src); window.mpApp.lastImageLoadTime = Date.now();" onerror="console.log('Image error:', this.src); this.style.display='none';">`;
             }).join('');
 
-            // Si hay más de 2 imágenes, añadir botón para ver todas
+            // Si hay más de 2 imágenes, crear botón para ver todas (se mostrará entre imágenes y precio)
             console.log('Checking if should show gallery button. Images count:', product.images.length);
             if (product.images.length > 2) {
                 console.log('Adding gallery button for product:', product.name);
-                imageHtml += `<div class="view-all-images" onclick="window.mpApp.showImageGallery('${product.name}', ${JSON.stringify(product.images).replace(/"/g, '&quot;')})">
-                    <i class="fas fa-images"></i>
-                    <span>+${product.images.length - 2}</span>
+                galleryButton = `<div class="gallery-button-container">
+                    <button class="gallery-button" onclick="window.mpApp.showImageGallery('${product.name}', ${JSON.stringify(product.images).replace(/"/g, '&quot;')})">
+                        <i class="fas fa-images"></i>
+                        <span>Ver galería (+${product.images.length - 2} más)</span>
+                    </button>
                 </div>`;
             } else {
                 console.log('Not adding gallery button. Only', product.images.length, 'images');
@@ -652,6 +656,7 @@ class MPApp {
                         <i class="fas fa-cannabis"></i>
                     </div>
                 </div>
+                ${galleryButton}
                 <div class="product-info">
                     <h3 class="product-name">${product.name}</h3>
                     <p class="product-price">${product.price}</p>
@@ -968,16 +973,16 @@ class MPApp {
         // Configurar galería de imágenes
         if (product.images && product.images.length > 0) {
             this.lastImageLoadTime = Date.now();
-            
+
             // Mostrar máximo 2 imágenes en el modal
             const maxImages = Math.min(2, product.images.length);
             const images = product.images.slice(0, maxImages);
-            
+
             let galleryHtml = images.map((image, index) => {
                 const imageUrl = this.getImageUrl(image);
                 return `<img src="${imageUrl}" alt="${product.name}" class="gallery-image ${index > 0 ? 'secondary-image' : ''}" onerror="this.style.display='none';" onload="window.mpApp.lastImageLoadTime = Date.now();">`;
             }).join('');
-            
+
             // Si hay más de 2 imágenes, añadir botón para ver todas
             if (product.images.length > 2) {
                 galleryHtml += `<div class="view-all-images" onclick="window.mpApp.showImageGallery('${product.name}', ${JSON.stringify(product.images).replace(/"/g, '&quot;')})">
@@ -985,7 +990,7 @@ class MPApp {
                     <span>+${product.images.length - 2}</span>
                 </div>`;
             }
-            
+
             productGallery.innerHTML = galleryHtml;
         } else {
             productGallery.innerHTML = '<div class="gallery-placeholder"><i class="fas fa-cannabis"></i></div>';
