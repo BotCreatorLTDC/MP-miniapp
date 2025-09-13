@@ -729,10 +729,12 @@ class MPApp {
 
     showImageGallery(productName, images) {
         console.log('showImageGallery called for:', productName, 'with', images.length, 'images');
+        console.log('Images array:', images);
 
         // Crear modal para galería de imágenes
         const modal = document.createElement('div');
         modal.className = 'image-gallery-modal';
+        console.log('Creating gallery modal with', images.length, 'images');
         modal.innerHTML = `
             <div class="gallery-overlay" onclick="this.parentElement.remove()">
                 <div class="gallery-container" onclick="event.stopPropagation()">
@@ -764,11 +766,14 @@ class MPApp {
         `;
 
         document.body.appendChild(modal);
+        console.log('Gallery modal added to DOM');
+        console.log('Modal element:', modal);
 
         // Añadir estilos si no existen
         if (!document.getElementById('gallery-styles')) {
             const styles = document.createElement('style');
             styles.id = 'gallery-styles';
+            console.log('Adding gallery styles');
             styles.textContent = `
                 .image-gallery-modal {
                     position: fixed;
@@ -931,6 +936,7 @@ class MPApp {
                 }
             `;
             document.head.appendChild(styles);
+            console.log('Gallery styles added to head');
         }
     }
 
@@ -949,8 +955,14 @@ class MPApp {
     }
 
     showProductModal(productName) {
+        console.log('showProductModal called for:', productName);
         const product = this.findProductByName(productName);
-        if (!product) return;
+        if (!product) {
+            console.log('Product not found:', productName);
+            return;
+        }
+        console.log('Product found:', product);
+        console.log('Product images:', product.images);
 
         const modal = document.getElementById('productModal');
         const modalProductName = document.getElementById('modalProductName');
@@ -984,6 +996,7 @@ class MPApp {
                     <i class="fas fa-images"></i>
                     <span>+${product.images.length - 2}</span>
                 </div>`;
+                console.log(`Modal: HTML del botón de galería generado:`, galleryHtml);
             } else {
                 console.log(`Modal: No se añade botón de galería - solo ${product.images.length} imágenes`);
             }
