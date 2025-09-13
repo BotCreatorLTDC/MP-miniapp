@@ -629,7 +629,12 @@ class MPApp {
                 return `<img src="${imageUrl}" alt="${product.name}" class="gallery-image ${index > 0 ? 'secondary-image' : ''}" onload="console.log('Image loaded:', this.src); window.mpApp.lastImageLoadTime = Date.now();" onerror="console.log('Image error:', this.src); this.style.display='none';">`;
             }).join('');
 
-            // Quitar botón de tarjeta; solo se muestra dentro del modal
+            // Añadir chip de galería en la tarjeta (siempre que haya ≥1 imagen)
+            const imagesPayload = JSON.stringify(product.images).replace(/"/g, '&quot;');
+            imageHtml += `<div class="view-all-images" onclick="event.stopPropagation(); window.mpApp.showImageGallery('${product.name}', ${imagesPayload})">
+                <i class="fas fa-images"></i>
+                <span>${product.images.length > 2 ? '+' + (product.images.length - 2) : 'Ver'}</span>
+            </div>`;
         }
 
         return `

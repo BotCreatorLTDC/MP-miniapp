@@ -925,6 +925,7 @@
     gap: 5px;
     font-size: 0.9em;
     transition: background 0.3s ease;
+    z-index: 2;
 }
 
 .view-all-images:hover {
