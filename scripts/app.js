@@ -629,14 +629,7 @@ class MPApp {
                 return `<img src="${imageUrl}" alt="${product.name}" class="gallery-image ${index > 0 ? 'secondary-image' : ''}" onload="console.log('Image loaded:', this.src); window.mpApp.lastImageLoadTime = Date.now();" onerror="console.log('Image error:', this.src); this.style.display='none';">`;
             }).join('');
 
-            // Si hay más de 2 imágenes, añadir botón para ver todas
-            if (product.images.length > 2) {
-                imageHtml += `<div class="gallery-button-container">
-                    <button class="gallery-button" onclick="event.stopPropagation(); window.mpApp.showImageGallery('${product.name}')">
-                        <i class="fas fa-images"></i> Ver Galería
-                    </button>
-                </div>`;
-            }
+            // Quitar botón de tarjeta; solo se muestra dentro del modal
         }
 
         return `
@@ -989,17 +982,13 @@ class MPApp {
                 return `<img src="${imageUrl}" alt="${product.name}" class="gallery-image ${index > 0 ? 'secondary-image' : ''}" onerror="this.style.display='none';" onload="window.mpApp.lastImageLoadTime = Date.now();">`;
             }).join('');
 
-            // Si hay más de 2 imágenes, añadir botón para ver todas
-            if (product.images.length > 2) {
-                console.log(`Modal: Añadiendo botón de galería para ${product.images.length} imágenes`);
-                galleryHtml += `<div class="view-all-images" onclick="window.mpApp.showImageGallery('${product.name}', ${JSON.stringify(product.images).replace(/"/g, '&quot;')})">
-                    <i class="fas fa-images"></i>
-                    <span>+${product.images.length - 2}</span>
-                </div>`;
-                console.log(`Modal: HTML del botón de galería generado:`, galleryHtml);
-            } else {
-                console.log(`Modal: No se añade botón de galería - solo ${product.images.length} imágenes`);
-            }
+            // Mostrar SIEMPRE botón de galería si hay al menos 1 imagen
+            const imagesPayload = JSON.stringify(product.images).replace(/"/g, '&quot;');
+            galleryHtml += `<div class="view-all-images" onclick="window.mpApp.showImageGallery('${product.name}', ${imagesPayload})">
+                <i class="fas fa-images"></i>
+                <span>${product.images.length > 2 ? '+' + (product.images.length - 2) : 'Ver'}</span>
+            </div>`;
+            console.log('Modal: Botón de galería forzado con', product.images.length, 'imágenes');
 
             productGallery.innerHTML = galleryHtml;
         } else {
