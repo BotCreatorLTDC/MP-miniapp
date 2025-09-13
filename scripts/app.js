@@ -617,7 +617,7 @@ class MPApp {
 
         let imageHtml = '';
         let galleryButton = '';
-        
+
         if (product.images && product.images.length > 0) {
             // Mostrar máximo 2 imágenes
             const maxImages = Math.min(2, product.images.length);
@@ -1668,4 +1668,5 @@ Enviado desde la Miniapp MP Global Corp`;
 // Inicializar la aplicación cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new MPApp();
+    window.mpApp = window.app; // Alias para compatibilidad
 });

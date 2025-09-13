@@ -16,20 +16,20 @@
     --accent-color: #FF6B35;
     --accent-light: #FF8A5B;
     --accent-dark: #E55A2B;
-    
+
     /* Fondos */
     --background-dark: #0F0F0F;
     --background-darker: #1A1A1A;
     --background-card: #1E1E1E;
     --background-hover: #2A2A2A;
     --background-glass: rgba(30, 30, 30, 0.8);
-    
+
     /* Textos */
     --text-primary: #FFFFFF;
     --text-secondary: #E0E0E0;
     --text-muted: #B0B0B0;
     --text-accent: #D4AF37;
-    
+
     /* Colores de estado */
     --success-color: #4CAF50;
     --success-light: #66BB6A;
@@ -39,7 +39,7 @@
     --error-light: #EF5350;
     --info-color: #2196F3;
     --info-light: #42A5F5;
-    
+
     /* Sombras mejoradas */
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.25);
@@ -48,19 +48,19 @@
     --shadow-neon: 0 0 30px rgba(45, 80, 22, 0.4);
     --shadow-gold: 0 0 20px rgba(212, 175, 55, 0.3);
     --shadow-orange: 0 0 20px rgba(255, 107, 53, 0.3);
-    
+
     /* Transiciones */
     --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    
+
     /* Bordes */
     --border-radius: 12px;
     --border-radius-lg: 16px;
     --border-radius-xl: 20px;
     --border-radius-full: 50px;
-    
+
     /* Gradientes */
     --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
     --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-light) 100%);
@@ -87,7 +87,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
+    background:
         url('assets/images/logo.jpg') center/cover no-repeat,
         radial-gradient(circle at 20% 80%, rgba(45, 80, 22, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
@@ -614,6 +614,8 @@ body::before {
     justify-content: center;
     position: relative;
     overflow: hidden;
+    z-index: 10;
+    flex-shrink: 0;
 }
 
 .close-btn::before {
@@ -881,7 +883,7 @@ body::before {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .footer-info {
         text-align: center;
     }
