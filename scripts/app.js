@@ -629,7 +629,14 @@ class MPApp {
                 return `<img src="${imageUrl}" alt="${product.name}" class="gallery-image ${index > 0 ? 'secondary-image' : ''}" onload="console.log('Image loaded:', this.src); window.mpApp.lastImageLoadTime = Date.now();" onerror="console.log('Image error:', this.src); this.style.display='none';">`;
             }).join('');
 
-            // El botón de galería solo se muestra en el modal del producto, no en las tarjetas de categoría
+            // Si hay más de 2 imágenes, añadir botón para ver todas
+            if (product.images.length > 2) {
+                imageHtml += `<div class="gallery-button-container">
+                    <button class="gallery-button" onclick="event.stopPropagation(); window.mpApp.showImageGallery('${product.name}')">
+                        <i class="fas fa-images"></i> Ver Galería
+                    </button>
+                </div>`;
+            }
         }
 
         return `
