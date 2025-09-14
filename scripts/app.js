@@ -503,7 +503,10 @@ class MPApp {
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.classList.remove('active');
         });
-        document.querySelector(`[data-category="${category}"]`).classList.add('active');
+        const activeButton = document.querySelector(`[data-category="${category}"]`);
+        if (activeButton) {
+            activeButton.classList.add('active');
+        }
 
         // Ocultar menú desplegado en móvil
         const navigation = document.getElementById('navigation');
@@ -677,10 +680,14 @@ class MPApp {
         if (products.length === 0) {
             console.log('❌ DEBUG: renderProducts - No hay productos para mostrar');
             productsGrid.innerHTML = '';
-            emptyState.style.display = 'block';
+            if (emptyState) {
+                emptyState.style.display = 'block';
+            }
         } else {
             console.log('✅ DEBUG: renderProducts - Renderizando', products.length, 'productos');
-            emptyState.style.display = 'none';
+            if (emptyState) {
+                emptyState.style.display = 'none';
+            }
             productsGrid.innerHTML = products.map(product => this.createProductCard(product)).join('');
 
             // Agregar event listeners a las tarjetas de productos
@@ -1856,7 +1863,7 @@ Enviado desde la Miniapp MP Global Corp`;
             }
 
             // Crear contenido de la sección
-            const content = this.formatSectionContent(section);
+            const content = this.formatSectionContent(section.content || section);
 
             // Mostrar en el área principal
             const mainContent = document.querySelector('.main-content');
@@ -2004,9 +2011,12 @@ Enviado desde la Miniapp MP Global Corp`;
     formatSectionContent(content) {
         /* Formatear contenido de sección para HTML */
         if (!content) return '<p>Sin contenido</p>';
+        
+        // Asegurar que content es un string
+        const contentStr = typeof content === 'string' ? content : String(content);
 
         // Convertir saltos de línea a <br>
-        let formatted = content.replace(/\n/g, '<br>');
+        let formatted = contentStr.replace(/\n/g, '<br>');
 
         // Convertir listas con • a <ul>
         formatted = formatted.replace(/(•[^<]*<br>)+/g, (match) => {
