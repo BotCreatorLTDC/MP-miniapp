@@ -1909,40 +1909,15 @@ Enviado desde la Miniapp MP Global Corp`;
             console.log('🔍 DEBUG: loadSections - this.catalog:', this.catalog);
             console.log('🔍 DEBUG: loadSections - this.catalog.sections:', this.catalog?.sections);
 
-            // Si ya tenemos el catálogo cargado, usar las secciones de ahí
+            // Usar las secciones del catálogo cargado (ya están disponibles)
             if (this.catalog && this.catalog.sections) {
                 console.log('✅ Usando secciones del catálogo cargado');
                 console.log('🔍 DEBUG: Secciones del catálogo:', Object.keys(this.catalog.sections));
                 return this.catalog.sections;
             }
 
-            console.log('⚠️ No hay secciones en el catálogo, intentando endpoint separado...');
-
-            // Si no, intentar cargar desde el endpoint de secciones
-            try {
-                const response = await fetch('https://mp-bot-wtcf.onrender.com/api/sections');
-                console.log('🔍 DEBUG: Respuesta del endpoint /api/sections - Status:', response.status);
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('🔍 DEBUG: Respuesta del endpoint /api/sections:', data);
-
-                    if (data.success) {
-                        console.log('✅ Secciones cargadas desde endpoint separado');
-                        console.log('🔍 DEBUG: Secciones del endpoint:', Object.keys(data.data));
-                        return data.data;
-                    } else {
-                        console.error('❌ Error en respuesta del endpoint:', data.error);
-                        return {};
-                    }
-                } else {
-                    console.error('❌ Error HTTP del endpoint:', response.status, response.statusText);
-                    return {};
-                }
-            } catch (fetchError) {
-                console.error('❌ Error de red al cargar secciones:', fetchError);
-                return {};
-            }
+            console.log('⚠️ No hay secciones en el catálogo, retornando objeto vacío');
+            return {};
         } catch (error) {
             console.error('❌ Error general cargando secciones:', error);
             return {};
