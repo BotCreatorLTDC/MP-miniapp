@@ -1727,22 +1727,22 @@ Enviado desde la Miniapp MP Global Corp`;
             console.log('🔍 DEBUG: loadSections - Iniciando...');
             console.log('🔍 DEBUG: loadSections - this.catalog:', this.catalog);
             console.log('🔍 DEBUG: loadSections - this.catalog.sections:', this.catalog?.sections);
-            
+
             // Si ya tenemos el catálogo cargado, usar las secciones de ahí
             if (this.catalog && this.catalog.sections) {
                 console.log('✅ Usando secciones del catálogo cargado');
                 console.log('🔍 DEBUG: Secciones del catálogo:', Object.keys(this.catalog.sections));
                 return this.catalog.sections;
             }
-            
+
             console.log('⚠️ No hay secciones en el catálogo, intentando endpoint separado...');
-            
+
             // Si no, intentar cargar desde el endpoint de secciones
             const response = await fetch('/api/sections');
             const data = await response.json();
-            
+
             console.log('🔍 DEBUG: Respuesta del endpoint /api/sections:', data);
-            
+
             if (data.success) {
                 console.log('✅ Secciones cargadas desde endpoint separado');
                 console.log('🔍 DEBUG: Secciones del endpoint:', Object.keys(data.data));
@@ -1761,28 +1761,28 @@ Enviado desde la Miniapp MP Global Corp`;
         /* Mostrar modal de información con secciones dinámicas */
         try {
             console.log('🔍 DEBUG: showInformationModal - Iniciando...');
-            
+
             const modal = document.getElementById('informationModal');
             const content = document.getElementById('informationContent');
             const loading = document.getElementById('infoLoading');
-            
+
             console.log('🔍 DEBUG: Elementos del modal encontrados:', {
                 modal: !!modal,
                 content: !!content,
                 loading: !!loading
             });
-            
+
             // Mostrar modal y loading
             modal.style.display = 'flex';
             loading.style.display = 'block';
             content.innerHTML = '';
-            
+
             // Cargar secciones
             console.log('🔍 DEBUG: Cargando secciones...');
             const sections = await this.loadSections();
             console.log('🔍 DEBUG: Secciones cargadas:', sections);
             console.log('🔍 DEBUG: Número de secciones:', Object.keys(sections).length);
-            
+
             // Ocultar loading
             loading.style.display = 'none';
 
