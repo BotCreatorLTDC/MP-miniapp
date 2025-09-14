@@ -102,6 +102,13 @@ class MPApp {
         try {
             await this.loadCatalog();
             this.setupEventListeners();
+            
+            // Asegurar que currentCategory esté inicializado
+            this.currentCategory = 'all';
+            console.log('🔍 DEBUG: init - currentCategory inicializado como:', this.currentCategory);
+            console.log('🔍 DEBUG: init - catálogo cargado:', this.catalog);
+            console.log('🔍 DEBUG: init - categorías disponibles:', Object.keys(this.catalog?.categories || {}));
+            
             this.renderProducts();
             this.updateCartUI();
             // Aplicar traducciones iniciales
@@ -619,10 +626,15 @@ class MPApp {
     }
 
     renderProducts() {
+        console.log('🔍 DEBUG: renderProducts - Iniciando...');
+        console.log('🔍 DEBUG: renderProducts - currentCategory:', this.currentCategory);
+        console.log('🔍 DEBUG: renderProducts - catalog:', this.catalog);
+        
         const productsGrid = document.getElementById('productsGrid');
         const emptyState = document.getElementById('emptyState');
 
         if (!this.catalog) {
+            console.log('❌ DEBUG: renderProducts - No hay catálogo');
             productsGrid.innerHTML = `<p>${this.t('error_loading_catalog')}</p>`;
             return;
         }
@@ -631,29 +643,41 @@ class MPApp {
 
         // Obtener productos según la categoría seleccionada
         if (this.currentCategory === 'all') {
+            console.log('🔍 DEBUG: renderProducts - Mostrando todos los productos');
             Object.values(this.catalog.categories).forEach(category => {
-                products = products.concat(category.products);
+                console.log('🔍 DEBUG: renderProducts - Procesando categoría:', category.name, 'con', category.products?.length || 0, 'productos');
+                products = products.concat(category.products || []);
             });
         } else {
+            console.log('🔍 DEBUG: renderProducts - Mostrando categoría específica:', this.currentCategory);
             const category = this.catalog.categories[this.currentCategory];
             if (category) {
-                products = category.products;
+                console.log('🔍 DEBUG: renderProducts - Categoría encontrada:', category.name, 'con', category.products?.length || 0, 'productos');
+                products = category.products || [];
+            } else {
+                console.log('❌ DEBUG: renderProducts - Categoría no encontrada:', this.currentCategory);
             }
         }
 
+        console.log('🔍 DEBUG: renderProducts - Productos encontrados:', products.length);
+
         // Filtrar por término de búsqueda
         if (this.searchTerm) {
+            console.log('🔍 DEBUG: renderProducts - Filtrando por término:', this.searchTerm);
             products = products.filter(product =>
                 product.name.toLowerCase().includes(this.searchTerm) ||
                 product.description.toLowerCase().includes(this.searchTerm)
             );
+            console.log('🔍 DEBUG: renderProducts - Productos después del filtro:', products.length);
         }
 
         // Renderizar productos
         if (products.length === 0) {
+            console.log('❌ DEBUG: renderProducts - No hay productos para mostrar');
             productsGrid.innerHTML = '';
             emptyState.style.display = 'block';
         } else {
+            console.log('✅ DEBUG: renderProducts - Renderizando', products.length, 'productos');
             emptyState.style.display = 'none';
             productsGrid.innerHTML = products.map(product => this.createProductCard(product)).join('');
 
@@ -1895,21 +1919,32 @@ Enviado desde la Miniapp MP Global Corp`;
             console.log('⚠️ No hay secciones en el catálogo, intentando endpoint separado...');
 
             // Si no, intentar cargar desde el endpoint de secciones
-            const response = await fetch('https://mp-bot-wtcf.onrender.com/api/sections');
-            const data = await response.json();
+            try {
+                const response = await fetch('https://mp-bot-wtcf.onrender.com/api/sections');
+                console.log('🔍 DEBUG: Respuesta del endpoint /api/sections - Status:', response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('🔍 DEBUG: Respuesta del endpoint /api/sections:', data);
 
-            console.log('🔍 DEBUG: Respuesta del endpoint /api/sections:', data);
-
-            if (data.success) {
-                console.log('✅ Secciones cargadas desde endpoint separado');
-                console.log('🔍 DEBUG: Secciones del endpoint:', Object.keys(data.data));
-                return data.data;
-            } else {
-                console.error('Error cargando secciones:', data.error);
+                    if (data.success) {
+                        console.log('✅ Secciones cargadas desde endpoint separado');
+                        console.log('🔍 DEBUG: Secciones del endpoint:', Object.keys(data.data));
+                        return data.data;
+                    } else {
+                        console.error('❌ Error en respuesta del endpoint:', data.error);
+                        return {};
+                    }
+                } else {
+                    console.error('❌ Error HTTP del endpoint:', response.status, response.statusText);
+                    return {};
+                }
+            } catch (fetchError) {
+                console.error('❌ Error de red al cargar secciones:', fetchError);
                 return {};
             }
         } catch (error) {
-            console.error('Error cargando secciones:', error);
+            console.error('❌ Error general cargando secciones:', error);
             return {};
         }
     }
