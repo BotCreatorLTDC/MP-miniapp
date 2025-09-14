@@ -147,6 +147,7 @@ class MPApp {
                     if (!result.success) throw new Error(result.error || 'error_api');
                     this.catalog = result.data;
                     console.log('✅ Catálogo cargado desde:', url);
+                    console.log('🔍 DEBUG: Secciones en catálogo:', this.catalog.sections);
                     loaded = true;
                     break;
                 } catch (e) {
@@ -167,6 +168,7 @@ class MPApp {
                 if (response.ok) {
                     this.catalog = await response.json();
                     console.log('✅ Catálogo cargado desde archivo local');
+                    console.log('🔍 DEBUG: Secciones en catálogo local:', this.catalog.sections);
                     // Convertir imágenes después de cargar el catálogo
                     this.convertCatalogImages();
                     // Actualizar visualización de categorías
@@ -1720,12 +1722,20 @@ Enviado desde la Miniapp MP Global Corp`;
     // ==================== FUNCIONALIDAD DE SECCIONES ====================
 
     async loadSections() {
-        /* Cargar secciones de información desde la API */
+        /* Cargar secciones de información desde el catálogo */
         try {
+            // Si ya tenemos el catálogo cargado, usar las secciones de ahí
+            if (this.catalog && this.catalog.sections) {
+                console.log('✅ Usando secciones del catálogo cargado');
+                return this.catalog.sections;
+            }
+
+            // Si no, intentar cargar desde el endpoint de secciones
             const response = await fetch('/api/sections');
             const data = await response.json();
 
             if (data.success) {
+                console.log('✅ Secciones cargadas desde endpoint separado');
                 return data.data;
             } else {
                 console.error('Error cargando secciones:', data.error);
