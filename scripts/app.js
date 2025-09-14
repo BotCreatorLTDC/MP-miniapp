@@ -229,10 +229,10 @@ class MPApp {
         }
     }
 
-    updateCategoryDisplay() {
-        // Actualizar la visualización de categorías dinámicamente
+    async updateCategoryDisplay() {
+        // Actualizar la visualización de categorías y secciones dinámicamente
         try {
-            console.log('🔄 Actualizando visualización de categorías...');
+            console.log('🔄 Actualizando visualización de categorías y secciones...');
 
             if (!this.catalog || !this.catalog.categories) {
                 console.warn('⚠️ No hay catálogo o categorías disponibles');
@@ -258,11 +258,38 @@ class MPApp {
                 }
 
                 console.log(`✅ Añadidas ${Object.keys(this.catalog.categories).length} categorías al menú`);
+
+                // Añadir botones para secciones de información
+                try {
+                    const sections = await this.loadSections();
+                    console.log('🔍 DEBUG: Secciones cargadas para menú:', Object.keys(sections));
+                    
+                    for (const sectionKey in sections) {
+                        const section = sections[sectionKey];
+                        const sectionButton = document.createElement('button');
+                        sectionButton.className = 'tab-btn section-btn';
+                        sectionButton.setAttribute('data-section', sectionKey);
+                        
+                        // Iconos específicos para cada sección
+                        let icon = 'fas fa-info-circle';
+                        if (sectionKey === 'shipping') icon = 'fas fa-shipping-fast';
+                        else if (sectionKey === 'stock') icon = 'fas fa-boxes';
+                        else if (sectionKey === 'contact') icon = 'fas fa-phone';
+                        
+                        sectionButton.innerHTML = `<i class="${icon}"></i><span>${section.title || sectionKey}</span>`;
+                        sectionButton.onclick = () => this.showSection(sectionKey);
+                        categoryTabs.appendChild(sectionButton);
+                    }
+                    
+                    console.log(`✅ Añadidas ${Object.keys(sections).length} secciones al menú`);
+                } catch (error) {
+                    console.error('❌ Error cargando secciones para menú:', error);
+                }
             } else {
                 console.warn('⚠️ No se encontró el elemento .category-tabs');
             }
 
-            console.log('✅ Visualización de categorías actualizada');
+            console.log('✅ Visualización de categorías y secciones actualizada');
         } catch (error) {
             console.error('❌ Error actualizando visualización de categorías:', error);
         }
@@ -1719,7 +1746,123 @@ Enviado desde la Miniapp MP Global Corp`;
         return this.translationManager.t(key);
     }
 
+    // ==================== FUNCIONALIDAD DE CATEGORÍAS ====================
+
+    showCategory(categoryKey) {
+        /* Mostrar una categoría específica */
+        try {
+            console.log(`🔍 DEBUG: showCategory - Mostrando categoría: ${categoryKey}`);
+            
+            if (categoryKey === 'all') {
+                this.showAllProducts();
+            } else {
+                this.showProductsByCategory(categoryKey);
+            }
+            
+            // Actualizar botones activos
+            this.updateActiveButtons(categoryKey, 'category');
+            
+        } catch (error) {
+            console.error(`❌ Error mostrando categoría ${categoryKey}:`, error);
+        }
+    }
+
+    showAllProducts() {
+        /* Mostrar todos los productos */
+        try {
+            console.log('🔍 DEBUG: Mostrando todos los productos');
+            
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.innerHTML = '<div class="products-grid" id="productsGrid"></div>';
+                this.renderProducts();
+            }
+            
+        } catch (error) {
+            console.error('❌ Error mostrando todos los productos:', error);
+        }
+    }
+
+    showProductsByCategory(categoryKey) {
+        /* Mostrar productos de una categoría específica */
+        try {
+            console.log(`🔍 DEBUG: Mostrando productos de categoría: ${categoryKey}`);
+            
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.innerHTML = '<div class="products-grid" id="productsGrid"></div>';
+                this.renderProducts(categoryKey);
+            }
+            
+        } catch (error) {
+            console.error(`❌ Error mostrando productos de categoría ${categoryKey}:`, error);
+        }
+    }
+
     // ==================== FUNCIONALIDAD DE SECCIONES ====================
+
+    async showSection(sectionKey) {
+        /* Mostrar una sección específica */
+        try {
+            console.log(`🔍 DEBUG: showSection - Mostrando sección: ${sectionKey}`);
+            
+            // Obtener secciones
+            const sections = await this.loadSections();
+            const section = sections[sectionKey];
+            
+            if (!section) {
+                console.error(`❌ Sección ${sectionKey} no encontrada`);
+                return;
+            }
+            
+            // Crear contenido de la sección
+            const content = this.formatSectionContent(section);
+            
+            // Mostrar en el área principal
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.innerHTML = `
+                    <div class="section-content">
+                        <div class="section-header">
+                            <h2><i class="fas fa-info-circle"></i> ${section.title || sectionKey}</h2>
+                        </div>
+                        <div class="section-body">
+                            ${content}
+                        </div>
+                    </div>
+                `;
+                
+                // Actualizar botones activos
+                this.updateActiveButtons(sectionKey, 'section');
+                
+                console.log(`✅ Sección ${sectionKey} mostrada correctamente`);
+            }
+            
+        } catch (error) {
+            console.error(`❌ Error mostrando sección ${sectionKey}:`, error);
+        }
+    }
+
+    updateActiveButtons(activeKey, type) {
+        /* Actualizar botones activos en el menú */
+        try {
+            // Remover clase active de todos los botones
+            const allButtons = document.querySelectorAll('.tab-btn');
+            allButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Añadir clase active al botón correspondiente
+            if (type === 'category') {
+                const activeButton = document.querySelector(`[data-category="${activeKey}"]`);
+                if (activeButton) activeButton.classList.add('active');
+            } else if (type === 'section') {
+                const activeButton = document.querySelector(`[data-section="${activeKey}"]`);
+                if (activeButton) activeButton.classList.add('active');
+            }
+            
+        } catch (error) {
+            console.error('❌ Error actualizando botones activos:', error);
+        }
+    }
 
     async loadSections() {
         /* Cargar secciones de información desde el catálogo */

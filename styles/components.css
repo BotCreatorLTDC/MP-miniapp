@@ -1188,3 +1188,77 @@
 .information-section .section-content li {
     margin: 0.25rem 0;
 }
+
+/* ==================== ESTILOS PARA SECCIONES EN BARRA LATERAL ==================== */
+
+.section-btn {
+    background: rgba(255, 193, 7, 0.1) !important;
+    border: 1px solid rgba(255, 193, 7, 0.3) !important;
+    color: #ffc107 !important;
+}
+
+.section-btn:hover {
+    background: rgba(255, 193, 7, 0.2) !important;
+    border-color: rgba(255, 193, 7, 0.5) !important;
+    transform: translateY(-2px);
+}
+
+.section-btn.active {
+    background: rgba(255, 193, 7, 0.3) !important;
+    border-color: #ffc107 !important;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+}
+
+/* ==================== ESTILOS PARA CONTENIDO DE SECCIONES ==================== */
+
+.section-content {
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    margin: 1rem 0;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+}
+
+.section-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.section-header h2 {
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-body {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.section-body pre {
+    background: var(--bg-secondary);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    overflow-x: auto;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+.section-body strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.section-body em {
+    color: var(--accent-color);
+    font-style: italic;
+}
