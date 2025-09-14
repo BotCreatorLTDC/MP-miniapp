@@ -1804,7 +1804,8 @@ Enviado desde la Miniapp MP Global Corp`;
             const mainContent = document.querySelector('.main-content');
             if (mainContent) {
                 mainContent.innerHTML = '<div class="products-grid" id="productsGrid"></div>';
-                this.renderProducts(categoryKey);
+                // currentCategory ya fue actualizado en showCategory()
+                this.renderProducts();
             }
 
         } catch (error) {
