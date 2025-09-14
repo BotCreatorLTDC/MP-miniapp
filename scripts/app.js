@@ -259,29 +259,38 @@ class MPApp {
 
                 console.log(`✅ Añadidas ${Object.keys(this.catalog.categories).length} categorías al menú`);
 
-                // Añadir botones para secciones de información
+                // Añadir separador y secciones de información
                 try {
                     const sections = await this.loadSections();
                     console.log('🔍 DEBUG: Secciones cargadas para menú:', Object.keys(sections));
                     
-                    for (const sectionKey in sections) {
-                        const section = sections[sectionKey];
-                        const sectionButton = document.createElement('button');
-                        sectionButton.className = 'tab-btn section-btn';
-                        sectionButton.setAttribute('data-section', sectionKey);
+                    if (Object.keys(sections).length > 0) {
+                        // Crear separador visual
+                        const separator = document.createElement('div');
+                        separator.className = 'menu-separator';
+                        separator.innerHTML = '<hr><span>Información</span><hr>';
+                        categoryTabs.appendChild(separator);
                         
-                        // Iconos específicos para cada sección
-                        let icon = 'fas fa-info-circle';
-                        if (sectionKey === 'shipping') icon = 'fas fa-shipping-fast';
-                        else if (sectionKey === 'stock') icon = 'fas fa-boxes';
-                        else if (sectionKey === 'contact') icon = 'fas fa-phone';
+                        // Añadir botones para secciones de información
+                        for (const sectionKey in sections) {
+                            const section = sections[sectionKey];
+                            const sectionButton = document.createElement('button');
+                            sectionButton.className = 'tab-btn section-btn';
+                            sectionButton.setAttribute('data-section', sectionKey);
+                            
+                            // Iconos específicos para cada sección
+                            let icon = 'fas fa-info-circle';
+                            if (sectionKey === 'shipping') icon = 'fas fa-shipping-fast';
+                            else if (sectionKey === 'stock') icon = 'fas fa-boxes';
+                            else if (sectionKey === 'contact') icon = 'fas fa-phone';
+                            
+                            sectionButton.innerHTML = `<i class="${icon}"></i><span>${section.title || sectionKey}</span>`;
+                            sectionButton.onclick = () => this.showSection(sectionKey);
+                            categoryTabs.appendChild(sectionButton);
+                        }
                         
-                        sectionButton.innerHTML = `<i class="${icon}"></i><span>${section.title || sectionKey}</span>`;
-                        sectionButton.onclick = () => this.showSection(sectionKey);
-                        categoryTabs.appendChild(sectionButton);
+                        console.log(`✅ Añadidas ${Object.keys(sections).length} secciones al menú con separador`);
                     }
-                    
-                    console.log(`✅ Añadidas ${Object.keys(sections).length} secciones al menú`);
                 } catch (error) {
                     console.error('❌ Error cargando secciones para menú:', error);
                 }
@@ -1752,16 +1761,16 @@ Enviado desde la Miniapp MP Global Corp`;
         /* Mostrar una categoría específica */
         try {
             console.log(`🔍 DEBUG: showCategory - Mostrando categoría: ${categoryKey}`);
-            
+
             if (categoryKey === 'all') {
                 this.showAllProducts();
             } else {
                 this.showProductsByCategory(categoryKey);
             }
-            
+
             // Actualizar botones activos
             this.updateActiveButtons(categoryKey, 'category');
-            
+
         } catch (error) {
             console.error(`❌ Error mostrando categoría ${categoryKey}:`, error);
         }
@@ -1771,13 +1780,13 @@ Enviado desde la Miniapp MP Global Corp`;
         /* Mostrar todos los productos */
         try {
             console.log('🔍 DEBUG: Mostrando todos los productos');
-            
+
             const mainContent = document.querySelector('.main-content');
             if (mainContent) {
                 mainContent.innerHTML = '<div class="products-grid" id="productsGrid"></div>';
                 this.renderProducts();
             }
-            
+
         } catch (error) {
             console.error('❌ Error mostrando todos los productos:', error);
         }
@@ -1787,13 +1796,13 @@ Enviado desde la Miniapp MP Global Corp`;
         /* Mostrar productos de una categoría específica */
         try {
             console.log(`🔍 DEBUG: Mostrando productos de categoría: ${categoryKey}`);
-            
+
             const mainContent = document.querySelector('.main-content');
             if (mainContent) {
                 mainContent.innerHTML = '<div class="products-grid" id="productsGrid"></div>';
                 this.renderProducts(categoryKey);
             }
-            
+
         } catch (error) {
             console.error(`❌ Error mostrando productos de categoría ${categoryKey}:`, error);
         }
@@ -1805,19 +1814,19 @@ Enviado desde la Miniapp MP Global Corp`;
         /* Mostrar una sección específica */
         try {
             console.log(`🔍 DEBUG: showSection - Mostrando sección: ${sectionKey}`);
-            
+
             // Obtener secciones
             const sections = await this.loadSections();
             const section = sections[sectionKey];
-            
+
             if (!section) {
                 console.error(`❌ Sección ${sectionKey} no encontrada`);
                 return;
             }
-            
+
             // Crear contenido de la sección
             const content = this.formatSectionContent(section);
-            
+
             // Mostrar en el área principal
             const mainContent = document.querySelector('.main-content');
             if (mainContent) {
@@ -1831,13 +1840,13 @@ Enviado desde la Miniapp MP Global Corp`;
                         </div>
                     </div>
                 `;
-                
+
                 // Actualizar botones activos
                 this.updateActiveButtons(sectionKey, 'section');
-                
+
                 console.log(`✅ Sección ${sectionKey} mostrada correctamente`);
             }
-            
+
         } catch (error) {
             console.error(`❌ Error mostrando sección ${sectionKey}:`, error);
         }
@@ -1849,7 +1858,7 @@ Enviado desde la Miniapp MP Global Corp`;
             // Remover clase active de todos los botones
             const allButtons = document.querySelectorAll('.tab-btn');
             allButtons.forEach(btn => btn.classList.remove('active'));
-            
+
             // Añadir clase active al botón correspondiente
             if (type === 'category') {
                 const activeButton = document.querySelector(`[data-category="${activeKey}"]`);
@@ -1858,7 +1867,7 @@ Enviado desde la Miniapp MP Global Corp`;
                 const activeButton = document.querySelector(`[data-section="${activeKey}"]`);
                 if (activeButton) activeButton.classList.add('active');
             }
-            
+
         } catch (error) {
             console.error('❌ Error actualizando botones activos:', error);
         }
@@ -2004,36 +2013,9 @@ Enviado desde la Miniapp MP Global Corp`;
     }
 
     setupInformationModal() {
-        /* Configurar eventos del modal de información */
-        const infoBtn = document.getElementById('infoBtn');
-        const modal = document.getElementById('informationModal');
-        const closeBtn = document.getElementById('closeInformationModal');
-        const closeBtnFooter = document.getElementById('closeInformationModalBtn');
-
-        if (infoBtn) {
-            infoBtn.addEventListener('click', () => {
-                this.showInformationModal();
-            });
-        }
-
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
-        }
-
-        if (closeBtnFooter) {
-            closeBtnFooter.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
-        }
-
-        // Cerrar al hacer clic fuera del modal
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
+        /* Configurar eventos del modal de información - YA NO SE USA */
+        // El modal de información se eliminó, las secciones ahora se muestran en el menú hamburguesa
+        console.log('ℹ️ Modal de información deshabilitado - secciones en menú hamburguesa');
     }
 }
 

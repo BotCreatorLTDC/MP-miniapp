@@ -1191,10 +1191,36 @@
 
 /* ==================== ESTILOS PARA SECCIONES EN BARRA LATERAL ==================== */
 
+.menu-separator {
+    margin: 1rem 0;
+    text-align: center;
+    position: relative;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.menu-separator hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+    margin: 0.5rem 0;
+}
+
+.menu-separator span {
+    background: var(--bg-primary);
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+}
+
 .section-btn {
     background: rgba(255, 193, 7, 0.1) !important;
     border: 1px solid rgba(255, 193, 7, 0.3) !important;
     color: #ffc107 !important;
+    margin-top: 0.5rem;
 }
 
 .section-btn:hover {
