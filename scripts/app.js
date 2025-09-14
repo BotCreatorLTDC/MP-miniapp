@@ -263,32 +263,32 @@ class MPApp {
                 try {
                     const sections = await this.loadSections();
                     console.log('🔍 DEBUG: Secciones cargadas para menú:', Object.keys(sections));
-                    
+
                     if (Object.keys(sections).length > 0) {
                         // Crear separador visual
                         const separator = document.createElement('div');
                         separator.className = 'menu-separator';
                         separator.innerHTML = '<hr><span>Información</span><hr>';
                         categoryTabs.appendChild(separator);
-                        
+
                         // Añadir botones para secciones de información
                         for (const sectionKey in sections) {
                             const section = sections[sectionKey];
                             const sectionButton = document.createElement('button');
                             sectionButton.className = 'tab-btn section-btn';
                             sectionButton.setAttribute('data-section', sectionKey);
-                            
+
                             // Iconos específicos para cada sección
                             let icon = 'fas fa-info-circle';
                             if (sectionKey === 'shipping') icon = 'fas fa-shipping-fast';
                             else if (sectionKey === 'stock') icon = 'fas fa-boxes';
                             else if (sectionKey === 'contact') icon = 'fas fa-phone';
-                            
+
                             sectionButton.innerHTML = `<i class="${icon}"></i><span>${section.title || sectionKey}</span>`;
                             sectionButton.onclick = () => this.showSection(sectionKey);
                             categoryTabs.appendChild(sectionButton);
                         }
-                        
+
                         console.log(`✅ Añadidas ${Object.keys(sections).length} secciones al menú con separador`);
                     }
                 } catch (error) {
@@ -1761,6 +1761,10 @@ Enviado desde la Miniapp MP Global Corp`;
         /* Mostrar una categoría específica */
         try {
             console.log(`🔍 DEBUG: showCategory - Mostrando categoría: ${categoryKey}`);
+
+            // Actualizar categoría actual
+            this.currentCategory = categoryKey;
+            this.searchTerm = ''; // Limpiar búsqueda
 
             if (categoryKey === 'all') {
                 this.showAllProducts();
