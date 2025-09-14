@@ -102,13 +102,13 @@ class MPApp {
         try {
             await this.loadCatalog();
             this.setupEventListeners();
-            
+
             // Asegurar que currentCategory esté inicializado
             this.currentCategory = 'all';
             console.log('🔍 DEBUG: init - currentCategory inicializado como:', this.currentCategory);
             console.log('🔍 DEBUG: init - catálogo cargado:', this.catalog);
             console.log('🔍 DEBUG: init - categorías disponibles:', Object.keys(this.catalog?.categories || {}));
-            
+
             this.renderProducts();
             this.updateCartUI();
             // Aplicar traducciones iniciales
@@ -166,7 +166,7 @@ class MPApp {
 
             // Convertir imágenes y sincronizar categorías
             this.convertCatalogImages();
-            this.updateCategoryDisplay();
+            await this.updateCategoryDisplay();
         } catch (error) {
             console.warn('Error cargando desde API del bot, intentando fallback:', error);
             try {
@@ -179,7 +179,7 @@ class MPApp {
                     // Convertir imágenes después de cargar el catálogo
                     this.convertCatalogImages();
                     // Actualizar visualización de categorías
-                    this.updateCategoryDisplay();
+                    await this.updateCategoryDisplay();
                 } else {
                     throw new Error('Archivo local no encontrado');
                 }
@@ -189,7 +189,7 @@ class MPApp {
                 // Convertir imágenes después de cargar el catálogo
                 this.convertCatalogImages();
                 // Actualizar visualización de categorías
-                this.updateCategoryDisplay();
+                await this.updateCategoryDisplay();
             }
         }
     }
@@ -240,6 +240,8 @@ class MPApp {
         // Actualizar la visualización de categorías y secciones dinámicamente
         try {
             console.log('🔄 Actualizando visualización de categorías y secciones...');
+            console.log('🔍 DEBUG: updateCategoryDisplay - this.catalog:', this.catalog);
+            console.log('🔍 DEBUG: updateCategoryDisplay - this.catalog.categories:', this.catalog?.categories);
 
             if (!this.catalog || !this.catalog.categories) {
                 console.warn('⚠️ No hay catálogo o categorías disponibles');
@@ -629,7 +631,7 @@ class MPApp {
         console.log('🔍 DEBUG: renderProducts - Iniciando...');
         console.log('🔍 DEBUG: renderProducts - currentCategory:', this.currentCategory);
         console.log('🔍 DEBUG: renderProducts - catalog:', this.catalog);
-        
+
         const productsGrid = document.getElementById('productsGrid');
         const emptyState = document.getElementById('emptyState');
 
