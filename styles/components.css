@@ -1129,3 +1129,62 @@
 .mt-2 { margin-top: 1rem; }
 .mt-3 { margin-top: 1.5rem; }
 .mt-4 { margin-top: 2rem; }
+
+/* Information Modal Styles */
+.information-content {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.information-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.information-content::-webkit-scrollbar-track {
+    background: var(--background-darker);
+    border-radius: var(--border-radius-full);
+}
+
+.information-content::-webkit-scrollbar-thumb {
+    background: var(--gradient-secondary);
+    border-radius: var(--border-radius-full);
+}
+
+.information-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--background-glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.information-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.information-section .section-content {
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.information-section .section-content p {
+    margin: 0.5rem 0;
+}
+
+.information-section .section-content ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.information-section .section-content li {
+    margin: 0.25rem 0;
+}

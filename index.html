@@ -313,7 +313,7 @@
                             <li><strong>Comunicación Segura:</strong> Los pedidos se envían directamente a Telegram con cifrado end-to-end.</li>
                         </ul>
                     </div>
-                    
+
                     <div class="security-section">
                         <h3><i class="fas fa-user-secret"></i> <span data-i18n="privacy">Privacidad</span></h3>
                         <ul>
@@ -323,7 +323,7 @@
                             <li><strong>Control Total:</strong> Puedes limpiar todos los datos locales en cualquier momento.</li>
                         </ul>
                     </div>
-                    
+
                     <div class="security-section">
                         <h3><i class="fas fa-lock"></i> <span data-i18n="legal_compliance">Cumplimiento Legal</span></h3>
                         <ul>
@@ -333,7 +333,7 @@
                             <li><strong>Transparencia:</strong> Toda nuestra política de privacidad está disponible públicamente.</li>
                         </ul>
                     </div>
-                    
+
                     <div class="security-section">
                         <h3><i class="fas fa-mobile-alt"></i> <span data-i18n="mobile_security">Seguridad Móvil</span></h3>
                         <ul>
@@ -355,6 +355,32 @@
         </div>
     </div>
 
+    <!-- Information Modal -->
+    <div class="modal" id="informationModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                    <h2 data-i18n="information">Información</h2>
+                </div>
+                <button class="close-btn" id="closeInformationModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="information-content" id="informationContent">
+                    <div class="loading" id="infoLoading">
+                        <div class="spinner"></div>
+                        <p data-i18n="loading_information">Cargando información...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeInformationModalBtn" data-i18n="close">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
@@ -372,6 +398,10 @@
                     <button class="footer-link" id="securityBtn">
                         <i class="fas fa-shield-alt"></i>
                         <span data-i18n="security_privacy_link">Seguridad y Privacidad</span>
+                    </button>
+                    <button class="footer-link" id="infoBtn">
+                        <i class="fas fa-info-circle"></i>
+                        <span data-i18n="information">Información</span>
                     </button>
                 </div>
             </div>

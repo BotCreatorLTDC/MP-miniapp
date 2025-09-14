@@ -112,6 +112,9 @@ class MPApp {
             this.orderManager = new OrderManager(this);
             console.log('OrderManager inicializado:', this.orderManager);
 
+            // Configurar modal de información
+            this.setupInformationModal();
+
             this.hideLoading();
         } catch (error) {
             console.error('Error inicializando la app:', error);
@@ -1712,6 +1715,151 @@ Enviado desde la Miniapp MP Global Corp`;
     // Función helper para obtener traducciones
     t(key) {
         return this.translationManager.t(key);
+    }
+
+    // ==================== FUNCIONALIDAD DE SECCIONES ====================
+
+    async loadSections() {
+        /* Cargar secciones de información desde la API */
+        try {
+            const response = await fetch('/api/sections');
+            const data = await response.json();
+
+            if (data.success) {
+                return data.data;
+            } else {
+                console.error('Error cargando secciones:', data.error);
+                return {};
+            }
+        } catch (error) {
+            console.error('Error cargando secciones:', error);
+            return {};
+        }
+    }
+
+    async showInformationModal() {
+        /* Mostrar modal de información con secciones dinámicas */
+        try {
+            const modal = document.getElementById('informationModal');
+            const content = document.getElementById('informationContent');
+            const loading = document.getElementById('infoLoading');
+
+            // Mostrar modal y loading
+            modal.style.display = 'flex';
+            loading.style.display = 'block';
+            content.innerHTML = '';
+
+            // Cargar secciones
+            const sections = await this.loadSections();
+
+            // Ocultar loading
+            loading.style.display = 'none';
+
+            if (Object.keys(sections).length === 0) {
+                content.innerHTML = `
+                    <div class="information-section">
+                        <h3><i class="fas fa-info-circle"></i> Información</h3>
+                        <div class="section-content">
+                            <p>No hay información disponible en este momento.</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Renderizar secciones
+            let sectionsHtml = '';
+            for (const [sectionKey, sectionData] of Object.entries(sections)) {
+                const title = sectionData.title || 'Sin título';
+                const content_text = sectionData.content || 'Sin contenido';
+
+                sectionsHtml += `
+                    <div class="information-section">
+                        <h3><i class="fas fa-info-circle"></i> ${title}</h3>
+                        <div class="section-content">
+                            ${this.formatSectionContent(content_text)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            content.innerHTML = sectionsHtml;
+
+        } catch (error) {
+            console.error('Error mostrando modal de información:', error);
+            const content = document.getElementById('informationContent');
+            const loading = document.getElementById('infoLoading');
+            loading.style.display = 'none';
+            content.innerHTML = `
+                <div class="information-section">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Error</h3>
+                    <div class="section-content">
+                        <p>Error cargando la información. Inténtalo de nuevo más tarde.</p>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    formatSectionContent(content) {
+        /* Formatear contenido de sección para HTML */
+        if (!content) return '<p>Sin contenido</p>';
+
+        // Convertir saltos de línea a <br>
+        let formatted = content.replace(/\n/g, '<br>');
+
+        // Convertir listas con • a <ul>
+        formatted = formatted.replace(/(•[^<]*<br>)+/g, (match) => {
+            const items = match.split('<br>').filter(item => item.trim());
+            const listItems = items.map(item =>
+                `<li>${item.replace('•', '').trim()}</li>`
+            ).join('');
+            return `<ul>${listItems}</ul>`;
+        });
+
+        // Convertir listas con - a <ul>
+        formatted = formatted.replace(/(-[^<]*<br>)+/g, (match) => {
+            const items = match.split('<br>').filter(item => item.trim());
+            const listItems = items.map(item =>
+                `<li>${item.replace('-', '').trim()}</li>`
+            ).join('');
+            return `<ul>${listItems}</ul>`;
+        });
+
+        return `<p>${formatted}</p>`;
+    }
+
+    setupInformationModal() {
+        /* Configurar eventos del modal de información */
+        const infoBtn = document.getElementById('infoBtn');
+        const modal = document.getElementById('informationModal');
+        const closeBtn = document.getElementById('closeInformationModal');
+        const closeBtnFooter = document.getElementById('closeInformationModalBtn');
+
+        if (infoBtn) {
+            infoBtn.addEventListener('click', () => {
+                this.showInformationModal();
+            });
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+        }
+
+        if (closeBtnFooter) {
+            closeBtnFooter.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+        }
+
+        // Cerrar al hacer clic fuera del modal
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
     }
 }
 
