@@ -1895,7 +1895,7 @@ Enviado desde la Miniapp MP Global Corp`;
             console.log('⚠️ No hay secciones en el catálogo, intentando endpoint separado...');
 
             // Si no, intentar cargar desde el endpoint de secciones
-            const response = await fetch('/api/sections');
+            const response = await fetch('https://mp-bot-wtcf.onrender.com/api/sections');
             const data = await response.json();
 
             console.log('🔍 DEBUG: Respuesta del endpoint /api/sections:', data);
