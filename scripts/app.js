@@ -637,10 +637,36 @@ class MPApp {
 
         const productsGrid = document.getElementById('productsGrid');
         const emptyState = document.getElementById('emptyState');
+        
+        // Si no existe productsGrid, crearlo
+        if (!productsGrid) {
+            console.log('🔍 DEBUG: productsGrid no existe, creándolo...');
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.innerHTML = `
+                    <div class="products-container" id="productsContainer">
+                        <div class="products-grid" id="productsGrid">
+                            <!-- Los productos se cargarán dinámicamente aquí -->
+                        </div>
+                    </div>
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <i class="fas fa-search"></i>
+                        <h3 data-i18n="no_products_found">No se encontraron productos</h3>
+                        <p data-i18n="try_different_terms">Intenta con otros términos de búsqueda</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Obtener referencias actualizadas después de crear los elementos
+        const updatedProductsGrid = document.getElementById('productsGrid');
+        const updatedEmptyState = document.getElementById('emptyState');
 
         if (!this.catalog) {
             console.log('❌ DEBUG: renderProducts - No hay catálogo');
-            productsGrid.innerHTML = `<p>${this.t('error_loading_catalog')}</p>`;
+            if (updatedProductsGrid) {
+                updatedProductsGrid.innerHTML = `<p>${this.t('error_loading_catalog')}</p>`;
+            }
             return;
         }
 
@@ -679,24 +705,28 @@ class MPApp {
         // Renderizar productos
         if (products.length === 0) {
             console.log('❌ DEBUG: renderProducts - No hay productos para mostrar');
-            productsGrid.innerHTML = '';
-            if (emptyState) {
-                emptyState.style.display = 'block';
+            if (updatedProductsGrid) {
+                updatedProductsGrid.innerHTML = '';
+            }
+            if (updatedEmptyState) {
+                updatedEmptyState.style.display = 'block';
             }
         } else {
             console.log('✅ DEBUG: renderProducts - Renderizando', products.length, 'productos');
-            if (emptyState) {
-                emptyState.style.display = 'none';
+            if (updatedEmptyState) {
+                updatedEmptyState.style.display = 'none';
             }
-            productsGrid.innerHTML = products.map(product => this.createProductCard(product)).join('');
-
-            // Agregar event listeners a las tarjetas de productos
-            productsGrid.querySelectorAll('.product-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const productName = card.dataset.productName;
-                    this.showProductModal(productName);
+            if (updatedProductsGrid) {
+                updatedProductsGrid.innerHTML = products.map(product => this.createProductCard(product)).join('');
+                
+                // Agregar event listeners a las tarjetas de productos
+                updatedProductsGrid.querySelectorAll('.product-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const productName = card.dataset.productName;
+                        this.showProductModal(productName);
+                    });
                 });
-            });
+            }
         }
     }
 
@@ -2011,7 +2041,7 @@ Enviado desde la Miniapp MP Global Corp`;
     formatSectionContent(content) {
         /* Formatear contenido de sección para HTML */
         if (!content) return '<p>Sin contenido</p>';
-        
+
         // Asegurar que content es un string
         const contentStr = typeof content === 'string' ? content : String(content);
 
