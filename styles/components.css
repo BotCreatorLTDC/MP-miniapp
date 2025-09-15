@@ -1288,3 +1288,120 @@
     color: var(--accent-color);
     font-style: italic;
 }
+
+/* ==================== ESTILOS PARA SECCIONES DE INFORMACIÓN ==================== */
+
+.information-section {
+    padding: 2rem;
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+}
+
+.information-section h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.information-section h3 i {
+    color: var(--accent-color);
+    font-size: 1.25rem;
+}
+
+.section-content {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.section-content p {
+    margin-bottom: 1rem;
+}
+
+.section-content ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.section-content li {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.section-content strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.section-content em {
+    color: var(--accent-color);
+    font-style: italic;
+}
+
+/* Estilos específicos para el modal de información */
+#informationModal .modal-content {
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#informationModal .modal-body {
+    padding: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+#informationModal .information-section {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 1.5rem;
+}
+
+/* Separador visual para secciones */
+.menu-separator {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.menu-separator hr {
+    flex: 1;
+    border: none;
+    height: 1px;
+    background: var(--border-color);
+    margin: 0 1rem;
+}
+
+/* Botones de sección */
+.section-btn {
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-secondary) !important;
+    transition: var(--transition-normal) !important;
+}
+
+.section-btn:hover {
+    background: var(--accent-color) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--accent-color) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.section-btn.active {
+    background: var(--accent-color) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--accent-color) !important;
+}

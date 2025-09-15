@@ -73,15 +73,15 @@
                         <hr><span>Información</span><hr>
                     </div>
                     
-                    <button class="tab-btn section-btn" data-section="shipping">
+                    <button class="tab-btn section-btn" data-section="shipping" onclick="app.showSection('shipping')">
                         <i class="fas fa-shipping-fast"></i>
                         <span>Envíos</span>
                     </button>
-                    <button class="tab-btn section-btn" data-section="stock">
+                    <button class="tab-btn section-btn" data-section="stock" onclick="app.showSection('stock')">
                         <i class="fas fa-boxes"></i>
                         <span>Stock</span>
                     </button>
-                    <button class="tab-btn section-btn" data-section="contact">
+                    <button class="tab-btn section-btn" data-section="contact" onclick="app.showSection('contact')">
                         <i class="fas fa-phone"></i>
                         <span>Contacto</span>
                     </button>
@@ -117,6 +117,33 @@
                 </div>
                 <div class="modal-body">
                     <!-- Contenido dinámico -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Modal -->
+        <div class="modal" id="informationModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-header-content">
+                        <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                        <h2 id="informationTitle">Información</h2>
+                    </div>
+                    <button class="close-btn" id="closeInformationModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="loading" id="infoLoading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p data-i18n="loading">Cargando...</p>
+                    </div>
+                    <div id="informationContent">
+                        <!-- Contenido de la sección se cargará aquí -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="closeInformationModalBtn" data-i18n="close">Cerrar</button>
                 </div>
             </div>
         </div>

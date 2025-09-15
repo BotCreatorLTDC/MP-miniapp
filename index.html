@@ -355,6 +355,32 @@
         </div>
     </div>
 
+    <!-- Information Modal -->
+    <div class="modal" id="informationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                    <h2 id="informationTitle">Información</h2>
+                </div>
+                <button class="close-btn" id="closeInformationModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="loading" id="infoLoading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p data-i18n="loading">Cargando...</p>
+                </div>
+                <div id="informationContent">
+                    <!-- Contenido de la sección se cargará aquí -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeInformationModalBtn" data-i18n="close">Cerrar</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">

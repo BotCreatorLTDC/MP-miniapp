@@ -5,23 +5,23 @@ class MPApp {
         this.currentCategory = 'all';
         this.searchTerm = '';
         this.lastImageLoadTime = 0;
-
+        
         // Inicializar sistema de traducciones
         this.translationManager = new TranslationManager();
-
+        
         // Obtener ID de usuario de Telegram
         this.userId = this.getTelegramUserId();
         console.log('User ID:', this.userId);
-
+        
         // Mostrar información del usuario para debug
         this.logUserInfo();
-
+        
         // Cargar carrito específico del usuario
         this.cart = this.loadUserCart();
-
+        
         this.init();
     }
-
+    
     getTelegramUserId() {
         // Intentar obtener el ID del usuario desde Telegram WebApp
         if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
@@ -30,13 +30,13 @@ class MPApp {
                 return initData.user.id.toString();
             }
         }
-
+        
         // Fallback: usar timestamp + random para usuarios sin ID de Telegram
         const timestamp = Date.now().toString(36);
         const random = Math.random().toString(36).substr(2, 9);
         return `temp_${timestamp}_${random}`;
     }
-
+    
     loadUserCart() {
         try {
             const userCarts = JSON.parse(localStorage.getItem('mp_user_carts')) || {};
@@ -46,26 +46,26 @@ class MPApp {
             return [];
         }
     }
-
+    
     saveUserCart() {
         try {
             const userCarts = JSON.parse(localStorage.getItem('mp_user_carts')) || {};
             userCarts[this.userId] = this.cart;
             localStorage.setItem('mp_user_carts', JSON.stringify(userCarts));
-
+            
             // Limpiar carritos temporales antiguos (más de 24 horas)
             this.cleanupOldCarts();
         } catch (error) {
             console.error('Error guardando carrito de usuario:', error);
         }
     }
-
+    
     cleanupOldCarts() {
         try {
             const userCarts = JSON.parse(localStorage.getItem('mp_user_carts')) || {};
             const now = Date.now();
             const oneDay = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
-
+            
             // Limpiar carritos temporales antiguos
             Object.keys(userCarts).forEach(userId => {
                 if (userId.startsWith('temp_')) {
@@ -77,13 +77,13 @@ class MPApp {
                     }
                 }
             });
-
+            
             localStorage.setItem('mp_user_carts', JSON.stringify(userCarts));
         } catch (error) {
             console.error('Error limpiando carritos antiguos:', error);
         }
     }
-
+    
     logUserInfo() {
         if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
             const initData = window.Telegram.WebApp.initDataUnsafe;
@@ -97,7 +97,7 @@ class MPApp {
             console.log('No Telegram WebApp data available, using temporary ID');
         }
     }
-
+    
     async init() {
         try {
             await this.loadCatalog();
@@ -113,7 +113,7 @@ class MPApp {
             this.updateCartUI();
             // Aplicar traducciones iniciales
             this.translationManager.updateUI();
-
+            
             // Inicializar gestor de pedidos
             console.log('Inicializando OrderManager...');
             this.orderManager = new OrderManager(this);
@@ -121,7 +121,7 @@ class MPApp {
 
             // Configurar modal de información
             this.setupInformationModal();
-
+            
             this.hideLoading();
         } catch (error) {
             console.error('Error inicializando la app:', error);
@@ -139,7 +139,7 @@ class MPApp {
         bases.push('http://127.0.0.1:5000');
         return bases;
     }
-
+    
     async loadCatalog() {
         try {
             // Probar múltiples bases de API en orden hasta conseguir catálogo
@@ -150,7 +150,7 @@ class MPApp {
                     console.log('🔎 Intentando cargar catálogo desde:', url);
                     const response = await fetch(url, { cache: 'no-store' });
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    const result = await response.json();
+                const result = await response.json();
                     if (!result.success) throw new Error(result.error || 'error_api');
                     this.catalog = result.data;
                     console.log('✅ Catálogo cargado desde:', url);
@@ -312,7 +312,7 @@ class MPApp {
             console.error('❌ Error actualizando visualización de categorías:', error);
         }
     }
-
+    
     getFallbackCatalog() {
         // Datos de fallback basados en el catalog.json del bot
         return {
@@ -382,7 +382,7 @@ class MPApp {
             }
         };
     }
-
+    
     setupEventListeners() {
         // Navegación por categorías
         document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -391,13 +391,13 @@ class MPApp {
                 this.setActiveCategory(category);
             });
         });
-
+        
         // Búsqueda
         const searchInput = document.getElementById('searchInput');
         let searchTimeout;
         searchInput.addEventListener('input', (e) => {
             this.searchTerm = e.target.value.toLowerCase();
-
+            
             // Debounce para evitar muchas llamadas a la API
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
@@ -423,29 +423,29 @@ class MPApp {
                 }
             }
         });
-
+        
         // Carrito
         document.getElementById('cartBtn').addEventListener('click', () => {
             this.showCart();
         });
-
+        
         // Menú móvil
         document.getElementById('menuToggle').addEventListener('click', () => {
             this.toggleMobileMenu();
         });
-
+        
         // Ocultar menú al hacer clic fuera de él
         document.addEventListener('click', (e) => {
             const navigation = document.getElementById('navigation');
             const menuToggle = document.getElementById('menuToggle');
-
-            if (navigation && navigation.classList.contains('show') &&
-                !navigation.contains(e.target) &&
+            
+            if (navigation && navigation.classList.contains('show') && 
+                !navigation.contains(e.target) && 
                 !menuToggle.contains(e.target)) {
                 navigation.classList.remove('show');
             }
         });
-
+        
         // Ocultar menú al hacer scroll
         window.addEventListener('scroll', () => {
             const navigation = document.getElementById('navigation');
@@ -453,20 +453,20 @@ class MPApp {
                 navigation.classList.remove('show');
             }
         });
-
+        
         // Modales
         this.setupModalListeners();
-
+        
         // Image Zoom
         this.setupImageZoom();
-
+        
         // Security & Privacy
         this.setupSecurity();
-
+        
         // Language Selection
         this.setupLanguageSelection();
     }
-
+    
     setupModalListeners() {
         // Cerrar modales
         document.querySelectorAll('.close-btn').forEach(btn => {
@@ -475,7 +475,7 @@ class MPApp {
                 this.hideModal(modal);
             });
         });
-
+        
         // Cerrar al hacer clic fuera del modal
         document.querySelectorAll('.modal').forEach(modal => {
             modal.addEventListener('click', (e) => {
@@ -484,7 +484,7 @@ class MPApp {
                 }
             });
         });
-
+        
         // Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
@@ -494,11 +494,35 @@ class MPApp {
                 }
             }
         });
+        
+        // Information modal specific listeners
+        this.setupInformationModalListeners();
     }
-
+    
+    setupInformationModalListeners() {
+        // Cerrar modal de información
+        const closeInformationModal = document.getElementById('closeInformationModal');
+        const closeInformationModalBtn = document.getElementById('closeInformationModalBtn');
+        
+        if (closeInformationModal) {
+            closeInformationModal.addEventListener('click', () => this.hideInformationModal());
+        }
+        if (closeInformationModalBtn) {
+            closeInformationModalBtn.addEventListener('click', () => this.hideInformationModal());
+        }
+    }
+    
+    hideInformationModal() {
+        const modal = document.getElementById('informationModal');
+        if (modal) {
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+    }
+    
     setActiveCategory(category) {
         this.currentCategory = category;
-
+        
         // Actualizar botones de categoría
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.classList.remove('active');
@@ -507,17 +531,17 @@ class MPApp {
         if (activeButton) {
             activeButton.classList.add('active');
         }
-
+        
         // Ocultar menú desplegado en móvil
         const navigation = document.getElementById('navigation');
         if (navigation) {
             navigation.classList.remove('show');
         }
-
+        
         // Renderizar productos
         this.renderProducts();
     }
-
+    
     async performSearch() {
         if (!this.searchTerm) {
             this.renderProducts();
@@ -534,12 +558,12 @@ class MPApp {
                     const url = `${base}/api/products/search?q=${encodeURIComponent(this.searchTerm)}`;
                     const response = await fetch(url, { cache: 'no-store' });
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    const result = await response.json();
-                    if (result.success) {
-                        this.searchResults = result.data;
-                        this.renderSearchResults();
+                const result = await response.json();
+                if (result.success) {
+                    this.searchResults = result.data;
+                    this.renderSearchResults();
                         return;
-                    }
+                }
                 } catch (e) {
                     // probar siguiente base
                 }
@@ -597,11 +621,11 @@ class MPApp {
         this.searchResults = results;
         this.renderSearchResults();
     }
-
+    
     renderSearchResults() {
         const productsGrid = document.getElementById('productsGrid');
         const emptyState = document.getElementById('emptyState');
-
+        
         if (this.searchResults.length === 0) {
             productsGrid.innerHTML = '';
             emptyState.style.display = 'block';
@@ -619,7 +643,7 @@ class MPApp {
         } else {
             emptyState.style.display = 'none';
             productsGrid.innerHTML = this.searchResults.map(product => this.createProductCard(product)).join('');
-
+            
             // Agregar event listeners a las tarjetas de productos
             productsGrid.querySelectorAll('.product-card').forEach(card => {
                 card.addEventListener('click', () => {
@@ -629,7 +653,7 @@ class MPApp {
             });
         }
     }
-
+    
     renderProducts() {
         console.log('🔍 DEBUG: renderProducts - Iniciando...');
         console.log('🔍 DEBUG: renderProducts - currentCategory:', this.currentCategory);
@@ -661,7 +685,7 @@ class MPApp {
         // Obtener referencias actualizadas después de crear los elementos
         const updatedProductsGrid = document.getElementById('productsGrid');
         const updatedEmptyState = document.getElementById('emptyState');
-
+        
         if (!this.catalog) {
             console.log('❌ DEBUG: renderProducts - No hay catálogo');
             if (updatedProductsGrid) {
@@ -669,9 +693,9 @@ class MPApp {
             }
             return;
         }
-
+        
         let products = [];
-
+        
         // Obtener productos según la categoría seleccionada
         if (this.currentCategory === 'all') {
             console.log('🔍 DEBUG: renderProducts - Mostrando todos los productos');
@@ -691,17 +715,17 @@ class MPApp {
         }
 
         console.log('🔍 DEBUG: renderProducts - Productos encontrados:', products.length);
-
+        
         // Filtrar por término de búsqueda
         if (this.searchTerm) {
             console.log('🔍 DEBUG: renderProducts - Filtrando por término:', this.searchTerm);
-            products = products.filter(product =>
+            products = products.filter(product => 
                 product.name.toLowerCase().includes(this.searchTerm) ||
                 product.description.toLowerCase().includes(this.searchTerm)
             );
             console.log('🔍 DEBUG: renderProducts - Productos después del filtro:', products.length);
         }
-
+        
         // Renderizar productos
         if (products.length === 0) {
             console.log('❌ DEBUG: renderProducts - No hay productos para mostrar');
@@ -718,25 +742,25 @@ class MPApp {
             }
             if (updatedProductsGrid) {
                 updatedProductsGrid.innerHTML = products.map(product => this.createProductCard(product)).join('');
-                
-                // Agregar event listeners a las tarjetas de productos
+            
+            // Agregar event listeners a las tarjetas de productos
                 updatedProductsGrid.querySelectorAll('.product-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        const productName = card.dataset.productName;
-                        this.showProductModal(productName);
-                    });
+                card.addEventListener('click', () => {
+                    const productName = card.dataset.productName;
+                    this.showProductModal(productName);
                 });
+            });
             }
         }
     }
-
+    
     createProductCard(product) {
         console.log('createProductCard called for:', product.name, 'with images:', product.images);
         console.log('Number of images:', product.images ? product.images.length : 0);
-
+        
         const isAvailable = product.stock === 'Disponible' || product.stock === this.t('available');
         const categoryClass = this.getCategoryClass(this.currentCategory);
-
+        
         let imageHtml = '';
 
         if (product.images && product.images.length > 0) {
@@ -781,7 +805,7 @@ class MPApp {
         } catch (e) {
             console.warn('Precio no parseable para tarjeta:', product.price, e);
         }
-
+        
         return `
             <div class="product-card fade-in" data-product-name="${product.name}">
                 <div class="category-indicator ${categoryClass}">
@@ -804,7 +828,7 @@ class MPApp {
             </div>
         `;
     }
-
+    
     getCategoryClass(category) {
         const classes = {
             'moroccan_hash': 'category-moroccan',
@@ -816,7 +840,7 @@ class MPApp {
         };
         return classes[category] || 'category-otros';
     }
-
+    
     getCategoryIcon(category) {
         const icons = {
             'moroccan_hash': '🇲🇦',
@@ -828,16 +852,16 @@ class MPApp {
         };
         return icons[category] || '📦';
     }
-
+    
     getImageUrl(imagePath) {
         console.log('getImageUrl called with:', imagePath);
-
+        
         // Si la imagen es una URL completa, usarla directamente
         if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
             console.log('Using full URL:', imagePath);
             return imagePath;
         }
-
+        
         // Si es una URL de Telegram API, usarla directamente
         if (imagePath.includes('api.telegram.org/file/bot')) {
             console.log('Using Telegram API URL:', imagePath);
@@ -867,7 +891,7 @@ class MPApp {
             console.log('Detected file_id, proxying via:', apiUrl);
             return apiUrl;
         }
-
+        
         // Para otros casos, intentar usar la imagen directamente
         console.log('Using path as-is:', imagePath);
         return imagePath;
@@ -1085,7 +1109,7 @@ class MPApp {
             console.log('Gallery styles added to head');
         }
     }
-
+    
     getPlaceholderImage() {
         // Generar un placeholder basado en la categoría
         const placeholders = {
@@ -1095,11 +1119,11 @@ class MPApp {
             'extractions': 'https://via.placeholder.com/300x200/8b4513/ffffff?text=🔬+EXTRACTIONS',
             'varios': 'https://via.placeholder.com/300x200/654321/ffffff?text=📦+PRODUCTS'
         };
-
+        
         const category = this.currentCategory || 'varios';
         return placeholders[category] || placeholders['varios'];
     }
-
+    
     showProductModal(productName) {
         console.log('showProductModal called for:', productName);
         const product = this.findProductByName(productName);
@@ -1109,18 +1133,18 @@ class MPApp {
         }
         console.log('Product found:', product);
         console.log('Product images:', product.images);
-
+        
         const modal = document.getElementById('productModal');
         const modalProductName = document.getElementById('modalProductName');
         const productGallery = document.getElementById('productGallery');
         const priceList = document.getElementById('priceList');
         const productDescription = document.getElementById('productDescription');
         const stockBadge = document.getElementById('stockBadge');
-
+        
         // Configurar modal
         modalProductName.textContent = product.name;
         productDescription.textContent = product.description;
-
+        
         // Configurar galería de imágenes
         if (product.images && product.images.length > 0) {
             console.log(`Modal: Producto ${product.name} tiene ${product.images.length} imágenes`);
@@ -1147,7 +1171,7 @@ class MPApp {
         } else {
             productGallery.innerHTML = '<div class="gallery-placeholder"><i class="fas fa-cannabis"></i></div>';
         }
-
+        
         // Configurar precios como botones seleccionables
         const prices = this.parsePrices(product.price);
         priceList.innerHTML = prices.map((price, index) => `
@@ -1158,7 +1182,7 @@ class MPApp {
                 </button>
             </div>
         `).join('');
-
+        
         // Agregar event listeners a los botones de precio
         priceList.querySelectorAll('.price-button').forEach(button => {
             button.addEventListener('click', () => {
@@ -1170,7 +1194,7 @@ class MPApp {
                 this.updateAddToCartButton(product, button.dataset.quantity, button.dataset.amount);
             });
         });
-
+        
         // Seleccionar la primera opción por defecto y actualizar el botón
         if (prices.length > 0) {
             const firstButton = priceList.querySelector('.price-button');
@@ -1179,12 +1203,12 @@ class MPApp {
                 this.updateAddToCartButton(product, firstButton.dataset.quantity, firstButton.dataset.amount);
             }
         }
-
+        
         // Configurar stock
         const isAvailable = product.stock === 'Disponible' || product.stock === this.t('available');
         stockBadge.className = `stock-badge ${isAvailable ? 'stock-available' : 'stock-unavailable'}`;
         stockBadge.textContent = isAvailable ? this.t('available') : this.t('unavailable');
-
+        
         // Configurar botón de agregar al carrito
         const addToCartBtn = document.getElementById('addToCartBtn');
         addToCartBtn.disabled = !isAvailable;
@@ -1194,42 +1218,42 @@ class MPApp {
                 this.showToast(this.t('product_added'), 'success');
             }
         };
-
+        
         this.showModal(modal);
     }
-
+    
     updateAddToCartButton(product, selectedQuantity, selectedAmount) {
         const addToCartBtn = document.getElementById('addToCartBtn');
         if (!addToCartBtn) return;
-
+        
         // Calcular el precio total para esta variante
         const totalPrice = this.calculateTotalPrice(selectedQuantity, selectedAmount);
-
+        
         // Actualizar el texto del botón para mostrar la variante seleccionada con precio total
         addToCartBtn.textContent = `${this.t('add')} ${selectedQuantity} ${this.t('for')} ${totalPrice}`;
         addToCartBtn.dataset.selectedQuantity = selectedQuantity;
         addToCartBtn.dataset.selectedAmount = selectedAmount;
-
+        
         // Habilitar el botón
         addToCartBtn.disabled = false;
     }
-
+    
     parsePrices(priceString) {
         // Parsear precios del formato "100@ / 320# | 300@ / 290#"
         const prices = [];
         // Permitir separadores con espacios variables alrededor de |
         const priceParts = priceString.split(/\s*\|\s*/);
-
+        
         priceParts.forEach(part => {
             // Aceptar espacios entre número y unidad (p.ej. "2 Oz"), y símbolos como @, #, €
             const match = part.match(/(\d+\s*[a-zA-Z@#]*)\s*\/\s*(\d+[\.,]?\d*\s*[a-zA-Z@#€]*)/);
             if (match) {
                 const quantity = match[1].replace(/\s+/g, ' ').trim();
                 const pricePerUnit = match[2].replace(/\s+/g, ' ').trim();
-
+                
                 // Calcular precio total para esta cantidad
                 const totalPrice = this.calculateTotalPrice(quantity, pricePerUnit);
-
+                
                 prices.push({
                     quantity: quantity,
                     amount: pricePerUnit,
@@ -1239,15 +1263,15 @@ class MPApp {
                 });
             }
         });
-
+        
         return prices;
     }
-
+    
     calculateTotalPrice(quantity, pricePerUnit) {
         // Extraer números de la cantidad y precio
         const quantityNum = this.extractNumber(quantity);
         const priceNum = this.extractNumber(pricePerUnit);
-
+        
         if (quantityNum && priceNum) {
             // Verificar si la cantidad usa "@" (aplicar lógica de "por cada 100@")
             if (quantity.includes('@')) {
@@ -1261,10 +1285,10 @@ class MPApp {
                 return `${total}#`;
             }
         }
-
+        
         return pricePerUnit; // Fallback si no se puede calcular
     }
-
+    
     extractNumber(str) {
         // Extraer número de strings como "100@", "320#", "1k@"
         const match = str.match(/(\d+)/);
@@ -1278,7 +1302,7 @@ class MPApp {
         }
         return null;
     }
-
+    
     findProductByName(name) {
         for (const category of Object.values(this.catalog.categories)) {
             const product = category.products.find(p => p.name === name);
@@ -1286,21 +1310,21 @@ class MPApp {
         }
         return null;
     }
-
+    
     addToCart(product) {
         // Obtener la variante seleccionada del botón
         const addToCartBtn = document.getElementById('addToCartBtn');
         const selectedQuantity = addToCartBtn?.dataset.selectedQuantity || '1';
         const selectedAmount = addToCartBtn?.dataset.selectedAmount || product.price;
-
+        
         // Calcular precio total para esta variante
         const totalPrice = this.calculateTotalPrice(selectedQuantity, selectedAmount);
-
+        
         // Crear un ID único para esta variante específica
         const variantId = `${product.name}_${selectedQuantity}_${selectedAmount}`;
-
+        
         const existingItem = this.cart.find(item => item.variantId === variantId);
-
+        
         if (existingItem) {
             existingItem.quantity += 1;
         } else {
@@ -1315,42 +1339,42 @@ class MPApp {
                 quantity: 1
             });
         }
-
+        
         this.saveUserCart();
         this.updateCartUI();
     }
-
+    
     removeFromCart(variantId) {
         console.log('Eliminando del carrito:', variantId);
         console.log('Carrito antes:', this.cart);
-
+        
         this.cart = this.cart.filter(item => item.variantId !== variantId);
-
+        
         console.log('Carrito después:', this.cart);
-
+        
         this.saveUserCart();
         this.updateCartUI();
-
+        
         // Recargar la vista del carrito si está abierto
         if (document.getElementById('cartModal').style.display !== 'none') {
             this.showCart();
         }
     }
-
+    
     clearCart() {
         console.log('Limpiando carrito completo');
         this.cart = [];
         this.saveUserCart();
         this.updateCartUI();
-
+        
         // Recargar la vista del carrito si está abierto
         if (document.getElementById('cartModal').style.display !== 'none') {
             this.showCart();
         }
-
+        
         this.showToast('Carrito limpiado', 'info');
     }
-
+    
     setupProceedButtonFallback() {
         console.log('Configurando botón de proceder al pedido (fallback)');
         const proceedBtn = document.getElementById('proceedOrderBtn');
@@ -1358,51 +1382,51 @@ class MPApp {
             // Remover event listeners anteriores
             proceedBtn.replaceWith(proceedBtn.cloneNode(true));
             const newProceedBtn = document.getElementById('proceedOrderBtn');
-
+            
             newProceedBtn.addEventListener('click', () => {
                 console.log('Botón proceder al pedido clickeado (fallback)');
                 this.openTelegramChatFallback();
             });
-
+            
             console.log('Event listener agregado al botón (fallback)');
         } else {
             console.error('No se encontró el botón proceedOrderBtn (fallback)');
         }
     }
-
+    
     openTelegramChatFallback() {
         console.log('openTelegramChatFallback llamada');
         console.log('Carrito:', this.cart);
-
+        
         if (this.cart.length === 0) {
             console.log('Carrito vacío, mostrando toast de error');
             this.showToast(this.t('cart_empty_error'), 'error');
             return;
         }
-
+        
         try {
             // Generar mensaje de pedido para Telegram
             const orderMessage = this.generateCartMessageFallback();
             console.log('Mensaje generado:', orderMessage);
-
+            
             // Crear URL de Telegram con el mensaje
             const telegramUrl = `https://t.me/grlltdc?text=${encodeURIComponent(orderMessage)}`;
             console.log('URL de Telegram:', telegramUrl);
-
+            
             // Abrir chat de Telegram
             console.log('Abriendo ventana de Telegram...');
             window.open(telegramUrl, '_blank');
-
+            
             // Mostrar mensaje de confirmación
             this.showToast(this.t('telegram_opened_success'), 'success');
             console.log('Chat de Telegram abierto exitosamente');
-
+            
         } catch (error) {
             console.error('Error abriendo chat de Telegram:', error);
             this.showToast(this.t('telegram_error'), 'error');
         }
     }
-
+    
     generateCartMessageFallback() {
         const cartItems = this.cart.map(item => {
             if (item.selectedQuantity && item.selectedAmount) {
@@ -1413,9 +1437,9 @@ class MPApp {
                 return `• ${item.name} x${item.quantity}`;
             }
         }).join('\n');
-
+        
         const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
-
+        
         return `🛒 NUEVO PEDIDO - MP Global Corp
 
 🛍️ PRODUCTOS (${totalItems} items):
@@ -1426,19 +1450,19 @@ ${cartItems}
 ---
 Enviado desde la Miniapp MP Global Corp`;
     }
-
-
+    
+    
     updateCartUI() {
         const cartCount = document.getElementById('cartCount');
         const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
         cartCount.textContent = totalItems;
     }
-
+    
     showCart() {
         const modal = document.getElementById('cartModal');
         const cartItems = document.getElementById('cartItems');
         const cartTotal = document.getElementById('cartTotal');
-
+        
         // Configurar el botón de proceder al pedido
         console.log('showCart - OrderManager existe:', !!this.orderManager);
         if (this.orderManager) {
@@ -1449,7 +1473,7 @@ Enviado desde la Miniapp MP Global Corp`;
             // Fallback: configurar el botón directamente
             this.setupProceedButtonFallback();
         }
-
+        
         if (this.cart.length === 0) {
             cartItems.innerHTML = `<p class="text-center">${this.t('cart_empty')}</p>`;
         } else {
@@ -1469,7 +1493,7 @@ Enviado desde la Miniapp MP Global Corp`;
                     </button>
                 </div>
             `).join('');
-
+            
             // Agregar event listeners a los botones de eliminar
             cartItems.querySelectorAll('.cart-item-remove').forEach(button => {
                 button.addEventListener('click', (e) => {
@@ -1478,40 +1502,40 @@ Enviado desde la Miniapp MP Global Corp`;
                 });
             });
         }
-
+        
         // Calcular total (simplificado)
         cartTotal.textContent = `${this.cart.length} ${this.t('products')}`;
-
+        
         this.showModal(modal);
     }
-
+    
     showModal(modal) {
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
     }
-
+    
     hideModal(modal) {
         modal.classList.remove('show');
         document.body.style.overflow = 'auto';
     }
-
+    
     toggleMobileMenu() {
         const navigation = document.getElementById('navigation');
         if (navigation) {
             navigation.classList.toggle('show');
         }
     }
-
+    
     hideLoading() {
         const loading = document.getElementById('loading');
         loading.style.display = 'none';
     }
-
+    
     showError(message) {
         console.error(message);
         // Implementar notificación de error
     }
-
+    
     showToast(message, type = 'info') {
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
@@ -1521,16 +1545,16 @@ Enviado desde la Miniapp MP Global Corp`;
                 <span class="toast-message">${message}</span>
             </div>
         `;
-
+        
         document.body.appendChild(toast);
-
+        
         setTimeout(() => toast.classList.add('show'), 100);
         setTimeout(() => {
             toast.classList.remove('show');
             setTimeout(() => document.body.removeChild(toast), 300);
         }, 3000);
     }
-
+    
     // Image Zoom Functionality
     setupImageZoom() {
         // Zoom state
@@ -1543,14 +1567,14 @@ Enviado desde la Miniapp MP Global Corp`;
             translateX: 0,
             translateY: 0
         };
-
+        
         // Setup image click listeners
         this.setupImageClickListeners();
-
+        
         // Setup zoom controls
         this.setupZoomControls();
     }
-
+    
     setupImageClickListeners() {
         // Add click listeners to all images
         document.addEventListener('click', (e) => {
@@ -1572,14 +1596,14 @@ Enviado desde la Miniapp MP Global Corp`;
             }
         });
     }
-
+    
     setupZoomControls() {
         const zoomInBtn = document.getElementById('zoomInBtn');
         const zoomOutBtn = document.getElementById('zoomOutBtn');
         const zoomResetBtn = document.getElementById('zoomResetBtn');
         const zoomRotateBtn = document.getElementById('zoomRotateBtn');
         const closeBtn = document.getElementById('closeImageZoomModal');
-
+        
         if (zoomInBtn) {
             zoomInBtn.addEventListener('click', () => this.zoomIn());
         }
@@ -1596,17 +1620,17 @@ Enviado desde la Miniapp MP Global Corp`;
             closeBtn.addEventListener('click', () => this.closeImageZoom());
         }
     }
-
+    
     openImageZoom(imageSrc, imageAlt) {
         const modal = document.getElementById('imageZoomModal');
         const zoomImage = document.getElementById('zoomImage');
         const zoomImageTitle = document.getElementById('zoomImageTitle');
-
+        
         if (modal && zoomImage) {
             zoomImage.src = imageSrc;
             zoomImage.alt = imageAlt;
             zoomImageTitle.textContent = imageAlt || this.t('image_zoom');
-
+            
             // Reset zoom state
             this.zoomState = {
                 scale: 1,
@@ -1617,26 +1641,26 @@ Enviado desde la Miniapp MP Global Corp`;
                 translateX: 0,
                 translateY: 0
             };
-
+            
             this.updateZoomImage();
             this.showModal(modal);
-
+            
             // Setup drag functionality
             this.setupImageDrag();
         }
     }
-
+    
     closeImageZoom() {
         const modal = document.getElementById('imageZoomModal');
         if (modal) {
             this.hideModal(modal);
         }
     }
-
+    
     setupImageDrag() {
         const zoomImage = document.getElementById('zoomImage');
         if (!zoomImage) return;
-
+        
         zoomImage.addEventListener('mousedown', (e) => {
             if (this.zoomState.scale > 1) {
                 this.zoomState.isDragging = true;
@@ -1645,7 +1669,7 @@ Enviado desde la Miniapp MP Global Corp`;
                 zoomImage.style.cursor = 'grabbing';
             }
         });
-
+        
         document.addEventListener('mousemove', (e) => {
             if (this.zoomState.isDragging) {
                 this.zoomState.translateX = e.clientX - this.zoomState.startX;
@@ -1653,14 +1677,14 @@ Enviado desde la Miniapp MP Global Corp`;
                 this.updateZoomImage();
             }
         });
-
+        
         document.addEventListener('mouseup', () => {
             this.zoomState.isDragging = false;
             if (zoomImage) {
                 zoomImage.style.cursor = this.zoomState.scale > 1 ? 'grab' : 'default';
             }
         });
-
+        
         // Touch support
         zoomImage.addEventListener('touchstart', (e) => {
             if (this.zoomState.scale > 1 && e.touches.length === 1) {
@@ -1669,7 +1693,7 @@ Enviado desde la Miniapp MP Global Corp`;
                 this.zoomState.startY = e.touches[0].clientY - this.zoomState.translateY;
             }
         });
-
+        
         document.addEventListener('touchmove', (e) => {
             if (this.zoomState.isDragging && e.touches.length === 1) {
                 e.preventDefault();
@@ -1678,22 +1702,22 @@ Enviado desde la Miniapp MP Global Corp`;
                 this.updateZoomImage();
             }
         });
-
+        
         document.addEventListener('touchend', () => {
             this.zoomState.isDragging = false;
         });
     }
-
+    
     zoomIn() {
         this.zoomState.scale = Math.min(this.zoomState.scale * 1.2, 5);
         this.updateZoomImage();
     }
-
+    
     zoomOut() {
         this.zoomState.scale = Math.max(this.zoomState.scale / 1.2, 0.5);
         this.updateZoomImage();
     }
-
+    
     zoomReset() {
         this.zoomState.scale = 1;
         this.zoomState.rotation = 0;
@@ -1701,23 +1725,23 @@ Enviado desde la Miniapp MP Global Corp`;
         this.zoomState.translateY = 0;
         this.updateZoomImage();
     }
-
+    
     zoomRotate() {
         this.zoomState.rotation = (this.zoomState.rotation + 90) % 360;
         this.updateZoomImage();
     }
-
+    
     updateZoomImage() {
         const zoomImage = document.getElementById('zoomImage');
         if (!zoomImage) return;
-
+        
         const transform = `scale(${this.zoomState.scale}) rotate(${this.zoomState.rotation}deg) translate(${this.zoomState.translateX}px, ${this.zoomState.translateY}px)`;
         zoomImage.style.transform = transform;
-
+        
         // Update cursor
         zoomImage.style.cursor = this.zoomState.scale > 1 ? 'grab' : 'default';
     }
-
+    
     // Security & Privacy Functionality
     setupSecurity() {
         // Security modal button
@@ -1725,60 +1749,60 @@ Enviado desde la Miniapp MP Global Corp`;
         if (securityBtn) {
             securityBtn.addEventListener('click', () => this.showSecurityModal());
         }
-
+        
         // Security modal close buttons
         const closeSecurityModal = document.getElementById('closeSecurityModal');
         const closeSecurityModalBtn = document.getElementById('closeSecurityModalBtn');
-
+        
         if (closeSecurityModal) {
             closeSecurityModal.addEventListener('click', () => this.hideSecurityModal());
         }
         if (closeSecurityModalBtn) {
             closeSecurityModalBtn.addEventListener('click', () => this.hideSecurityModal());
         }
-
+        
         // Clear all data button
         const clearAllDataBtn = document.getElementById('clearAllDataBtn');
         if (clearAllDataBtn) {
             clearAllDataBtn.addEventListener('click', () => this.clearAllData());
         }
     }
-
+    
     showSecurityModal() {
         const modal = document.getElementById('securityModal');
         if (modal) {
             this.showModal(modal);
         }
     }
-
+    
     hideSecurityModal() {
         const modal = document.getElementById('securityModal');
         if (modal) {
             this.hideModal(modal);
         }
     }
-
+    
     clearAllData() {
         if (confirm('¿Estás seguro de que quieres eliminar todos los datos locales? Esto incluye tu carrito y preferencias.')) {
             try {
                 // Clear all localStorage data
                 localStorage.clear();
-
+                
                 // Reset app state
                 this.cart = [];
                 this.currentCategory = 'all';
                 this.searchTerm = '';
-
+                
                 // Update UI
                 this.updateCartUI();
                 this.renderProducts();
-
+                
                 // Show success message
                 this.showToast('Todos los datos han sido eliminados', 'success');
-
+                
                 // Close security modal
                 this.hideSecurityModal();
-
+                
                 console.log('All data cleared successfully');
             } catch (error) {
                 console.error('Error clearing data:', error);
@@ -1786,17 +1810,17 @@ Enviado desde la Miniapp MP Global Corp`;
             }
         }
     }
-
+    
     // Language Selection Functionality
     setupLanguageSelection() {
         const languageSelect = document.getElementById('languageSelect');
         if (languageSelect) {
             // Establecer idioma actual
             languageSelect.value = this.translationManager.currentLanguage;
-
+            
             // Actualizar UI inicial
             this.translationManager.updateUI();
-
+            
             // Escuchar cambios de idioma
             languageSelect.addEventListener('change', (e) => {
                 this.translationManager.setLanguage(e.target.value);
@@ -1812,7 +1836,7 @@ Enviado desde la Miniapp MP Global Corp`;
             });
         }
     }
-
+    
     // Función helper para obtener traducciones
     t(key) {
         return this.translationManager.t(key);
@@ -1879,7 +1903,7 @@ Enviado desde la Miniapp MP Global Corp`;
     // ==================== FUNCIONALIDAD DE SECCIONES ====================
 
     async showSection(sectionKey) {
-        /* Mostrar una sección específica en el modal de producto */
+        /* Mostrar una sección específica en el modal de información */
         try {
             console.log(`🔍 DEBUG: showSection - Mostrando sección: ${sectionKey}`);
 
@@ -1896,32 +1920,43 @@ Enviado desde la Miniapp MP Global Corp`;
             // Crear contenido de la sección
             const content = this.formatSectionContent(section.content || section);
 
-            // Mostrar en el modal de producto (reutilizar modal existente)
-            const modal = document.getElementById('productModal');
-            const modalTitle = document.getElementById('modalProductName');
-            const modalBody = document.querySelector('#productModal .modal-body');
+            // Mostrar en el modal de información específico
+            const modal = document.getElementById('informationModal');
+            const modalTitle = document.getElementById('informationTitle');
+            const modalContent = document.getElementById('informationContent');
+            const loading = document.getElementById('infoLoading');
 
-            if (modal && modalTitle && modalBody) {
+            if (modal && modalTitle && modalContent && loading) {
+                // Mostrar loading
+                loading.style.display = 'block';
+                modalContent.innerHTML = '';
+
                 // Configurar título
                 modalTitle.textContent = section.title || sectionKey;
 
-                // Mostrar contenido de la sección
-                modalBody.innerHTML = `
-                    <div class="information-section">
-                        <div class="section-content">
-                            ${content}
+                // Simular carga para mejor UX
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    
+                    // Mostrar contenido de la sección (solo información, sin botones de producto)
+                    modalContent.innerHTML = `
+                        <div class="information-section">
+                            <div class="section-content">
+                                ${content}
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
 
-                // Mostrar modal
-                modal.classList.add('show');
-                document.body.style.overflow = 'hidden';
+                    // Mostrar modal
+                    modal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
 
-                console.log(`✅ Sección ${sectionKey} mostrada en modal correctamente`);
+                    console.log(`✅ Sección ${sectionKey} mostrada en modal de información correctamente`);
+                }, 300);
+
             } else {
-                console.error('❌ Elementos del modal de producto no encontrados');
-                this.showError('Error: Modal no disponible');
+                console.error('❌ Elementos del modal de información no encontrados');
+                this.showError('Error: Modal de información no disponible');
             }
 
         } catch (error) {
