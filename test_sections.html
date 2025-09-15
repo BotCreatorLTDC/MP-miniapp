@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Secciones - MP Global Corp</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo">
+                    <div class="logo-text">
+                        <h1 data-i18n="app_title">MP Global Corp</h1>
+                        <p data-i18n="app_tagline">Cannabis Premium</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="language-selector">
+                        <select id="languageSelect">
+                            <option value="es">🇪🇸 Español</option>
+                            <option value="en">🇺🇸 English</option>
+                        </select>
+                    </div>
+                    <button class="cart-btn" id="cartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="navigation" id="navigation">
+            <div class="nav-content">
+                <div class="category-tabs">
+                    <button class="tab-btn active" data-category="all">
+                        <i class="fas fa-home"></i>
+                        <span data-i18n="all_products">Todos</span>
+                    </button>
+                    <button class="tab-btn" data-category="moroccan_hash">
+                        <i class="fas fa-leaf"></i>
+                        <span data-i18n="moroccan_hash">🇲🇦 Moroccan</span>
+                    </button>
+                    <button class="tab-btn" data-category="spanish_flower">
+                        <i class="fas fa-seedling"></i>
+                        <span data-i18n="spanish_flower">🇪🇸 Spanish</span>
+                    </button>
+                    <button class="tab-btn" data-category="cali_flower">
+                        <i class="fas fa-star"></i>
+                        <span data-i18n="cali_flower">🇺🇸 California</span>
+                    </button>
+                    <button class="tab-btn" data-category="extractions">
+                        <i class="fas fa-flask"></i>
+                        <span data-i18n="extractions">🔬 Extractions</span>
+                    </button>
+                    <button class="tab-btn" data-category="varios">
+                        <i class="fas fa-box"></i>
+                        <span data-i18n="varios">📦 Otros</span>
+                    </button>
+                    
+                    <!-- Separador y secciones de información -->
+                    <div class="menu-separator">
+                        <hr><span>Información</span><hr>
+                    </div>
+                    
+                    <button class="tab-btn section-btn" data-section="shipping">
+                        <i class="fas fa-shipping-fast"></i>
+                        <span>Envíos</span>
+                    </button>
+                    <button class="tab-btn section-btn" data-section="stock">
+                        <i class="fas fa-boxes"></i>
+                        <span>Stock</span>
+                    </button>
+                    <button class="tab-btn section-btn" data-section="contact">
+                        <i class="fas fa-phone"></i>
+                        <span>Contacto</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="products-container" id="productsContainer">
+                <div class="products-grid" id="productsGrid">
+                    <!-- Los productos se cargarán dinámicamente aquí -->
+                </div>
+            </div>
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3 data-i18n="no_products_found">No se encontraron productos</h3>
+                <p data-i18n="try_different_terms">Intenta con otros términos de búsqueda</p>
+            </div>
+        </main>
+
+        <!-- Product Modal -->
+        <div class="modal" id="productModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-header-content">
+                        <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                        <h2 id="modalProductName"></h2>
+                    </div>
+                    <button class="close-btn" id="closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Contenido dinámico -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p data-i18n="loading_catalog">Cargando catálogo...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="scripts/translations.js"></script>
+    <script src="scripts/app.js"></script>
+    
+    <script>
+        // Test específico para secciones
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🧪 Iniciando test de secciones...');
+            
+            // Crear instancia de la app
+            const app = new MPApp();
+            
+            // Simular catálogo con secciones
+            app.catalog = {
+                categories: {
+                    'moroccan_hash': {
+                        name: '🇲🇦 Moroccan Hash',
+                        products: [
+                            { name: 'Test Product 1', price: '50@ / 150#', description: 'Test description' }
+                        ]
+                    }
+                },
+                sections: {
+                    'shipping': {
+                        title: 'Información de Envíos',
+                        content: 'Aquí está la información sobre envíos y entregas...'
+                    },
+                    'stock': {
+                        title: 'Estado del Stock',
+                        content: 'Información actualizada sobre disponibilidad de productos...'
+                    },
+                    'contact': {
+                        title: 'Información de Contacto',
+                        content: 'Datos de contacto y horarios de atención...'
+                    }
+                }
+            };
+            
+            // Inicializar app
+            await app.init();
+            
+            // Test: Hacer clic en una sección
+            const shippingBtn = document.querySelector('[data-section="shipping"]');
+            if (shippingBtn) {
+                console.log('🧪 Probando sección de envíos...');
+                shippingBtn.click();
+            }
+            
+            console.log('✅ Test de secciones completado');
+        });
+    </script>
+</body>
+</html>

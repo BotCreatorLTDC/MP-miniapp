@@ -1879,7 +1879,7 @@ Enviado desde la Miniapp MP Global Corp`;
     // ==================== FUNCIONALIDAD DE SECCIONES ====================
 
     async showSection(sectionKey) {
-        /* Mostrar una sección específica */
+        /* Mostrar una sección específica en el modal de producto */
         try {
             console.log(`🔍 DEBUG: showSection - Mostrando sección: ${sectionKey}`);
 
@@ -1889,34 +1889,44 @@ Enviado desde la Miniapp MP Global Corp`;
 
             if (!section) {
                 console.error(`❌ Sección ${sectionKey} no encontrada`);
+                this.showError(this.t('error_loading_catalog'));
                 return;
             }
 
             // Crear contenido de la sección
             const content = this.formatSectionContent(section.content || section);
 
-            // Mostrar en el área principal
-            const mainContent = document.querySelector('.main-content');
-            if (mainContent) {
-                mainContent.innerHTML = `
-                    <div class="section-content">
-                        <div class="section-header">
-                            <h2><i class="fas fa-info-circle"></i> ${section.title || sectionKey}</h2>
-                        </div>
-                        <div class="section-body">
+            // Mostrar en el modal de producto (reutilizar modal existente)
+            const modal = document.getElementById('productModal');
+            const modalTitle = document.getElementById('modalProductName');
+            const modalBody = document.querySelector('#productModal .modal-body');
+
+            if (modal && modalTitle && modalBody) {
+                // Configurar título
+                modalTitle.textContent = section.title || sectionKey;
+
+                // Mostrar contenido de la sección
+                modalBody.innerHTML = `
+                    <div class="information-section">
+                        <div class="section-content">
                             ${content}
                         </div>
                     </div>
                 `;
 
-                // Actualizar botones activos
-                this.updateActiveButtons(sectionKey, 'section');
+                // Mostrar modal
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
 
-                console.log(`✅ Sección ${sectionKey} mostrada correctamente`);
+                console.log(`✅ Sección ${sectionKey} mostrada en modal correctamente`);
+            } else {
+                console.error('❌ Elementos del modal de producto no encontrados');
+                this.showError('Error: Modal no disponible');
             }
 
         } catch (error) {
             console.error(`❌ Error mostrando sección ${sectionKey}:`, error);
+            this.showError(this.t('error_loading_catalog'));
         }
     }
 
