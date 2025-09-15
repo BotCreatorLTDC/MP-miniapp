@@ -2049,12 +2049,56 @@ Enviado desde la Miniapp MP Global Corp`;
     async loadSections() {
         /* Cargar secciones de información desde la API */
         try {
-            console.log('🔍 DEBUG: loadSections - INICIANDO...');
+            console.log('🔍 DEBUG: loadSections - Iniciando...');
             console.log('🔍 DEBUG: loadSections - this.catalog:', this.catalog);
             console.log('🔍 DEBUG: loadSections - this.catalog.sections:', this.catalog?.sections);
 
-            // TEMPORAL: Usar siempre fallback para debug
-            console.log('🔍 DEBUG: loadSections - USANDO FALLBACK TEMPORAL PARA DEBUG');
+            // Primero intentar usar las secciones del catálogo cargado
+            if (this.catalog && this.catalog.sections && Object.keys(this.catalog.sections).length > 0) {
+                console.log('✅ Usando secciones del catálogo cargado');
+                console.log('🔍 DEBUG: Secciones del catálogo:', Object.keys(this.catalog.sections));
+                return this.catalog.sections;
+            }
+
+            // Si no hay secciones en el catálogo, hacer llamada a la API
+            console.log('🔍 DEBUG: No hay secciones en el catálogo, llamando a la API...');
+            
+            const apiUrls = [
+                'https://mp-bot-miniapp.onrender.com/api/sections',
+                'http://localhost:5000/api/sections'
+            ];
+
+            for (const url of apiUrls) {
+                try {
+                    console.log(`🔍 DEBUG: Intentando cargar secciones desde: ${url}`);
+                    const response = await fetch(url);
+                    
+                    if (!response.ok) {
+                        console.warn(`⚠️ Error HTTP ${response.status} desde ${url}`);
+                        continue;
+                    }
+                    
+                    const result = await response.json();
+                    if (result.success && result.data) {
+                        console.log('✅ Secciones cargadas desde API:', Object.keys(result.data));
+                        
+                        // Actualizar el catálogo con las secciones
+                        if (this.catalog) {
+                            this.catalog.sections = result.data;
+                        }
+                        
+                        return result.data;
+                    } else {
+                        console.warn(`⚠️ Respuesta inválida desde ${url}:`, result);
+                    }
+                } catch (e) {
+                    console.warn(`⚠️ Error cargando secciones desde ${url}:`, e.message);
+                }
+            }
+
+            console.log('⚠️ No se pudieron cargar secciones desde ninguna fuente, usando fallback');
+            console.log('🔍 DEBUG: loadSections - this.catalog después de intentar API:', this.catalog);
+            console.log('🔍 DEBUG: loadSections - this.catalog.sections después de intentar API:', this.catalog?.sections);
             
             // Fallback: secciones por defecto si la API no está disponible
             const fallbackSections = {
