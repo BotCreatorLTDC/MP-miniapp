@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Simple - MP Global Corp</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo">
+                    <div class="logo-text">
+                        <h1>MP Global Corp</h1>
+                        <p>Cannabis Premium</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="navigation" id="navigation">
+            <div class="nav-content">
+                <div class="category-tabs">
+                    <button class="tab-btn active" data-category="all">
+                        <i class="fas fa-home"></i>
+                        <span>Todos</span>
+                    </button>
+                    
+                    <!-- Separador y secciones de información -->
+                    <div class="menu-separator">
+                        <hr><span>Información</span><hr>
+                    </div>
+                    
+                    <button class="tab-btn section-btn" data-section="shipping" onclick="testSection('shipping')">
+                        <i class="fas fa-shipping-fast"></i>
+                        <span>Envíos</span>
+                    </button>
+                    <button class="tab-btn section-btn" data-section="stock" onclick="testSection('stock')">
+                        <i class="fas fa-boxes"></i>
+                        <span>Stock</span>
+                    </button>
+                    <button class="tab-btn section-btn" data-section="contact" onclick="testSection('contact')">
+                        <i class="fas fa-phone"></i>
+                        <span>Contacto</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="products-container" id="productsContainer">
+                <div class="products-grid" id="productsGrid">
+                    <div class="product-card">
+                        <h3>Producto de Prueba</h3>
+                        <p>Este es un producto de prueba para verificar que la vista principal funciona.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>No se encontraron productos</h3>
+                <p>Intenta con otros términos de búsqueda</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="scripts/translations.js"></script>
+    <script src="scripts/app.js"></script>
+    
+    <script>
+        let app;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🧪 Iniciando test simple...');
+            app = new MPApp();
+        });
+        
+        async function testSection(sectionKey) {
+            console.log(`🧪 Test: Mostrando sección ${sectionKey}...`);
+            
+            try {
+                // Llamar directamente a showSection
+                await app.showSection(sectionKey);
+                console.log(`✅ Sección ${sectionKey} mostrada`);
+            } catch (error) {
+                console.error(`❌ Error mostrando sección ${sectionKey}:`, error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>

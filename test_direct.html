@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Directo - MP Global Corp</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo">
+                    <div class="logo-text">
+                        <h1>MP Global Corp</h1>
+                        <p>Cannabis Premium</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="navigation" id="navigation">
+            <div class="nav-content">
+                <div class="category-tabs">
+                    <button class="tab-btn active" data-category="all">
+                        <i class="fas fa-home"></i>
+                        <span>Todos</span>
+                    </button>
+                    
+                    <!-- Separador y secciones de información -->
+                    <div class="menu-separator">
+                        <hr><span>Información</span><hr>
+                    </div>
+                    
+                    <button class="tab-btn section-btn" onclick="showDirectSection('shipping')">
+                        <i class="fas fa-shipping-fast"></i>
+                        <span>Envíos</span>
+                    </button>
+                    <button class="tab-btn section-btn" onclick="showDirectSection('stock')">
+                        <i class="fas fa-boxes"></i>
+                        <span>Stock</span>
+                    </button>
+                    <button class="tab-btn section-btn" onclick="showDirectSection('contact')">
+                        <i class="fas fa-phone"></i>
+                        <span>Contacto</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="products-container" id="productsContainer">
+                <div class="products-grid" id="productsGrid">
+                    <div class="product-card">
+                        <h3>Producto de Prueba</h3>
+                        <p>Este es un producto de prueba para verificar que la vista principal funciona.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>No se encontraron productos</h3>
+                <p>Intenta con otros términos de búsqueda</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="scripts/translations.js"></script>
+    <script src="scripts/app.js"></script>
+    
+    <script>
+        let app;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🧪 Iniciando test directo...');
+            app = new MPApp();
+        });
+        
+        function showDirectSection(sectionKey) {
+            console.log(`🧪 Test Directo: Mostrando sección ${sectionKey}...`);
+            
+            // Datos de prueba directos
+            const sections = {
+                'shipping': {
+                    title: '🚚 Envíos y Pagos',
+                    content: `
+                        <h2>Información de Envíos</h2>
+                        <p>Realizamos envíos a toda España con las siguientes opciones:</p>
+                        <ul>
+                            <li><strong>Envío Estándar:</strong> 3-5 días laborables - 5€</li>
+                            <li><strong>Envío Express:</strong> 1-2 días laborables - 10€</li>
+                            <li><strong>Envío Gratis:</strong> Pedidos superiores a 100€</li>
+                        </ul>
+                        
+                        <h2>Métodos de Pago</h2>
+                        <p>Aceptamos los siguientes métodos de pago:</p>
+                        <ul>
+                            <li>Transferencia bancaria</li>
+                            <li>Bizum</li>
+                            <li>Criptomonedas (Bitcoin, Ethereum)</li>
+                            <li>Pago contra reembolso (+3€)</li>
+                        </ul>
+                    `
+                },
+                'stock': {
+                    title: '📦 Estado del Stock',
+                    content: `
+                        <h2>Disponibilidad en Tiempo Real</h2>
+                        <p>Nuestro stock se actualiza constantemente. Aquí puedes ver el estado actual de nuestros productos:</p>
+                        
+                        <h3>Disponibilidad por Categoría</h3>
+                        <ul>
+                            <li><strong>Moroccan Hash:</strong> Stock completo</li>
+                            <li><strong>Spanish Flower:</strong> Stock limitado</li>
+                            <li><strong>California Flower:</strong> Stock completo</li>
+                            <li><strong>Extractions:</strong> Stock variable</li>
+                            <li><strong>Otros:</strong> Stock completo</li>
+                        </ul>
+                    `
+                },
+                'contact': {
+                    title: '📞 Información de Contacto',
+                    content: `
+                        <h2>Contacta con Nosotros</h2>
+                        <p>Estamos aquí para ayudarte con cualquier consulta sobre nuestros productos o servicios.</p>
+                        
+                        <h3>Horarios de Atención</h3>
+                        <ul>
+                            <li><strong>Lunes a Viernes:</strong> 10:00 - 20:00</li>
+                            <li><strong>Sábados:</strong> 10:00 - 18:00</li>
+                            <li><strong>Domingos:</strong> Cerrado</li>
+                        </ul>
+                        
+                        <h3>Canales de Contacto</h3>
+                        <ul>
+                            <li><strong>Telegram:</strong> @mpglobalcorp_bot</li>
+                            <li><strong>Email:</strong> info@mpglobalcorp.com</li>
+                            <li><strong>WhatsApp:</strong> +34 600 123 456</li>
+                        </ul>
+                    `
+                }
+            };
+            
+            const section = sections[sectionKey];
+            if (!section) {
+                console.error(`❌ Sección ${sectionKey} no encontrada`);
+                return;
+            }
+            
+            // Mostrar como página en el área principal
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                // Ocultar elementos de productos
+                const productsContainer = document.getElementById('productsContainer');
+                const emptyState = document.getElementById('emptyState');
+                
+                if (productsContainer) productsContainer.style.display = 'none';
+                if (emptyState) emptyState.style.display = 'none';
+
+                // Crear página de sección
+                mainContent.innerHTML = `
+                    <div class="section-page">
+                        <div class="section-header">
+                            <button class="back-btn" onclick="showMainView()">
+                                <i class="fas fa-arrow-left"></i>
+                                <span>Volver</span>
+                            </button>
+                            <h1 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                ${section.title}
+                            </h1>
+                        </div>
+                        <div class="section-content">
+                            ${section.content}
+                        </div>
+                    </div>
+                `;
+
+                console.log(`✅ Sección ${sectionKey} mostrada directamente`);
+            } else {
+                console.error('❌ Elemento .main-content no encontrado');
+            }
+        }
+        
+        function showMainView() {
+            console.log('🔍 Regresando a vista principal...');
+            
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                // Restaurar elementos de productos
+                const productsContainer = document.getElementById('productsContainer');
+                const emptyState = document.getElementById('emptyState');
+                
+                if (productsContainer) productsContainer.style.display = 'block';
+                if (emptyState) emptyState.style.display = 'none';
+
+                // Restaurar contenido original
+                mainContent.innerHTML = `
+                    <div class="products-container" id="productsContainer">
+                        <div class="products-grid" id="productsGrid">
+                            <div class="product-card">
+                                <h3>Producto de Prueba</h3>
+                                <p>Este es un producto de prueba para verificar que la vista principal funciona.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <i class="fas fa-search"></i>
+                        <h3>No se encontraron productos</h3>
+                        <p>Intenta con otros términos de búsqueda</p>
+                    </div>
+                `;
+
+                console.log('✅ Vista principal restaurada');
+            }
+        }
+    </script>
+</body>
+</html>

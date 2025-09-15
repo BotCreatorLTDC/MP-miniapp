@@ -2097,6 +2097,8 @@ Enviado desde la Miniapp MP Global Corp`;
             }
 
             console.log('⚠️ No se pudieron cargar secciones desde ninguna fuente, usando fallback');
+            console.log('🔍 DEBUG: loadSections - this.catalog después de intentar API:', this.catalog);
+            console.log('🔍 DEBUG: loadSections - this.catalog.sections después de intentar API:', this.catalog?.sections);
             
             // Fallback: secciones por defecto si la API no está disponible
             const fallbackSections = {
