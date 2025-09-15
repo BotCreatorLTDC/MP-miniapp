@@ -1903,7 +1903,7 @@ Enviado desde la Miniapp MP Global Corp`;
     // ==================== FUNCIONALIDAD DE SECCIONES ====================
 
     async showSection(sectionKey) {
-        /* Mostrar una sección específica en el modal de información */
+        /* Mostrar una sección específica como página */
         try {
             console.log(`🔍 DEBUG: showSection - Mostrando sección: ${sectionKey}`);
 
@@ -1920,48 +1920,90 @@ Enviado desde la Miniapp MP Global Corp`;
             // Crear contenido de la sección
             const content = this.formatSectionContent(section.content || section);
 
-            // Mostrar en el modal de información específico
-            const modal = document.getElementById('informationModal');
-            const modalTitle = document.getElementById('informationTitle');
-            const modalContent = document.getElementById('informationContent');
-            const loading = document.getElementById('infoLoading');
+            // Mostrar como página en el área principal
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                // Ocultar elementos de productos
+                const productsContainer = document.getElementById('productsContainer');
+                const emptyState = document.getElementById('emptyState');
+                
+                if (productsContainer) productsContainer.style.display = 'none';
+                if (emptyState) emptyState.style.display = 'none';
 
-            if (modal && modalTitle && modalContent && loading) {
-                // Mostrar loading
-                loading.style.display = 'block';
-                modalContent.innerHTML = '';
-
-                // Configurar título
-                modalTitle.textContent = section.title || sectionKey;
-
-                // Simular carga para mejor UX
-                setTimeout(() => {
-                    loading.style.display = 'none';
-                    
-                    // Mostrar contenido de la sección (solo información, sin botones de producto)
-                    modalContent.innerHTML = `
-                        <div class="information-section">
-                            <div class="section-content">
-                                ${content}
-                            </div>
+                // Crear página de sección
+                mainContent.innerHTML = `
+                    <div class="section-page">
+                        <div class="section-header">
+                            <button class="back-btn" onclick="app.showMainView()">
+                                <i class="fas fa-arrow-left"></i>
+                                <span data-i18n="back">Volver</span>
+                            </button>
+                            <h1 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                ${section.title || sectionKey}
+                            </h1>
                         </div>
-                    `;
+                        <div class="section-content">
+                            ${content}
+                        </div>
+                    </div>
+                `;
 
-                    // Mostrar modal
-                    modal.classList.add('show');
-                    document.body.style.overflow = 'hidden';
+                // Actualizar botones activos
+                this.updateActiveButtons(sectionKey, 'section');
 
-                    console.log(`✅ Sección ${sectionKey} mostrada en modal de información correctamente`);
-                }, 300);
-
+                console.log(`✅ Sección ${sectionKey} mostrada como página correctamente`);
             } else {
-                console.error('❌ Elementos del modal de información no encontrados');
-                this.showError('Error: Modal de información no disponible');
+                console.error('❌ Elemento .main-content no encontrado');
+                this.showError('Error: Área principal no disponible');
             }
 
         } catch (error) {
             console.error(`❌ Error mostrando sección ${sectionKey}:`, error);
             this.showError(this.t('error_loading_catalog'));
+        }
+    }
+
+    showMainView() {
+        /* Regresar a la vista principal de productos */
+        try {
+            console.log('🔍 DEBUG: showMainView - Regresando a vista principal');
+
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                // Restaurar elementos de productos
+                const productsContainer = document.getElementById('productsContainer');
+                const emptyState = document.getElementById('emptyState');
+                
+                if (productsContainer) productsContainer.style.display = 'block';
+                if (emptyState) emptyState.style.display = 'none';
+
+                // Restaurar contenido original
+                mainContent.innerHTML = `
+                    <div class="products-container" id="productsContainer">
+                        <div class="products-grid" id="productsGrid">
+                            <!-- Los productos se cargarán dinámicamente aquí -->
+                        </div>
+                    </div>
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <i class="fas fa-search"></i>
+                        <h3 data-i18n="no_products_found">No se encontraron productos</h3>
+                        <p data-i18n="try_different_terms">Intenta con otros términos de búsqueda</p>
+                    </div>
+                `;
+
+                // Renderizar productos actuales
+                this.renderProducts();
+
+                // Actualizar botones activos (categoría actual)
+                this.updateActiveButtons(this.currentCategory, 'category');
+
+                console.log('✅ Vista principal restaurada correctamente');
+            } else {
+                console.error('❌ Elemento .main-content no encontrado');
+            }
+        } catch (error) {
+            console.error('❌ Error restaurando vista principal:', error);
         }
     }
 

@@ -109,7 +109,10 @@ const translations = {
         'zoom_in': 'Acercar',
         'zoom_out': 'Alejar',
         'zoom_reset': 'Restablecer',
-        'zoom_rotate': 'Rotar'
+        'zoom_rotate': 'Rotar',
+        
+        // Navigation
+        'back': 'Volver'
     },
 
     en: {
@@ -221,7 +224,10 @@ const translations = {
         'zoom_in': 'Zoom In',
         'zoom_out': 'Zoom Out',
         'zoom_reset': 'Reset',
-        'zoom_rotate': 'Rotate'
+        'zoom_rotate': 'Rotate',
+        
+        // Navigation
+        'back': 'Back'
     },
 
     fr: {
@@ -333,7 +339,10 @@ const translations = {
         'zoom_in': 'Zoomer',
         'zoom_out': 'Dézoomer',
         'zoom_reset': 'Réinitialiser',
-        'zoom_rotate': 'Tourner'
+        'zoom_rotate': 'Tourner',
+        
+        // Navigation
+        'back': 'Retour'
     }
 };
 
