@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Secciones - MP Global Corp</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .section-content { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Debug de Secciones</h1>
+    
+    <div class="debug">
+        <h3>Test 1: Cargar secciones</h3>
+        <button onclick="testLoadSections()">Cargar Secciones</button>
+        <div id="load-result"></div>
+    </div>
+    
+    <div class="debug">
+        <h3>Test 2: Mostrar sección específica</h3>
+        <button onclick="testShowSection('shipping')">Mostrar Envíos</button>
+        <button onclick="testShowSection('stock')">Mostrar Stock</button>
+        <button onclick="testShowSection('contact')">Mostrar Contacto</button>
+        <div id="section-result"></div>
+    </div>
+    
+    <div class="debug">
+        <h3>Test 3: Verificar catálogo</h3>
+        <button onclick="testCatalog()">Verificar Catálogo</button>
+        <div id="catalog-result"></div>
+    </div>
+
+    <script src="scripts/translations.js"></script>
+    <script src="scripts/app.js"></script>
+    
+    <script>
+        let app;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🧪 Iniciando debug de secciones...');
+            app = new MPApp();
+        });
+        
+        async function testLoadSections() {
+            const result = document.getElementById('load-result');
+            result.innerHTML = '<p>Cargando...</p>';
+            
+            try {
+                console.log('🔍 Test: Cargando secciones...');
+                const sections = await app.loadSections();
+                
+                if (Object.keys(sections).length === 0) {
+                    result.innerHTML = '<div class="error">❌ No se pudieron cargar secciones</div>';
+                    return;
+                }
+                
+                let html = '<div class="success">✅ Secciones cargadas:</div><ul>';
+                for (const [key, section] of Object.entries(sections)) {
+                    html += `<li><strong>${key}:</strong> ${section.title || 'Sin título'}</li>`;
+                }
+                html += '</ul>';
+                
+                result.innerHTML = html;
+                console.log('✅ Secciones cargadas:', sections);
+                
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+                console.error('❌ Error cargando secciones:', error);
+            }
+        }
+        
+        async function testShowSection(sectionKey) {
+            const result = document.getElementById('section-result');
+            result.innerHTML = '<p>Mostrando sección...</p>';
+            
+            try {
+                console.log(`🔍 Test: Mostrando sección ${sectionKey}...`);
+                await app.showSection(sectionKey);
+                
+                // Verificar si se mostró correctamente
+                const mainContent = document.querySelector('.main-content');
+                if (mainContent && mainContent.innerHTML.includes('section-page')) {
+                    result.innerHTML = '<div class="success">✅ Sección mostrada correctamente</div>';
+                } else {
+                    result.innerHTML = '<div class="error">❌ La sección no se mostró correctamente</div>';
+                }
+                
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+                console.error(`❌ Error mostrando sección ${sectionKey}:`, error);
+            }
+        }
+        
+        async function testCatalog() {
+            const result = document.getElementById('catalog-result');
+            result.innerHTML = '<p>Verificando catálogo...</p>';
+            
+            try {
+                console.log('🔍 Test: Verificando catálogo...');
+                
+                let html = '<div class="success">✅ Información del catálogo:</div>';
+                html += `<p><strong>Catálogo existe:</strong> ${app.catalog ? 'Sí' : 'No'}</p>`;
+                
+                if (app.catalog) {
+                    html += `<p><strong>Categorías:</strong> ${Object.keys(app.catalog.categories || {}).length}</p>`;
+                    html += `<p><strong>Secciones:</strong> ${Object.keys(app.catalog.sections || {}).length}</p>`;
+                    
+                    if (app.catalog.sections) {
+                        html += '<p><strong>Secciones disponibles:</strong></p><ul>';
+                        for (const [key, section] of Object.entries(app.catalog.sections)) {
+                            html += `<li>${key}: ${section.title || 'Sin título'}</li>`;
+                        }
+                        html += '</ul>';
+                    }
+                }
+                
+                result.innerHTML = html;
+                console.log('✅ Catálogo verificado:', app.catalog);
+                
+            } catch (error) {
+                result.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+                console.error('❌ Error verificando catálogo:', error);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1905,32 +1905,48 @@ Enviado desde la Miniapp MP Global Corp`;
     async showSection(sectionKey) {
         /* Mostrar una sección específica como página */
         try {
-            console.log(`🔍 DEBUG: showSection - Mostrando sección: ${sectionKey}`);
+            console.log(`🔍 DEBUG: showSection - INICIANDO para sección: ${sectionKey}`);
+            console.log(`🔍 DEBUG: showSection - this.catalog:`, this.catalog);
 
             // Obtener secciones
+            console.log(`🔍 DEBUG: showSection - Llamando a loadSections()...`);
             const sections = await this.loadSections();
+            console.log(`🔍 DEBUG: showSection - Secciones obtenidas:`, Object.keys(sections));
+            
             const section = sections[sectionKey];
+            console.log(`🔍 DEBUG: showSection - Sección específica:`, section);
 
             if (!section) {
-                console.error(`❌ Sección ${sectionKey} no encontrada`);
-                this.showError(this.t('error_loading_catalog'));
+                console.error(`❌ Sección ${sectionKey} no encontrada en:`, Object.keys(sections));
+                this.showError(`Sección ${sectionKey} no encontrada`);
                 return;
             }
 
             // Crear contenido de la sección
             const content = this.formatSectionContent(section.content || section);
+            console.log(`🔍 DEBUG: showSection - Contenido formateado:`, content.substring(0, 100) + '...');
 
             // Mostrar como página en el área principal
             const mainContent = document.querySelector('.main-content');
+            console.log(`🔍 DEBUG: showSection - mainContent encontrado:`, !!mainContent);
+            
             if (mainContent) {
                 // Ocultar elementos de productos
                 const productsContainer = document.getElementById('productsContainer');
                 const emptyState = document.getElementById('emptyState');
                 
-                if (productsContainer) productsContainer.style.display = 'none';
-                if (emptyState) emptyState.style.display = 'none';
+                console.log(`🔍 DEBUG: showSection - Ocultando elementos de productos...`);
+                if (productsContainer) {
+                    productsContainer.style.display = 'none';
+                    console.log(`🔍 DEBUG: showSection - productsContainer ocultado`);
+                }
+                if (emptyState) {
+                    emptyState.style.display = 'none';
+                    console.log(`🔍 DEBUG: showSection - emptyState ocultado`);
+                }
 
                 // Crear página de sección
+                console.log(`🔍 DEBUG: showSection - Creando página de sección...`);
                 mainContent.innerHTML = `
                     <div class="section-page">
                         <div class="section-header">
@@ -1949,6 +1965,8 @@ Enviado desde la Miniapp MP Global Corp`;
                     </div>
                 `;
 
+                console.log(`🔍 DEBUG: showSection - Página creada, actualizando botones activos...`);
+
                 // Actualizar botones activos
                 this.updateActiveButtons(sectionKey, 'section');
 
@@ -1960,7 +1978,7 @@ Enviado desde la Miniapp MP Global Corp`;
 
         } catch (error) {
             console.error(`❌ Error mostrando sección ${sectionKey}:`, error);
-            this.showError(this.t('error_loading_catalog'));
+            this.showError(`Error mostrando sección: ${error.message}`);
         }
     }
 
