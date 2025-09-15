@@ -170,18 +170,18 @@ class OrderManager {
         const required = field.hasAttribute('required');
         
         if (required && !field.value.trim()) {
-            return 'Este campo es obligatorio';
+            return this.app.t('required_field');
         }
         
         switch (type) {
             case 'email':
-                return 'Ingresa un email válido';
+                return this.app.t('valid_email_required');
             case 'tel':
-                return 'Ingresa un teléfono válido';
+                return this.app.t('valid_phone_required');
             case 'text':
-                return 'Debe tener al menos 2 caracteres';
+                return this.app.t('min_chars_required');
             default:
-                return 'Valor inválido';
+                return this.app.t('invalid_value');
         }
     }
     
@@ -380,7 +380,7 @@ Enviado desde la Miniapp MP Global Corp`;
         
         if (this.app.cart.length === 0) {
             console.log('Carrito vacío, mostrando toast de error');
-            this.app.showToast('Tu carrito está vacío', 'error');
+            this.app.showToast(this.app.t('cart_empty_error'), 'error');
             return;
         }
         
@@ -398,12 +398,12 @@ Enviado desde la Miniapp MP Global Corp`;
             window.open(telegramUrl, '_blank');
             
             // Mostrar mensaje de confirmación
-            this.app.showToast('¡Chat de Telegram abierto!', 'success');
+            this.app.showToast(this.app.t('telegram_opened_success'), 'success');
             console.log('Chat de Telegram abierto exitosamente');
             
         } catch (error) {
             console.error('Error abriendo chat de Telegram:', error);
-            this.app.showToast('Error abriendo chat de Telegram', 'error');
+            this.app.showToast(this.app.t('telegram_error'), 'error');
         }
     }
     
@@ -411,7 +411,7 @@ Enviado desde la Miniapp MP Global Corp`;
         const cartItems = this.app.cart.map(item => {
             if (item.selectedQuantity && item.selectedAmount) {
                 const totalPrice = item.totalPrice || item.selectedAmount;
-                const unitText = item.selectedQuantity.includes('@') ? 'cada 100@' : 'c/u';
+                const unitText = item.selectedQuantity.includes('@') ? this.app.t('per_100') : this.app.t('per_unit');
                 return `• ${item.name} (${item.selectedQuantity} por ${item.selectedAmount} ${unitText}) x${item.quantity} = ${totalPrice}`;
             } else {
                 return `• ${item.name} x${item.quantity}`;

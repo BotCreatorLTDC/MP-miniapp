@@ -584,7 +584,7 @@ class MPApp {
         productsGrid.innerHTML = `
             <div class="search-indicator">
                 <i class="fas fa-spinner fa-spin"></i>
-                <p>Buscando productos...</p>
+                <p>${this.t('searching')}</p>
             </div>
         `;
     }
@@ -635,9 +635,9 @@ class MPApp {
             if (emptyStateContent) {
                 emptyStateContent.innerHTML = `
                     <i class="fas fa-search"></i>
-                    <h3>No se encontraron productos</h3>
-                    <p>No hay productos que coincidan con "${this.searchTerm}"</p>
-                    <p>Intenta con otros términos de búsqueda</p>
+                    <h3>${this.t('no_products_found')}</h3>
+                    <p>${this.t('no_products_match')} "${this.searchTerm}"</p>
+                    <p>${this.t('try_different_terms')}</p>
                 `;
             }
         } else {
@@ -779,7 +779,7 @@ class MPApp {
             const imagesPayload = JSON.stringify(product.images).replace(/"/g, '&quot;');
             imageHtml += `<div class="view-all-images" onclick="event.stopPropagation(); window.mpApp.showImageGallery('${product.name}', ${imagesPayload})">
                 <i class="fas fa-images"></i>
-                <span>${product.images.length > 2 ? '+' + (product.images.length - 2) : 'Ver'}</span>
+                <span>${product.images.length > 2 ? '+' + (product.images.length - 2) : this.t('view_all_images')}</span>
             </div>`;
         }
 
@@ -1163,7 +1163,7 @@ class MPApp {
             const imagesPayload = JSON.stringify(product.images).replace(/"/g, '&quot;');
             galleryHtml += `<div class="view-all-images" onclick="window.mpApp.showImageGallery('${product.name}', ${imagesPayload})">
                 <i class="fas fa-images"></i>
-                <span>${product.images.length > 2 ? '+' + (product.images.length - 2) : 'Ver'}</span>
+                <span>${product.images.length > 2 ? '+' + (product.images.length - 2) : this.t('view_all_images')}</span>
             </div>`;
             console.log('Modal: Botón de galería forzado con', product.images.length, 'imágenes');
 
@@ -1372,7 +1372,7 @@ class MPApp {
             this.showCart();
         }
         
-        this.showToast('Carrito limpiado', 'info');
+        this.showToast(this.t('cart_cleared'), 'info');
     }
     
     setupProceedButtonFallback() {
@@ -1783,7 +1783,7 @@ Enviado desde la Miniapp MP Global Corp`;
     }
     
     clearAllData() {
-        if (confirm('¿Estás seguro de que quieres eliminar todos los datos locales? Esto incluye tu carrito y preferencias.')) {
+        if (confirm(this.t('confirm_clear_all_data'))) {
             try {
                 // Clear all localStorage data
                 localStorage.clear();
@@ -1798,7 +1798,7 @@ Enviado desde la Miniapp MP Global Corp`;
                 this.renderProducts();
                 
                 // Show success message
-                this.showToast('Todos los datos han sido eliminados', 'success');
+                this.showToast(this.t('data_cleared'), 'success');
                 
                 // Close security modal
                 this.hideSecurityModal();
@@ -1806,7 +1806,7 @@ Enviado desde la Miniapp MP Global Corp`;
                 console.log('All data cleared successfully');
             } catch (error) {
                 console.error('Error clearing data:', error);
-                this.showToast('Error al eliminar los datos', 'error');
+                this.showToast(this.t('data_clear_error'), 'error');
             }
         }
     }
