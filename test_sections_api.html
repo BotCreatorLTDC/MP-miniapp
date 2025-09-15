@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Secciones API - MP Global Corp</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo">
+                    <div class="logo-text">
+                        <h1>MP Global Corp</h1>
+                        <p>Cannabis Premium</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="section-page">
+                <div class="section-header">
+                    <button class="back-btn" onclick="window.history.back()">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Volver</span>
+                    </button>
+                    <h1 class="section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Test de Secciones API
+                    </h1>
+                </div>
+                <div class="section-content">
+                    <h2>Probando carga de secciones desde la API</h2>
+                    <p>Este test verifica que las secciones se carguen correctamente desde la base de datos.</p>
+                    
+                    <div id="test-results">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            <p>Cargando secciones...</p>
+                        </div>
+                    </div>
+                    
+                    <div id="sections-content" style="display: none;">
+                        <h3>Secciones disponibles:</h3>
+                        <div id="sections-list"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="scripts/translations.js"></script>
+    <script src="scripts/app.js"></script>
+    
+    <script>
+        // Test específico para la API de secciones
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🧪 Iniciando test de API de secciones...');
+            
+            const testResults = document.getElementById('test-results');
+            const sectionsContent = document.getElementById('sections-content');
+            const sectionsList = document.getElementById('sections-list');
+            
+            try {
+                // Crear instancia de la app
+                const app = new MPApp();
+                
+                // Test 1: Cargar secciones
+                console.log('🔍 Test 1: Cargando secciones...');
+                const sections = await app.loadSections();
+                
+                if (Object.keys(sections).length === 0) {
+                    testResults.innerHTML = `
+                        <div class="error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>❌ Error: No se pudieron cargar las secciones</h3>
+                            <p>Verifica que la API esté funcionando y que haya secciones en la base de datos.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Test 2: Mostrar secciones
+                console.log('🔍 Test 2: Mostrando secciones...');
+                let sectionsHtml = '';
+                for (const [key, section] of Object.entries(sections)) {
+                    sectionsHtml += `
+                        <div class="section-item" style="margin: 1rem 0; padding: 1rem; border: 1px solid var(--border-color); border-radius: var(--border-radius);">
+                            <h4><i class="fas fa-info-circle"></i> ${section.title || key}</h4>
+                            <p><strong>Clave:</strong> ${key}</p>
+                            <p><strong>Contenido:</strong> ${section.content ? section.content.substring(0, 100) + '...' : 'Sin contenido'}</p>
+                            <button onclick="testShowSection('${key}')" class="btn btn-primary" style="margin-top: 0.5rem;">
+                                <i class="fas fa-eye"></i> Ver Sección
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                sectionsList.innerHTML = sectionsHtml;
+                testResults.style.display = 'none';
+                sectionsContent.style.display = 'block';
+                
+                console.log('✅ Test completado exitosamente');
+                
+            } catch (error) {
+                console.error('❌ Error en el test:', error);
+                testResults.innerHTML = `
+                    <div class="error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>❌ Error en el test</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        });
+        
+        // Función para probar mostrar una sección específica
+        async function testShowSection(sectionKey) {
+            console.log(`🧪 Probando mostrar sección: ${sectionKey}`);
+            
+            try {
+                const app = new MPApp();
+                await app.showSection(sectionKey);
+            } catch (error) {
+                console.error(`❌ Error mostrando sección ${sectionKey}:`, error);
+                alert(`Error mostrando sección: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>
