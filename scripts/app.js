@@ -384,8 +384,8 @@ class MPApp {
     }
     
     setupEventListeners() {
-        // Navegación por categorías
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        // Navegación por categorías (solo botones de categoría, no secciones)
+        document.querySelectorAll('.tab-btn[data-category]').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const category = e.currentTarget.dataset.category;
                 this.setActiveCategory(category);
