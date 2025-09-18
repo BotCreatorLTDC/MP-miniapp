@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Pantalla de Bienvenida MP Global Corp</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Video de Entrada / Pantalla de Bienvenida -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-video-container">
+            <video class="welcome-video" id="welcomeVideo" autoplay muted loop playsinline>
+                <source src="assets/videos/welcome.mp4" type="video/mp4">
+                <source src="assets/videos/welcome.webm" type="video/webm">
+                <!-- Fallback para navegadores que no soportan video -->
+                <div class="video-fallback">
+                    <div class="fallback-background"></div>
+                </div>
+            </video>
+            <div class="video-overlay"></div>
+        </div>
+        
+        <div class="welcome-content">
+            <div class="welcome-logo">
+                <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="welcome-logo-image">
+                <div class="welcome-logo-text">
+                    <h1 class="welcome-title" data-i18n="welcome_title">MP Global Corp®</h1>
+                    <p class="welcome-subtitle" data-i18n="welcome_subtitle">Premium Cannabis Products</p>
+                </div>
+            </div>
+            
+            <div class="welcome-actions">
+                <button class="welcome-start-btn" id="welcomeStartBtn">
+                    <i class="fas fa-play"></i>
+                    <span data-i18n="start_exploring">COMENZAR</span>
+                </button>
+                
+                <div class="welcome-features">
+                    <div class="feature-item">
+                        <i class="fas fa-leaf"></i>
+                        <span data-i18n="feature_quality">Productos Premium</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shipping-fast"></i>
+                        <span data-i18n="feature_delivery">Envío Seguro</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span data-i18n="feature_security">100% Privado</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="welcome-footer">
+            <p class="welcome-disclaimer" data-i18n="adult_only">Solo para mayores de 18 años</p>
+        </div>
+    </div>
+
+    <!-- Contenido de prueba (se muestra después del botón START) -->
+    <div id="mainContent" style="display: none; padding: 2rem; background: var(--background-dark); min-height: 100vh; color: white;">
+        <h1>¡Bienvenido a MP Global Corp!</h1>
+        <p>La pantalla de bienvenida funcionó correctamente.</p>
+        <p>En la aplicación real, aquí aparecería el catálogo de productos.</p>
+        <button onclick="resetWelcome()" style="padding: 1rem 2rem; background: var(--secondary-color); color: var(--background-dark); border: none; border-radius: 8px; cursor: pointer; margin-top: 1rem;">
+            Reiniciar Pantalla de Bienvenida
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="scripts/translations.js"></script>
+    <script>
+        // Sistema de traducciones simplificado para la prueba
+        class TranslationManager {
+            constructor() {
+                this.currentLanguage = 'es';
+            }
+            
+            translatePage() {
+                // Aplicar traducciones básicas
+                const elements = document.querySelectorAll('[data-i18n]');
+                elements.forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    const translation = this.getTranslation(key);
+                    if (translation) {
+                        element.textContent = translation;
+                    }
+                });
+            }
+            
+            getTranslation(key) {
+                const translations = {
+                    'welcome_title': 'MP Global Corp®',
+                    'welcome_subtitle': 'Premium Cannabis Products',
+                    'start_exploring': 'COMENZAR',
+                    'feature_quality': 'Productos Premium',
+                    'feature_delivery': 'Envío Seguro',
+                    'feature_security': '100% Privado',
+                    'adult_only': 'Solo para mayores de 18 años'
+                };
+                return translations[key];
+            }
+        }
+
+        // Lógica de la pantalla de bienvenida
+        class WelcomeScreenTest {
+            constructor() {
+                this.translationManager = new TranslationManager();
+                this.init();
+            }
+
+            init() {
+                this.setupWelcomeVideo();
+                this.setupWelcomeButton();
+                this.showWelcomeScreen();
+            }
+
+            setupWelcomeVideo() {
+                const video = document.getElementById('welcomeVideo');
+                if (!video) return;
+
+                video.addEventListener('loadeddata', () => {
+                    console.log('Video de bienvenida cargado');
+                });
+
+                video.addEventListener('error', (e) => {
+                    console.log('Error cargando video, usando fallback:', e);
+                });
+
+                video.play().catch(error => {
+                    console.log('No se pudo reproducir el video automáticamente:', error);
+                });
+            }
+
+            setupWelcomeButton() {
+                const startBtn = document.getElementById('welcomeStartBtn');
+                if (!startBtn) return;
+
+                startBtn.addEventListener('click', () => {
+                    this.startApp();
+                });
+            }
+
+            showWelcomeScreen() {
+                const welcomeScreen = document.getElementById('welcomeScreen');
+                if (!welcomeScreen) return;
+
+                welcomeScreen.style.display = 'flex';
+                this.translationManager.translatePage();
+                console.log('Pantalla de bienvenida mostrada');
+            }
+
+            startApp() {
+                console.log('Iniciando aplicación...');
+                
+                const welcomeScreen = document.getElementById('welcomeScreen');
+                const mainContent = document.getElementById('mainContent');
+                
+                if (welcomeScreen && mainContent) {
+                    welcomeScreen.classList.add('fade-out');
+                    
+                    setTimeout(() => {
+                        welcomeScreen.style.display = 'none';
+                        mainContent.style.display = 'block';
+                    }, 800);
+                }
+            }
+        }
+
+        // Función para reiniciar la pantalla de bienvenida
+        function resetWelcome() {
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (welcomeScreen && mainContent) {
+                welcomeScreen.classList.remove('fade-out');
+                welcomeScreen.style.display = 'flex';
+                mainContent.style.display = 'none';
+            }
+        }
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', () => {
+            new WelcomeScreenTest();
+        });
+    </script>
+</body>
+</html>

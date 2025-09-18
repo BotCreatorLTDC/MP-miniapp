@@ -1,6 +1,15 @@
 // Sistema de traducciones para MP Global Corp Miniapp
 const translations = {
     es: {
+        // Welcome Screen
+        'welcome_title': 'MP Global Corp®',
+        'welcome_subtitle': 'Premium Cannabis Products',
+        'start_exploring': 'COMENZAR',
+        'feature_quality': 'Productos Premium',
+        'feature_delivery': 'Envío Seguro',
+        'feature_security': '100% Privado',
+        'adult_only': 'Solo para mayores de 18 años',
+        
         // Header
         'app_title': 'MP Global Corp®',
         'app_tagline': 'Premium Cannabis Products',
@@ -231,6 +240,15 @@ const translations = {
     },
     
     en: {
+        // Welcome Screen
+        'welcome_title': 'MP Global Corp®',
+        'welcome_subtitle': 'Premium Cannabis Products',
+        'start_exploring': 'START',
+        'feature_quality': 'Premium Products',
+        'feature_delivery': 'Secure Delivery',
+        'feature_security': '100% Private',
+        'adult_only': 'Adults only (18+)',
+        
         // Header
         'app_title': 'MP Global Corp®',
         'app_tagline': 'Premium Cannabis Products',
@@ -461,6 +479,15 @@ const translations = {
     },
     
     fr: {
+        // Welcome Screen
+        'welcome_title': 'MP Global Corp®',
+        'welcome_subtitle': 'Produits Cannabis Premium',
+        'start_exploring': 'COMMENCER',
+        'feature_quality': 'Produits Premium',
+        'feature_delivery': 'Livraison Sécurisée',
+        'feature_security': '100% Privé',
+        'adult_only': 'Réservé aux adultes (18+)',
+        
         // Header
         'app_title': 'MP Global Corp®',
         'app_tagline': 'Produits Cannabis Premium',
