@@ -899,9 +899,10 @@ class MPApp {
 
             // Añadir chip de galería en la tarjeta
             const mediaPayload = JSON.stringify(mediaItems).replace(/"/g, '&quot;');
+            const viewAllText = mediaItems.length > 2 ? '+' + (mediaItems.length - 2) : 'Ver todo';
             mediaHtml += `<div class="view-all-media" onclick="event.stopPropagation(); showMediaGallery('${product.name}', ${mediaPayload})">
                 <i class="fas fa-images"></i>
-                <span>${mediaItems.length > 2 ? '+' + (mediaItems.length - 2) : this.t('view_all_media')}</span>
+                <span>${viewAllText}</span>
             </div>`;
         }
 
