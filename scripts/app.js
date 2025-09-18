@@ -1616,7 +1616,7 @@ class MPApp {
 
             // Mostrar SIEMPRE botón de galería si hay al menos 1 imagen
             const imagesPayload = JSON.stringify(product.images).replace(/"/g, '&quot;');
-            galleryHtml += `<div class="view-all-images" onclick="window.mpApp.showImageGallery('${product.name}', ${imagesPayload})">
+            galleryHtml += `<div class="view-all-images" onclick="if(window.mpApp) { window.mpApp.showImageGallery('${product.name}', ${imagesPayload}); } else { console.error('MP App no disponible'); }">
                 <i class="fas fa-images"></i>
                 <span>${product.images.length > 2 ? '+' + (product.images.length - 2) : this.t('view_all_images')}</span>
             </div>`;
@@ -2747,12 +2747,42 @@ function showMediaGallery(productName, mediaItems) {
     if (window.mpApp) {
         window.mpApp.showMediaGallery(productName, mediaItems);
     } else {
-        console.error('MP App no está disponible');
+        console.warn('⚠️ MP App no está disponible, intentando inicializar...');
+        // Intentar inicializar la app
+        initializeApp();
+        if (window.mpApp) {
+            console.log('✅ MP App inicializada, mostrando galería');
+            window.mpApp.showMediaGallery(productName, mediaItems);
+        } else {
+            console.error('❌ No se pudo inicializar MP App');
+        }
+    }
+}
+
+// Función de inicialización
+function initializeApp() {
+    if (!window.mpApp) {
+        window.app = new MPApp();
+        window.mpApp = window.app; // Alias para compatibilidad
+        console.log('✅ MP App inicializada correctamente');
     }
 }
 
 // Inicializar la aplicación cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-    window.app = new MPApp();
-    window.mpApp = window.app; // Alias para compatibilidad
-});
+document.addEventListener('DOMContentLoaded', initializeApp);
+
+// Inicialización adicional para Telegram WebApp
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+    // DOM ya está listo
+    initializeApp();
+}
+
+// Inicialización de respaldo después de un breve delay
+setTimeout(() => {
+    if (!window.mpApp) {
+        console.warn('⚠️ Inicializando MP App con delay de respaldo');
+        initializeApp();
+    }
+}, 100);
