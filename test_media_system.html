@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Sistema de Medios MP Global Corp</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="logo-image">
+                <div class="logo-text">
+                    <h1>MP Global Corp®</h1>
+                    <span class="tagline">Sistema de Medios - Demo</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="products-container">
+            <div class="products-grid" id="productsGrid">
+                <!-- Los productos con medios se cargarán aquí -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="scripts/translations.js"></script>
+    <script>
+        // Sistema de traducciones simplificado para la prueba
+        class TranslationManager {
+            constructor() {
+                this.currentLanguage = 'es';
+            }
+
+            translatePage() {
+                // Aplicar traducciones básicas
+                const elements = document.querySelectorAll('[data-i18n]');
+                elements.forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    const translation = this.getTranslation(key);
+                    if (translation) {
+                        element.textContent = translation;
+                    }
+                });
+            }
+
+            getTranslation(key) {
+                const translations = {
+                    'view_all_media': 'Ver Medios',
+                    'media_gallery': 'Galería de Medios',
+                    'video': 'Video',
+                    'gif': 'GIF',
+                    'image': 'Imagen',
+                    'available': 'Disponible'
+                };
+                return translations[key];
+            }
+        }
+
+        // Clase de prueba para el sistema de medios
+        class MediaSystemTest {
+            constructor() {
+                this.translationManager = new TranslationManager();
+                this.init();
+            }
+
+            init() {
+                this.createTestProducts();
+                this.setupEventListeners();
+            }
+
+            createTestProducts() {
+                const productsGrid = document.getElementById('productsGrid');
+
+                // Producto con imágenes
+                const product1 = {
+                    name: "Producto con Imágenes",
+                    price: "100@ / 350# | 300@ / 320#",
+                    stock: "Disponible",
+                    media: [
+                        { type: "image", url: "assets/images/logo.jpg" },
+                        { type: "image", url: "assets/images/logo.jpg" }
+                    ]
+                };
+
+                // Producto con video
+                const product2 = {
+                    name: "Producto con Video",
+                    price: "200@ / 400# | 500@ / 380#",
+                    stock: "Disponible",
+                    media: [
+                        { type: "video", url: "assets/videos/welcome.mp4", duration: 15 },
+                        { type: "image", url: "assets/images/logo.jpg" }
+                    ]
+                };
+
+                // Producto con GIF
+                const product3 = {
+                    name: "Producto con GIF",
+                    price: "150@ / 300#",
+                    stock: "Disponible",
+                    media: [
+                        { type: "gif", url: "assets/images/logo.jpg" }, // Simulando GIF
+                        { type: "image", url: "assets/images/logo.jpg" }
+                    ]
+                };
+
+                // Producto con mezcla de medios
+                const product4 = {
+                    name: "Producto Mixto",
+                    price: "250@ / 450# | 500@ / 420# | 1k@ / 400#",
+                    stock: "Disponible",
+                    media: [
+                        { type: "image", url: "assets/images/logo.jpg" },
+                        { type: "video", url: "assets/videos/welcome.mp4", duration: 20 },
+                        { type: "gif", url: "assets/images/logo.jpg" },
+                        { type: "image", url: "assets/images/logo.jpg" }
+                    ]
+                };
+
+                const products = [product1, product2, product3, product4];
+
+                productsGrid.innerHTML = products.map(product => this.createProductCard(product)).join('');
+            }
+
+            createProductCard(product) {
+                const isAvailable = product.stock === 'Disponible';
+                let mediaHtml = '';
+
+                if (product.media && product.media.length > 0) {
+                    const maxMedia = Math.min(2, product.media.length);
+                    const media = product.media.slice(0, maxMedia);
+
+                    mediaHtml = media.map((mediaItem, index) => {
+                        return this.createMediaElement(mediaItem, product.name, index);
+                    }).join('');
+
+                    const mediaPayload = JSON.stringify(product.media).replace(/"/g, '&quot;');
+                    mediaHtml += `<div class="view-all-media" onclick="event.stopPropagation(); window.mediaTest.showMediaGallery('${product.name}', ${mediaPayload})">
+                        <i class="fas fa-images"></i>
+                        <span>${product.media.length > 2 ? '+' + (product.media.length - 2) : 'Ver Medios'}</span>
+                    </div>`;
+                }
+
+                return `
+                    <div class="product-card fade-in" data-product-name="${product.name}">
+                        <div class="product-image">
+                            ${mediaHtml}
+                            <div class="image-placeholder" style="display: ${product.media && product.media.length > 0 ? 'none' : 'flex'};">
+                                <i class="fas fa-cannabis"></i>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">${product.name}</h3>
+                            <p class="product-price">${product.price}</p>
+                            <span class="product-stock ${isAvailable ? 'stock-available' : 'stock-unavailable'}">
+                                ${isAvailable ? 'Disponible' : 'No Disponible'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            createMediaElement(mediaItem, productName, index) {
+                const mediaUrl = this.getMediaUrl(mediaItem.url);
+                const isSecondary = index > 0;
+
+                switch (mediaItem.type) {
+                    case 'video':
+                        return `
+                            <div class="media-container video-container ${isSecondary ? 'secondary-media' : ''}" data-media-type="video">
+                                <video class="gallery-media" muted loop playsinline preload="metadata">
+                                    <source src="${mediaUrl}" type="video/mp4">
+                                </video>
+                                <div class="media-overlay">
+                                    <i class="fas fa-play media-play-icon"></i>
+                                </div>
+                                <div class="media-duration">${this.formatDuration(mediaItem.duration)}</div>
+                            </div>
+                        `;
+
+                    case 'gif':
+                        return `
+                            <div class="media-container gif-container ${isSecondary ? 'secondary-media' : ''}" data-media-type="gif">
+                                <img src="${mediaUrl}" alt="${productName}" class="gallery-media gif-media">
+                                <div class="media-overlay">
+                                    <i class="fas fa-play gif-play-icon"></i>
+                                </div>
+                            </div>
+                        `;
+
+                    case 'image':
+                    default:
+                        return `
+                            <img src="${mediaUrl}" alt="${productName}" class="gallery-media gallery-image ${isSecondary ? 'secondary-image' : ''}">
+                        `;
+                }
+            }
+
+            getMediaUrl(mediaPath) {
+                if (mediaPath.startsWith('http://') || mediaPath.startsWith('https://')) {
+                    return mediaPath;
+                }
+                return mediaPath; // Para la prueba, usar rutas relativas
+            }
+
+            formatDuration(seconds) {
+                if (!seconds) return '';
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            showMediaGallery(productName, mediaItems) {
+                console.log('Mostrando galería de medios para:', productName, mediaItems);
+                alert(`Galería de medios para: ${productName}\n\nMedios disponibles: ${mediaItems.length}\n\nTipos: ${mediaItems.map(m => m.type).join(', ')}`);
+            }
+
+            setupEventListeners() {
+                // Configurar eventos para videos
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('.video-container')) {
+                        const video = e.target.closest('.video-container').querySelector('video');
+                        if (video) {
+                            video.play();
+                        }
+                    }
+                });
+            }
+        }
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', () => {
+            window.mediaTest = new MediaSystemTest();
+        });
+    </script>
+</body>
+</html>

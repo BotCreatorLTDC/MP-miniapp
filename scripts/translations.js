@@ -9,14 +9,19 @@ const translations = {
         'feature_delivery': 'Envío Seguro',
         'feature_security': '100% Privado',
         'adult_only': 'Solo para mayores de 18 años',
-        
+        'view_all_media': 'Ver Medios',
+        'media_gallery': 'Galería de Medios',
+        'video': 'Video',
+        'gif': 'GIF',
+        'image': 'Imagen',
+
         // Header
         'app_title': 'MP Global Corp®',
         'app_tagline': 'Premium Cannabis Products',
         'cart': 'Carrito',
         'menu': 'Menú',
         'language_changed': 'Idioma cambiado a',
-        
+
         // Navigation
         'all_products': 'Todos',
         'moroccan_hash': '🇲🇦 Moroccan',
@@ -24,8 +29,9 @@ const translations = {
         'cali_flower': '🇺🇸 California',
         'extractions': '🔬 Extractions',
         'varios': '📦 Varios',
+        'vapes': '🔋 Vapes',
         'search_placeholder': 'Buscar productos...',
-        
+
         // Product Modal
         'product_details': 'Detalles del Producto',
         'price_options': 'Opciones de Precio',
@@ -36,7 +42,7 @@ const translations = {
         'unavailable': 'No Disponible',
         'description': 'Descripción',
         'stock': 'Stock',
-        
+
         // Cart Modal
         'my_order': 'Mi Pedido',
         'cart_empty': 'Tu carrito está vacío',
@@ -48,7 +54,7 @@ const translations = {
         'per_unit': 'c/u',
         'per_100': 'cada 100@',
         'remove_item': 'Eliminar',
-        
+
         // Order Modal
         'order_form': 'Formulario de Pedido',
         'order_details': 'Detalles del Pedido',
@@ -72,14 +78,14 @@ const translations = {
         'cancel': 'Cancelar',
         'submit_order': 'Enviar Pedido',
         'sending': 'Enviando...',
-        
+
         // Success Modal
         'telegram_opened': '¡Chat de Telegram Abierto!',
         'telegram_message': 'Se ha abierto un chat con @grlltdc con los detalles de tu pedido. Completa tu pedido allí para finalizar la compra.',
         'telegram_note': 'Nota: Si no se abrió automáticamente, busca @grlltdc en Telegram.',
         'note_label': 'Nota:',
         'close': 'Cerrar',
-        
+
         // Security Modal
         'security_privacy': 'Seguridad y Privacidad',
         'data_security': 'Seguridad de Datos',
@@ -88,14 +94,14 @@ const translations = {
         'mobile_security': 'Seguridad Móvil',
         'clear_all_data': 'Limpiar Todos los Datos',
         'confirm_clear_all_data': '¿Estás seguro de que quieres eliminar todos los datos locales? Esto incluye tu carrito y preferencias.',
-        
+
         // Footer
         'copyright': '© 2025 MP Global Corp. Todos los derechos reservados.',
         'adult_only': 'Productos de cannabis premium para adultos.',
         'security_privacy_link': 'Seguridad y Privacidad',
         'information': 'Información',
         'loading_information': 'Cargando información...',
-        
+
         // Toast Messages
         'product_added': 'Producto agregado al carrito',
         'cart_cleared': 'Carrito limpiado',
@@ -112,17 +118,17 @@ const translations = {
         'error_loading_catalog': 'Error cargando productos',
         'no_products_found': 'No se encontraron productos',
         'try_different_terms': 'Intenta con otros términos de búsqueda',
-        
+
         // Image Zoom
         'image_zoom': 'Imagen del Producto',
         'zoom_in': 'Acercar',
         'zoom_out': 'Alejar',
         'zoom_reset': 'Restablecer',
         'zoom_rotate': 'Rotar',
-        
+
         // Navigation
         'back': 'Volver',
-        
+
         // Additional missing translations
         'loading': 'Cargando...',
         'error': 'Error',
@@ -196,14 +202,14 @@ const translations = {
         'section_content': 'Contenido de sección',
         'information_section': 'Sección de información',
         'error_section': 'Sección de error',
-        
+
         // Form validation messages
         'required_field': 'Este campo es obligatorio',
         'valid_email_required': 'Ingresa un email válido',
         'valid_phone_required': 'Ingresa un teléfono válido',
         'min_chars_required': 'Debe tener al menos 2 caracteres',
         'invalid_value': 'Valor inválido',
-        
+
         // Security modal content
         'ssl_encryption': 'Cifrado SSL/TLS',
         'ssl_encryption_desc': 'Todas las comunicaciones están cifradas con protocolos de seguridad de grado bancario.',
@@ -238,7 +244,7 @@ const translations = {
         'verification': 'Verificación',
         'verification_desc': 'Todos los productos son verificados antes de su inclusión en el catálogo.'
     },
-    
+
     en: {
         // Welcome Screen
         'welcome_title': 'MP Global Corp®',
@@ -248,14 +254,19 @@ const translations = {
         'feature_delivery': 'Secure Delivery',
         'feature_security': '100% Private',
         'adult_only': 'Adults only (18+)',
-        
+        'view_all_media': 'View Media',
+        'media_gallery': 'Media Gallery',
+        'video': 'Video',
+        'gif': 'GIF',
+        'image': 'Image',
+
         // Header
         'app_title': 'MP Global Corp®',
         'app_tagline': 'Premium Cannabis Products',
         'cart': 'Cart',
         'menu': 'Menu',
         'language_changed': 'Language changed to',
-        
+
         // Navigation
         'all_products': 'All',
         'moroccan_hash': '🇲🇦 Moroccan',
@@ -264,7 +275,7 @@ const translations = {
         'extractions': '🔬 Extractions',
         'varios': '📦 Various',
         'search_placeholder': 'Search products...',
-        
+
         // Product Modal
         'product_details': 'Product Details',
         'price_options': 'Price Options',
@@ -275,7 +286,7 @@ const translations = {
         'unavailable': 'Unavailable',
         'description': 'Description',
         'stock': 'Stock',
-        
+
         // Cart Modal
         'my_order': 'My Order',
         'cart_empty': 'Your cart is empty',
@@ -287,7 +298,7 @@ const translations = {
         'per_unit': 'each',
         'per_100': 'per 100@',
         'remove_item': 'Remove',
-        
+
         // Order Modal
         'order_form': 'Order Form',
         'order_details': 'Order Details',
@@ -311,14 +322,14 @@ const translations = {
         'cancel': 'Cancel',
         'submit_order': 'Submit Order',
         'sending': 'Sending...',
-        
+
         // Success Modal
         'telegram_opened': 'Telegram Chat Opened!',
         'telegram_message': 'A chat with @grlltdc has been opened with your order details. Complete your order there to finalize the purchase.',
         'telegram_note': 'Note: If it didn\'t open automatically, search for @grlltdc on Telegram.',
         'note_label': 'Note:',
         'close': 'Close',
-        
+
         // Security Modal
         'security_privacy': 'Security & Privacy',
         'data_security': 'Data Security',
@@ -327,14 +338,14 @@ const translations = {
         'mobile_security': 'Mobile Security',
         'clear_all_data': 'Clear All Data',
         'confirm_clear_all_data': 'Are you sure you want to delete all local data? This includes your cart and preferences.',
-        
+
         // Footer
         'copyright': '© 2025 MP Global Corp. All rights reserved.',
         'adult_only': 'Premium cannabis products for adults.',
         'security_privacy_link': 'Security & Privacy',
         'information': 'Information',
         'loading_information': 'Loading information...',
-        
+
         // Toast Messages
         'product_added': 'Product added to cart',
         'cart_cleared': 'Cart cleared',
@@ -351,17 +362,17 @@ const translations = {
         'error_loading_catalog': 'Error loading products',
         'no_products_found': 'No products found',
         'try_different_terms': 'Try different search terms',
-        
+
         // Image Zoom
         'image_zoom': 'Product Image',
         'zoom_in': 'Zoom In',
         'zoom_out': 'Zoom Out',
         'zoom_reset': 'Reset',
         'zoom_rotate': 'Rotate',
-        
+
         // Navigation
         'back': 'Back',
-        
+
         // Additional missing translations
         'loading': 'Loading...',
         'error': 'Error',
@@ -435,14 +446,14 @@ const translations = {
         'section_content': 'Section content',
         'information_section': 'Information section',
         'error_section': 'Error section',
-        
+
         // Form validation messages
         'required_field': 'This field is required',
         'valid_email_required': 'Enter a valid email',
         'valid_phone_required': 'Enter a valid phone number',
         'min_chars_required': 'Must be at least 2 characters',
         'invalid_value': 'Invalid value',
-        
+
         // Security modal content
         'ssl_encryption': 'SSL/TLS Encryption',
         'ssl_encryption_desc': 'All communications are encrypted with bank-grade security protocols.',
@@ -477,7 +488,7 @@ const translations = {
         'verification': 'Verification',
         'verification_desc': 'All products are verified before inclusion in the catalog.'
     },
-    
+
     fr: {
         // Welcome Screen
         'welcome_title': 'MP Global Corp®',
@@ -487,14 +498,19 @@ const translations = {
         'feature_delivery': 'Livraison Sécurisée',
         'feature_security': '100% Privé',
         'adult_only': 'Réservé aux adultes (18+)',
-        
+        'view_all_media': 'Voir Médias',
+        'media_gallery': 'Galerie de Médias',
+        'video': 'Vidéo',
+        'gif': 'GIF',
+        'image': 'Image',
+
         // Header
         'app_title': 'MP Global Corp®',
         'app_tagline': 'Produits Cannabis Premium',
         'cart': 'Panier',
         'menu': 'Menu',
         'language_changed': 'Langue changée en',
-        
+
         // Navigation
         'all_products': 'Tous',
         'moroccan_hash': '🇲🇦 Marocain',
@@ -503,7 +519,7 @@ const translations = {
         'extractions': '🔬 Extractions',
         'varios': '📦 Divers',
         'search_placeholder': 'Rechercher des produits...',
-        
+
         // Product Modal
         'product_details': 'Détails du Produit',
         'price_options': 'Options de Prix',
@@ -514,7 +530,7 @@ const translations = {
         'unavailable': 'Indisponible',
         'description': 'Description',
         'stock': 'Stock',
-        
+
         // Cart Modal
         'my_order': 'Ma Commande',
         'cart_empty': 'Votre panier est vide',
@@ -526,7 +542,7 @@ const translations = {
         'per_unit': 'pièce',
         'per_100': 'par 100@',
         'remove_item': 'Supprimer',
-        
+
         // Order Modal
         'order_form': 'Formulaire de Commande',
         'order_details': 'Détails de la Commande',
@@ -550,14 +566,14 @@ const translations = {
         'cancel': 'Annuler',
         'submit_order': 'Envoyer la Commande',
         'sending': 'Envoi...',
-        
+
         // Success Modal
         'telegram_opened': 'Chat Telegram Ouvert!',
         'telegram_message': 'Un chat avec @grlltdc a été ouvert avec les détails de votre commande. Complétez votre commande là-bas pour finaliser l\'achat.',
         'telegram_note': 'Note: Si cela ne s\'est pas ouvert automatiquement, recherchez @grlltdc sur Telegram.',
         'note_label': 'Note :',
         'close': 'Fermer',
-        
+
         // Security Modal
         'security_privacy': 'Sécurité et Confidentialité',
         'data_security': 'Sécurité des Données',
@@ -566,14 +582,14 @@ const translations = {
         'mobile_security': 'Sécurité Mobile',
         'clear_all_data': 'Effacer Toutes les Données',
         'confirm_clear_all_data': 'Êtes-vous sûr de vouloir supprimer toutes les données locales ? Ceci inclut votre panier et vos préférences.',
-        
+
         // Footer
         'copyright': '© 2025 MP Global Corp. Tous droits réservés.',
         'adult_only': 'Produits cannabis premium pour adultes.',
         'security_privacy_link': 'Sécurité et Confidentialité',
         'information': 'Information',
         'loading_information': 'Chargement des informations...',
-        
+
         // Toast Messages
         'product_added': 'Produit ajouté au panier',
         'cart_cleared': 'Panier vidé',
@@ -590,17 +606,17 @@ const translations = {
         'error_loading_catalog': 'Erreur de chargement des produits',
         'no_products_found': 'Aucun produit trouvé',
         'try_different_terms': 'Essayez d\'autres termes de recherche',
-        
+
         // Image Zoom
         'image_zoom': 'Image du Produit',
         'zoom_in': 'Zoomer',
         'zoom_out': 'Dézoomer',
         'zoom_reset': 'Réinitialiser',
         'zoom_rotate': 'Tourner',
-        
+
         // Navigation
         'back': 'Retour',
-        
+
         // Additional missing translations
         'loading': 'Chargement...',
         'error': 'Erreur',
@@ -674,14 +690,14 @@ const translations = {
         'section_content': 'Contenu de section',
         'information_section': 'Section d\'information',
         'error_section': 'Section d\'erreur',
-        
+
         // Form validation messages
         'required_field': 'Ce champ est obligatoire',
         'valid_email_required': 'Entrez un email valide',
         'valid_phone_required': 'Entrez un numéro de téléphone valide',
         'min_chars_required': 'Doit avoir au moins 2 caractères',
         'invalid_value': 'Valeur invalide',
-        
+
         // Security modal content
         'ssl_encryption': 'Chiffrement SSL/TLS',
         'ssl_encryption_desc': 'Toutes les communications sont chiffrées avec des protocoles de sécurité de niveau bancaire.',
@@ -725,7 +741,7 @@ class TranslationManager {
         this.translations = translations;
         this.applyHtmlLang();
     }
-    
+
     getStoredLanguage() {
         return localStorage.getItem('mp_language') || 'es';
     }
@@ -735,7 +751,7 @@ class TranslationManager {
         if (this.translations[lang]) return lang;
         return 'es';
     }
-    
+
     setLanguage(language) {
         if (this.translations[language]) {
             this.currentLanguage = language;
@@ -744,17 +760,17 @@ class TranslationManager {
             this.updateUI();
         }
     }
-    
+
     t(key) {
         return this.translations[this.currentLanguage][key] || key;
     }
-    
+
     updateUI() {
         // Actualizar todos los elementos con data-i18n
         document.querySelectorAll('[data-i18n]').forEach(element => {
             const key = element.getAttribute('data-i18n');
             const translation = this.t(key);
-            
+
             if (element.tagName === 'INPUT' && element.type === 'text') {
                 element.placeholder = translation;
             } else if (element.tagName === 'TEXTAREA') {
@@ -763,21 +779,21 @@ class TranslationManager {
                 element.textContent = translation;
             }
         });
-        
+
         // Actualizar títulos de atributos
         document.querySelectorAll('[data-i18n-title]').forEach(element => {
             const key = element.getAttribute('data-i18n-title');
             element.title = this.t(key);
         });
     }
-    
+
     getAvailableLanguages() {
         return Object.keys(this.translations).map(code => ({
             code,
             name: this.getLanguageName(code)
         }));
     }
-    
+
     getLanguageName(code) {
         const names = {
             'es': 'Español',

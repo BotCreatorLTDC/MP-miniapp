@@ -1,0 +1,133 @@
+{
+  "categories": {
+    "moroccan_hash": {
+      "name": "🇲🇦 MOROCCAN STUFF 🇲🇦",
+      "description": "Productos de hash marroquí",
+      "products": [
+        {
+          "name": "Commercial Mousse - Premium",
+          "price": "100@ / 320# | 300@ / 290# | 500@ / 270# | 1k@ / 250#",
+          "description": "Commercial Mousse de alta calidad con proceso artesanal tradicional",
+          "stock": "Disponible",
+          "media": [
+            {
+              "type": "image",
+              "url": "products/moroccan/commercial_mousse_1.jpg",
+              "thumbnail": "products/moroccan/thumbs/commercial_mousse_1_thumb.jpg"
+            },
+            {
+              "type": "video",
+              "url": "products/moroccan/commercial_mousse_process.mp4",
+              "thumbnail": "products/moroccan/thumbs/commercial_mousse_process_thumb.jpg",
+              "duration": 25
+            },
+            {
+              "type": "gif",
+              "url": "products/moroccan/commercial_mousse_texture.gif",
+              "thumbnail": "products/moroccan/thumbs/commercial_mousse_texture_thumb.jpg"
+            },
+            {
+              "type": "image",
+              "url": "products/moroccan/commercial_mousse_2.jpg",
+              "thumbnail": "products/moroccan/thumbs/commercial_mousse_2_thumb.jpg"
+            }
+          ]
+        },
+        {
+          "name": "7Seven Mousse - Artesanal",
+          "price": "100@ / 320# | 300@ / 290# | 500@ / 270# | 1k@ / 250#",
+          "description": "7Seven Mousse con proceso artesanal único",
+          "stock": "Disponible",
+          "media": [
+            {
+              "type": "video",
+              "url": "products/moroccan/7seven_mousse_showcase.mp4",
+              "thumbnail": "products/moroccan/thumbs/7seven_mousse_showcase_thumb.jpg",
+              "duration": 18
+            },
+            {
+              "type": "image",
+              "url": "products/moroccan/7seven_mousse_1.jpg",
+              "thumbnail": "products/moroccan/thumbs/7seven_mousse_1_thumb.jpg"
+            },
+            {
+              "type": "gif",
+              "url": "products/moroccan/7seven_mousse_consistency.gif",
+              "thumbnail": "products/moroccan/thumbs/7seven_mousse_consistency_thumb.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "cali_flower": {
+      "name": "🇺🇸 CALIFORNIA FLOWER 🇺🇸",
+      "description": "Flores premium de California",
+      "products": [
+        {
+          "name": "Purple Haze - Premium",
+          "price": "100@ / 450# | 300@ / 420# | 500@ / 400# | 1k@ / 380#",
+          "description": "Purple Haze de cultivo premium con efectos únicos",
+          "stock": "Disponible",
+          "media": [
+            {
+              "type": "image",
+              "url": "products/cali/purple_haze_1.jpg",
+              "thumbnail": "products/cali/thumbs/purple_haze_1_thumb.jpg"
+            },
+            {
+              "type": "video",
+              "url": "products/cali/purple_haze_grow.mp4",
+              "thumbnail": "products/cali/thumbs/purple_haze_grow_thumb.jpg",
+              "duration": 30
+            },
+            {
+              "type": "gif",
+              "url": "products/cali/purple_haze_trichomes.gif",
+              "thumbnail": "products/cali/thumbs/purple_haze_trichomes_thumb.jpg"
+            },
+            {
+              "type": "image",
+              "url": "products/cali/purple_haze_2.jpg",
+              "thumbnail": "products/cali/thumbs/purple_haze_2_thumb.jpg"
+            },
+            {
+              "type": "image",
+              "url": "products/cali/purple_haze_3.jpg",
+              "thumbnail": "products/cali/thumbs/purple_haze_3_thumb.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "extractions": {
+      "name": "🔬 EXTRACTIONS 🔬",
+      "description": "Extracciones y concentrados",
+      "products": [
+        {
+          "name": "Live Rosin - Cold Pressed",
+          "price": "50@ / 800# | 100@ / 750# | 250@ / 700#",
+          "description": "Live Rosin extraído en frío para máxima pureza",
+          "stock": "Disponible",
+          "media": [
+            {
+              "type": "video",
+              "url": "products/extractions/live_rosin_extraction.mp4",
+              "thumbnail": "products/extractions/thumbs/live_rosin_extraction_thumb.jpg",
+              "duration": 45
+            },
+            {
+              "type": "gif",
+              "url": "products/extractions/live_rosin_consistency.gif",
+              "thumbnail": "products/extractions/thumbs/live_rosin_consistency_thumb.jpg"
+            },
+            {
+              "type": "image",
+              "url": "products/extractions/live_rosin_1.jpg",
+              "thumbnail": "products/extractions/thumbs/live_rosin_1_thumb.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -868,31 +868,40 @@ class MPApp {
     }
 
     createProductCard(product) {
-        console.log('createProductCard called for:', product.name, 'with images:', product.images);
-        console.log('Number of images:', product.images ? product.images.length : 0);
+        console.log('createProductCard called for:', product.name, 'with media:', product.media || product.images);
 
         const isAvailable = product.stock === 'Disponible' || product.stock === this.t('available');
         const categoryClass = this.getCategoryClass(this.currentCategory);
 
-        let imageHtml = '';
+        let mediaHtml = '';
 
-        if (product.images && product.images.length > 0) {
-            // Mostrar máximo 2 imágenes
-            const maxImages = Math.min(2, product.images.length);
-            const images = product.images.slice(0, maxImages);
+        // Usar el nuevo sistema de medios o fallback a imágenes
+        const mediaItems = product.media || (product.images ? product.images.map(img => {
+            // Detectar tipo de medio por extensión
+            const url = img.toLowerCase();
+            if (url.includes('.mp4') || url.includes('.webm') || url.includes('.mov')) {
+                return { type: 'video', url: img };
+            } else if (url.includes('.gif')) {
+                return { type: 'gif', url: img };
+            } else {
+                return { type: 'image', url: img };
+            }
+        }) : []);
 
-            imageHtml = images.map((image, index) => {
-                const imageUrl = this.getImageUrl(image);
-                console.log(`Generated image URL ${index + 1}:`, imageUrl);
-                this.lastImageLoadTime = Date.now();
-                return `<img src="${imageUrl}" alt="${product.name}" class="gallery-image ${index > 0 ? 'secondary-image' : ''}" onload="console.log('Image loaded:', this.src); window.mpApp.lastImageLoadTime = Date.now();" onerror="console.log('Image error:', this.src); this.style.display='none';">`;
+        if (mediaItems && mediaItems.length > 0) {
+            // Mostrar máximo 2 elementos de medios
+            const maxMedia = Math.min(2, mediaItems.length);
+            const media = mediaItems.slice(0, maxMedia);
+
+            mediaHtml = media.map((mediaItem, index) => {
+                return this.createMediaElement(mediaItem, product.name, index);
             }).join('');
 
-            // Añadir chip de galería en la tarjeta (siempre que haya ≥1 imagen)
-            const imagesPayload = JSON.stringify(product.images).replace(/"/g, '&quot;');
-            imageHtml += `<div class="view-all-images" onclick="event.stopPropagation(); window.mpApp.showImageGallery('${product.name}', ${imagesPayload})">
+            // Añadir chip de galería en la tarjeta
+            const mediaPayload = JSON.stringify(mediaItems).replace(/"/g, '&quot;');
+            mediaHtml += `<div class="view-all-media" onclick="event.stopPropagation(); window.mpApp.showMediaGallery('${product.name}', ${mediaPayload})">
                 <i class="fas fa-images"></i>
-                <span>${product.images.length > 2 ? '+' + (product.images.length - 2) : this.t('view_all_images')}</span>
+                <span>${mediaItems.length > 2 ? '+' + (mediaItems.length - 2) : this.t('view_all_media')}</span>
             </div>`;
         }
 
@@ -925,8 +934,8 @@ class MPApp {
                     ${this.getCategoryIcon(this.currentCategory)}
                 </div>
                 <div class="product-image">
-                    ${imageHtml}
-                    <div class="image-placeholder" style="display: ${product.images && product.images.length > 0 ? 'none' : 'flex'};">
+                    ${mediaHtml}
+                    <div class="image-placeholder" style="display: ${mediaItems && mediaItems.length > 0 ? 'none' : 'flex'};">
                         <i class="fas fa-cannabis"></i>
                     </div>
                 </div>
@@ -940,6 +949,278 @@ class MPApp {
                 </div>
             </div>
         `;
+    }
+
+    createMediaElement(mediaItem, productName, index) {
+        const mediaUrl = this.getMediaUrl(mediaItem.url);
+        const isSecondary = index > 0;
+
+        switch (mediaItem.type) {
+            case 'video':
+                return `
+                    <div class="media-container video-container ${isSecondary ? 'secondary-media' : ''}" data-media-type="video">
+                        <video class="gallery-media" muted loop playsinline preload="metadata">
+                            <source src="${mediaUrl}" type="video/mp4">
+                            <source src="${mediaUrl.replace('.mp4', '.webm')}" type="video/webm">
+                        </video>
+                        <div class="media-overlay">
+                            <i class="fas fa-play media-play-icon"></i>
+                        </div>
+                        <div class="media-duration">${this.formatDuration(mediaItem.duration)}</div>
+                    </div>
+                `;
+
+            case 'gif':
+                return `
+                    <div class="media-container gif-container ${isSecondary ? 'secondary-media' : ''}" data-media-type="gif">
+                        <img src="${mediaUrl}" alt="${productName}" class="gallery-media gif-media">
+                        <div class="media-overlay">
+                            <i class="fas fa-play gif-play-icon"></i>
+                        </div>
+                    </div>
+                `;
+
+            case 'image':
+            default:
+                return `
+                    <img src="${mediaUrl}" alt="${productName}" class="gallery-media gallery-image ${isSecondary ? 'secondary-image' : ''}"
+                         onload="console.log('Media loaded:', this.src); window.mpApp.lastImageLoadTime = Date.now();"
+                         onerror="console.log('Media error:', this.src); this.style.display='none';">
+                `;
+        }
+    }
+
+    getMediaUrl(mediaPath) {
+        // Si ya es una URL completa, devolverla tal como está
+        if (mediaPath.startsWith('http://') || mediaPath.startsWith('https://')) {
+            return mediaPath;
+        }
+
+        // Si es una ruta relativa, construir la URL completa usando la misma lógica del bot
+        const baseUrl = 'https://botcreatorltdc.github.io/MP-miniapp';
+        return `${baseUrl}/${mediaPath}`;
+    }
+
+    formatDuration(seconds) {
+        if (!seconds) return '';
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    showMediaGallery(productName, mediaItems) {
+        console.log('Mostrando galería de medios para:', productName, mediaItems);
+
+        const modal = document.getElementById('mediaGalleryModal');
+        if (!modal) {
+            this.createMediaGalleryModal();
+        }
+
+        // Actualizar contenido del modal
+        this.updateMediaGalleryContent(productName, mediaItems);
+
+        // Mostrar modal
+        document.getElementById('mediaGalleryModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    createMediaGalleryModal() {
+        const modalHtml = `
+            <div class="modal" id="mediaGalleryModal">
+                <div class="modal-content media-gallery-content">
+                    <div class="modal-header">
+                        <div class="modal-header-content">
+                            <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                            <h2 id="mediaGalleryTitle">Galería de Medios</h2>
+                        </div>
+                        <button class="close-btn" id="closeMediaGalleryModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body media-gallery-body">
+                        <div class="media-gallery-container">
+                            <div class="media-gallery-main" id="mediaGalleryMain">
+                                <!-- Contenido principal de medios -->
+                            </div>
+                            <div class="media-gallery-thumbnails" id="mediaGalleryThumbnails">
+                                <!-- Miniaturas -->
+                            </div>
+                        </div>
+                        <div class="media-gallery-controls">
+                            <button class="media-control-btn" id="prevMediaBtn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="media-control-btn" id="nextMediaBtn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+        // Configurar event listeners
+        this.setupMediaGalleryEvents();
+    }
+
+    setupMediaGalleryEvents() {
+        const modal = document.getElementById('mediaGalleryModal');
+        const closeBtn = document.getElementById('closeMediaGalleryModal');
+        const prevBtn = document.getElementById('prevMediaBtn');
+        const nextBtn = document.getElementById('nextMediaBtn');
+
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        prevBtn.addEventListener('click', () => this.previousMedia());
+        nextBtn.addEventListener('click', () => this.nextMedia());
+
+        // Cerrar con Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+
+    updateMediaGalleryContent(productName, mediaItems) {
+        const title = document.getElementById('mediaGalleryTitle');
+        const mainContainer = document.getElementById('mediaGalleryMain');
+        const thumbnailsContainer = document.getElementById('mediaGalleryThumbnails');
+
+        title.textContent = `${productName} - Galería`;
+
+        // Limpiar contenido anterior
+        mainContainer.innerHTML = '';
+        thumbnailsContainer.innerHTML = '';
+
+        // Configurar estado de la galería
+        this.currentMediaIndex = 0;
+        this.mediaItems = mediaItems;
+
+        // Crear elementos de medios
+        mediaItems.forEach((mediaItem, index) => {
+            // Contenido principal
+            const mediaElement = this.createGalleryMediaElement(mediaItem, index === 0);
+            mainContainer.appendChild(mediaElement);
+
+            // Miniatura
+            const thumbnail = this.createMediaThumbnail(mediaItem, index);
+            thumbnailsContainer.appendChild(thumbnail);
+        });
+
+        // Actualizar controles
+        this.updateMediaGalleryControls();
+    }
+
+    createGalleryMediaElement(mediaItem, isActive) {
+        const container = document.createElement('div');
+        container.className = `gallery-media-item ${isActive ? 'active' : ''}`;
+        container.dataset.mediaType = mediaItem.type;
+
+        const mediaUrl = this.getMediaUrl(mediaItem.url);
+
+        switch (mediaItem.type) {
+            case 'video':
+                container.innerHTML = `
+                    <video class="gallery-main-media" controls muted loop playsinline preload="metadata">
+                        <source src="${mediaUrl}" type="video/mp4">
+                        <source src="${mediaUrl.replace('.mp4', '.webm')}" type="video/webm">
+                    </video>
+                    <div class="media-info">
+                        <span class="media-type-badge video-badge">
+                            <i class="fas fa-video"></i> Video
+                        </span>
+                        ${mediaItem.duration ? `<span class="media-duration">${this.formatDuration(mediaItem.duration)}</span>` : ''}
+                    </div>
+                `;
+                break;
+
+            case 'gif':
+                container.innerHTML = `
+                    <img src="${mediaUrl}" alt="GIF" class="gallery-main-media gif-media">
+                    <div class="media-info">
+                        <span class="media-type-badge gif-badge">
+                            <i class="fas fa-play"></i> GIF
+                        </span>
+                    </div>
+                `;
+                break;
+
+            case 'image':
+            default:
+                container.innerHTML = `
+                    <img src="${mediaUrl}" alt="Imagen" class="gallery-main-media">
+                    <div class="media-info">
+                        <span class="media-type-badge image-badge">
+                            <i class="fas fa-image"></i> Imagen
+                        </span>
+                    </div>
+                `;
+        }
+
+        return container;
+    }
+
+    createMediaThumbnail(mediaItem, index) {
+        const thumbnail = document.createElement('div');
+        thumbnail.className = `media-thumbnail ${index === 0 ? 'active' : ''}`;
+        thumbnail.dataset.index = index;
+
+        const mediaUrl = this.getMediaUrl(mediaItem.thumbnail || mediaItem.url);
+
+        thumbnail.innerHTML = `
+            <img src="${mediaUrl}" alt="Thumbnail" class="thumbnail-image">
+            <div class="thumbnail-overlay">
+                <i class="fas fa-${mediaItem.type === 'video' ? 'play' : mediaItem.type === 'gif' ? 'play' : 'image'}"></i>
+            </div>
+        `;
+
+        thumbnail.addEventListener('click', () => this.showMediaAtIndex(index));
+
+        return thumbnail;
+    }
+
+    showMediaAtIndex(index) {
+        const mainContainer = document.getElementById('mediaGalleryMain');
+        const thumbnails = document.querySelectorAll('.media-thumbnail');
+        const mediaItems = document.querySelectorAll('.gallery-media-item');
+
+        // Ocultar elemento actual
+        mediaItems[this.currentMediaIndex].classList.remove('active');
+        thumbnails[this.currentMediaIndex].classList.remove('active');
+
+        // Mostrar nuevo elemento
+        this.currentMediaIndex = index;
+        mediaItems[index].classList.add('active');
+        thumbnails[index].classList.add('active');
+
+        this.updateMediaGalleryControls();
+    }
+
+    previousMedia() {
+        if (this.currentMediaIndex > 0) {
+            this.showMediaAtIndex(this.currentMediaIndex - 1);
+        }
+    }
+
+    nextMedia() {
+        if (this.currentMediaIndex < this.mediaItems.length - 1) {
+            this.showMediaAtIndex(this.currentMediaIndex + 1);
+        }
+    }
+
+    updateMediaGalleryControls() {
+        const prevBtn = document.getElementById('prevMediaBtn');
+        const nextBtn = document.getElementById('nextMediaBtn');
+
+        prevBtn.style.opacity = this.currentMediaIndex === 0 ? '0.5' : '1';
+        nextBtn.style.opacity = this.currentMediaIndex === this.mediaItems.length - 1 ? '0.5' : '1';
     }
 
     getCategoryClass(category) {
@@ -1012,6 +1293,17 @@ class MPApp {
 
     showImageGallery(productName, images) {
         console.log('showImageGallery called for:', productName, 'with', images.length, 'images');
+        console.log('Images array:', images);
+
+        // Convertir imágenes al nuevo formato de medios
+        const mediaItems = images.map(img => ({ type: 'image', url: img }));
+
+        // Usar el nuevo sistema de galería de medios
+        this.showMediaGallery(productName, mediaItems);
+    }
+
+    showImageGalleryLegacy(productName, images) {
+        console.log('showImageGalleryLegacy called for:', productName, 'with', images.length, 'images');
         console.log('Images array:', images);
 
         // Crear modal para galería de imágenes
