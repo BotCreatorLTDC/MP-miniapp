@@ -899,9 +899,11 @@ class MPApp {
         console.log('mediaItems processed:', mediaItems);
 
         if (mediaItems && mediaItems.length > 0) {
-            // Mostrar máximo 2 elementos de medios
-            const maxMedia = Math.min(2, mediaItems.length);
-            const media = mediaItems.slice(0, maxMedia);
+            // Mostrar solo 1 elemento de medio (la primera imagen)
+            const maxMedia = 1;
+            // Filtrar solo imágenes para la miniatura
+            const imageItems = mediaItems.filter(item => item.type === 'image');
+            const media = imageItems.slice(0, maxMedia);
 
             mediaHtml = media.map((mediaItem, index) => {
                 return this.createMediaElement(mediaItem, product.name, index);
@@ -970,14 +972,13 @@ class MPApp {
             case 'video':
                 return `
                     <div class="media-container video-container ${isSecondary ? 'secondary-media' : ''}" data-media-type="video">
-                        <video class="gallery-media" muted loop playsinline preload="metadata">
+                        <video class="gallery-media" muted loop playsinline autoplay preload="metadata" style="object-fit: cover;">
                             <source src="${mediaUrl}" type="video/mp4">
                             <source src="${mediaUrl.replace('.mp4', '.webm')}" type="video/webm">
                         </video>
                         <div class="media-overlay">
                             <i class="fas fa-play media-play-icon"></i>
                         </div>
-                        <div class="media-duration">${this.formatDuration(mediaItem.duration)}</div>
                     </div>
                 `;
 
@@ -1185,14 +1186,37 @@ class MPApp {
         thumbnail.className = `media-thumbnail ${index === 0 ? 'active' : ''}`;
         thumbnail.dataset.index = index;
 
-        const mediaUrl = this.getMediaUrl(mediaItem.thumbnail || mediaItem.url);
+        let thumbnailUrl;
+        if (mediaItem.type === 'video') {
+            // Para videos, usar la primera imagen disponible o crear un thumbnail
+            const imageItems = this.currentMediaItems.filter(item => item.type === 'image');
+            if (imageItems.length > 0) {
+                thumbnailUrl = this.getMediaUrl(imageItems[0].url);
+            } else {
+                // Si no hay imágenes, usar el video con poster
+                thumbnailUrl = this.getMediaUrl(mediaItem.url);
+            }
+        } else {
+            thumbnailUrl = this.getMediaUrl(mediaItem.url);
+        }
 
-        thumbnail.innerHTML = `
-            <img src="${mediaUrl}" alt="Thumbnail" class="thumbnail-image">
-            <div class="thumbnail-overlay">
-                <i class="fas fa-${mediaItem.type === 'video' ? 'play' : mediaItem.type === 'gif' ? 'play' : 'image'}"></i>
-            </div>
-        `;
+        if (mediaItem.type === 'video') {
+            thumbnail.innerHTML = `
+                <video class="thumbnail-video" muted preload="metadata" poster="${thumbnailUrl}">
+                    <source src="${this.getMediaUrl(mediaItem.url)}" type="video/mp4">
+                </video>
+                <div class="thumbnail-overlay">
+                    <i class="fas fa-play"></i>
+                </div>
+            `;
+        } else {
+            thumbnail.innerHTML = `
+                <img src="${thumbnailUrl}" alt="Thumbnail" class="thumbnail-image">
+                <div class="thumbnail-overlay">
+                    <i class="fas fa-${mediaItem.type === 'gif' ? 'play' : 'image'}"></i>
+                </div>
+            `;
+        }
 
         thumbnail.addEventListener('click', () => this.showMediaAtIndex(index));
 
