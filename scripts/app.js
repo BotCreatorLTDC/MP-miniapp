@@ -868,7 +868,9 @@ class MPApp {
     }
 
     createProductCard(product) {
-        console.log('createProductCard called for:', product.name, 'with media:', product.media || product.images);
+        console.log('createProductCard called for:', product.name);
+        console.log('product.media:', product.media);
+        console.log('product.images:', product.images);
 
         const isAvailable = product.stock === 'Disponible' || product.stock === this.t('available');
         const categoryClass = this.getCategoryClass(this.currentCategory);
@@ -876,17 +878,25 @@ class MPApp {
         let mediaHtml = '';
 
         // Usar el nuevo sistema de medios o fallback a imágenes
-        const mediaItems = product.media || (product.images ? product.images.map(img => {
-            // Detectar tipo de medio por extensión
-            const url = img.toLowerCase();
-            if (url.includes('.mp4') || url.includes('.webm') || url.includes('.mov')) {
-                return { type: 'video', url: img };
-            } else if (url.includes('.gif')) {
-                return { type: 'gif', url: img };
-            } else {
-                return { type: 'image', url: img };
-            }
-        }) : []);
+        let mediaItems = [];
+
+        if (product.media && product.media.length > 0) {
+            mediaItems = product.media;
+        } else if (product.images && product.images.length > 0) {
+            mediaItems = product.images.map(img => {
+                // Detectar tipo de medio por extensión
+                const url = img.toLowerCase();
+                if (url.includes('.mp4') || url.includes('.webm') || url.includes('.mov')) {
+                    return { type: 'video', url: img };
+                } else if (url.includes('.gif')) {
+                    return { type: 'gif', url: img };
+                } else {
+                    return { type: 'image', url: img };
+                }
+            });
+        }
+
+        console.log('mediaItems processed:', mediaItems);
 
         if (mediaItems && mediaItems.length > 0) {
             // Mostrar máximo 2 elementos de medios
@@ -1033,7 +1043,7 @@ class MPApp {
                 <div class="modal-content media-gallery-content">
                     <div class="modal-header">
                         <div class="modal-header-content">
-                            <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                            <img src="https://botcreatorltdc.github.io/MP-miniapp/assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
                             <h2 id="mediaGalleryTitle">Galería de Medios</h2>
                         </div>
                         <button class="close-btn" id="closeMediaGalleryModal">
@@ -1298,8 +1308,17 @@ class MPApp {
         console.log('showImageGallery called for:', productName, 'with', images.length, 'images');
         console.log('Images array:', images);
 
-        // Convertir imágenes al nuevo formato de medios
-        const mediaItems = images.map(img => ({ type: 'image', url: img }));
+        // Convertir imágenes al nuevo formato de medios detectando el tipo
+        const mediaItems = images.map(img => {
+            const url = img.toLowerCase();
+            if (url.includes('.mp4') || url.includes('.webm') || url.includes('.mov')) {
+                return { type: 'video', url: img };
+            } else if (url.includes('.gif')) {
+                return { type: 'gif', url: img };
+            } else {
+                return { type: 'image', url: img };
+            }
+        });
 
         // Usar el nuevo sistema de galería de medios
         this.showMediaGallery(productName, mediaItems);
