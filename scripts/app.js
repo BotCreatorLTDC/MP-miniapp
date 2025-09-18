@@ -1030,6 +1030,10 @@ class MPApp {
             this.createMediaGalleryModal();
         }
 
+        // Guardar los medios actuales para uso en thumbnails
+        this.currentMediaItems = mediaItems;
+        this.currentMediaIndex = 0;
+
         // Actualizar contenido del modal
         this.updateMediaGalleryContent(productName, mediaItems);
 
@@ -1044,7 +1048,7 @@ class MPApp {
                 <div class="modal-content media-gallery-content">
                     <div class="modal-header">
                         <div class="modal-header-content">
-                            <img src="https://botcreatorltdc.github.io/MP-miniapp/assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                                <img src="https://botcreatorltdc.github.io/MP-miniapp/assets/images/img/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
                             <h2 id="mediaGalleryTitle">Galería de Medios</h2>
                         </div>
                         <button class="close-btn" id="closeMediaGalleryModal">
