@@ -179,7 +179,7 @@ class MPApp {
         this.welcomeScreenShown = true;
 
         // Aplicar traducciones a la pantalla de bienvenida
-        this.translationManager.translatePage();
+        // Las traducciones se aplican automáticamente con data-i18n
 
         console.log('Pantalla de bienvenida mostrada');
     }
@@ -1716,9 +1716,16 @@ class MPApp {
                     this.updateAddToCartButtonWithVariant(product, selectedVariant);
                 });
                 
-                // Traducir elementos
-                this.translateElement(variantsSection.querySelector('h3'));
-                this.translateElement(variantSelect.querySelector('option[value=""]'));
+                // Traducir elementos usando data-i18n
+                const h3Element = variantsSection.querySelector('h3');
+                const optionElement = variantSelect.querySelector('option[value=""]');
+                
+                if (h3Element && h3Element.dataset.i18n) {
+                    h3Element.textContent = this.t(h3Element.dataset.i18n);
+                }
+                if (optionElement && optionElement.dataset.i18n) {
+                    optionElement.textContent = this.t(optionElement.dataset.i18n);
+                }
             } else {
                 variantsSection.style.display = 'none';
             }
