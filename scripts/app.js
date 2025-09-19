@@ -1595,10 +1595,15 @@ class MPApp {
         const priceList = document.getElementById('priceList');
         const productDescription = document.getElementById('productDescription');
         const stockBadge = document.getElementById('stockBadge');
+        const variantsSection = document.getElementById('variantsSection');
+        const variantSelect = document.getElementById('variantSelect');
 
         // Configurar modal
         modalProductName.textContent = product.name;
         productDescription.textContent = product.description;
+
+        // Configurar desplegable de variantes
+        this.setupVariantsSection(product, variantsSection, variantSelect);
 
         // Configurar galería de imágenes
         if (product.images && product.images.length > 0) {
@@ -1675,6 +1680,99 @@ class MPApp {
         };
 
         this.showModal(modal);
+    }
+
+    setupVariantsSection(product, variantsSection, variantSelect) {
+        // Detectar si el producto tiene variantes (SuperDope)
+        const hasVariants = product.name.includes('SuperDope') && product.description.includes('VARIANTES DISPONIBLES');
+        
+        if (hasVariants) {
+            console.log('Configurando desplegable de variantes para:', product.name);
+            
+            // Extraer variantes de la descripción
+            const variants = this.extractVariantsFromDescription(product.description);
+            
+            if (variants.length > 0) {
+                // Mostrar sección de variantes
+                variantsSection.style.display = 'block';
+                
+                // Limpiar opciones anteriores
+                variantSelect.innerHTML = `<option value="" data-i18n="choose_variant">${this.t('choose_variant')}</option>`;
+                
+                // Añadir variantes al desplegable
+                variants.forEach(variant => {
+                    const option = document.createElement('option');
+                    option.value = variant;
+                    option.textContent = variant;
+                    variantSelect.appendChild(option);
+                });
+                
+                // Configurar event listener para el cambio de variante
+                variantSelect.addEventListener('change', () => {
+                    const selectedVariant = variantSelect.value;
+                    console.log('Variante seleccionada:', selectedVariant);
+                    
+                    // Actualizar el botón de agregar al carrito con la variante
+                    this.updateAddToCartButtonWithVariant(product, selectedVariant);
+                });
+                
+                // Traducir elementos
+                this.translateElement(variantsSection.querySelector('h3'));
+                this.translateElement(variantSelect.querySelector('option[value=""]'));
+            } else {
+                variantsSection.style.display = 'none';
+            }
+        } else {
+            variantsSection.style.display = 'none';
+        }
+    }
+
+    extractVariantsFromDescription(description) {
+        const variants = [];
+        const lines = description.split('\n');
+        let inVariantsSection = false;
+        
+        for (const line of lines) {
+            if (line.includes('VARIANTES DISPONIBLES')) {
+                inVariantsSection = true;
+                continue;
+            }
+            
+            if (inVariantsSection) {
+                if (line.includes('**CARACTERÍSTICAS:**') || line.includes('**PRECIOS POR CANTIDAD:**')) {
+                    break;
+                }
+                
+                // Extraer variante de líneas que empiezan con "•"
+                const match = line.match(/•\s*(.+)/);
+                if (match) {
+                    variants.push(match[1].trim());
+                }
+            }
+        }
+        
+        return variants;
+    }
+
+    updateAddToCartButtonWithVariant(product, selectedVariant) {
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        if (addToCartBtn) {
+            // Guardar la variante seleccionada en el botón
+            addToCartBtn.dataset.selectedVariant = selectedVariant;
+            
+            // Actualizar el texto del botón si hay variante seleccionada
+            if (selectedVariant) {
+                addToCartBtn.innerHTML = `
+                    <i class="fas fa-cart-plus"></i>
+                    <span>${this.t('add_to_cart')} - ${selectedVariant}</span>
+                `;
+            } else {
+                addToCartBtn.innerHTML = `
+                    <i class="fas fa-cart-plus"></i>
+                    <span>${this.t('add_to_cart')}</span>
+                `;
+            }
+        }
     }
 
     updateAddToCartButton(product, selectedQuantity, selectedAmount) {
@@ -1771,21 +1869,31 @@ class MPApp {
         const addToCartBtn = document.getElementById('addToCartBtn');
         const selectedQuantity = addToCartBtn?.dataset.selectedQuantity || '1';
         const selectedAmount = addToCartBtn?.dataset.selectedAmount || product.price;
+        const selectedVariant = addToCartBtn?.dataset.selectedVariant || '';
 
         // Calcular precio total para esta variante
         const totalPrice = this.calculateTotalPrice(selectedQuantity, selectedAmount);
 
-        // Crear un ID único para esta variante específica
-        const variantId = `${product.name}_${selectedQuantity}_${selectedAmount}`;
+        // Crear un ID único para esta variante específica (incluyendo la variante si existe)
+        const variantId = selectedVariant 
+            ? `${product.name}_${selectedVariant}_${selectedQuantity}_${selectedAmount}`
+            : `${product.name}_${selectedQuantity}_${selectedAmount}`;
 
         const existingItem = this.cart.find(item => item.variantId === variantId);
 
         if (existingItem) {
             existingItem.quantity += 1;
         } else {
+            // Crear nombre del producto con variante si aplica
+            const productName = selectedVariant 
+                ? `${product.name} - ${selectedVariant}`
+                : product.name;
+
             this.cart.push({
                 variantId: variantId,
-                name: product.name,
+                name: productName,
+                originalName: product.name,
+                selectedVariant: selectedVariant,
                 price: product.price,
                 selectedQuantity: selectedQuantity,
                 selectedAmount: selectedAmount,

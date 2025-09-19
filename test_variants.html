@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Variantes - MP Global Corp</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="logo-image">
+                <div class="header-text">
+                    <h1 class="app-title">MP Global Corp®</h1>
+                    <p class="app-tagline">Premium Cannabis Products</p>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="products-grid" id="productsGrid">
+                <!-- Productos se cargarán aquí -->
+            </div>
+        </main>
+
+        <!-- Product Modal -->
+        <div class="modal" id="productModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-header-content">
+                        <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                        <h2 id="modalProductName"></h2>
+                    </div>
+                    <button class="close-btn" id="closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="product-gallery" id="productGallery">
+                        <!-- Imágenes del producto -->
+                    </div>
+                    <div class="product-details">
+                        <div class="price-section">
+                            <h3>Precios</h3>
+                            <div class="price-list" id="priceList">
+                                <!-- Precios por cantidad -->
+                            </div>
+                        </div>
+                        <div class="description-section">
+                            <h3>Descripción</h3>
+                            <p id="productDescription"></p>
+                        </div>
+                        <div class="variants-section" id="variantsSection" style="display: none;">
+                            <h3>Selecciona Variante</h3>
+                            <select id="variantSelect" class="variant-select">
+                                <option value="">Elige una variante...</option>
+                            </select>
+                        </div>
+                        <div class="stock-section">
+                            <span class="stock-badge" id="stockBadge"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="addToCartBtn">
+                        <i class="fas fa-cart-plus"></i>
+                        <span>Agregar al Pedido</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Modal -->
+        <div class="modal" id="cartModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-header-content">
+                        <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                        <h2>Mi Pedido</h2>
+                    </div>
+                    <button class="close-btn" id="closeCartModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="cartContent">
+                        <!-- Contenido del carrito -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="clearCartBtn">Limpiar</button>
+                    <button class="btn btn-success" id="proceedOrderBtn">Proceder al Pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/translations.js"></script>
+    <script src="scripts/app.js"></script>
+    <script>
+        // Datos de prueba para SuperDope con variantes
+        const testCatalog = {
+            categories: {
+                vapes: {
+                    name: "Vapes",
+                    products: [
+                        {
+                            name: "SuperDope Live Resin Diamonds 🔥💎",
+                            price: "1ud / 100# | 5ud / 90# | 10ud / 80# | 25ud / 70# | 50ud / 60# | 100ud / 50#",
+                            description: `**VARIANTES DISPONIBLES:**
+• SuperDope Live Resin Diamonds - Zkittlez
+• SuperDope Live Resin Diamonds - Gelato
+• SuperDope Live Resin Diamonds - OG Kush
+• SuperDope Live Resin Diamonds - Blue Dream
+• SuperDope Live Resin Diamonds - Sour Diesel
+• SuperDope Live Resin Diamonds - White Widow
+• SuperDope Live Resin Diamonds - Purple Haze
+• SuperDope Live Resin Diamonds - Jack Herer
+• SuperDope Live Resin Diamonds - Green Crack
+
+**CARACTERÍSTICAS:**
+• Concentrado premium de resina viva
+• Potencia excepcional y pureza máxima
+• Proceso de extracción avanzado
+• Sabor y aroma intensos
+
+**PRECIOS POR CANTIDAD:**
+• 1 unidad: 100€
+• 5 unidades: 90€ cada una
+• 10 unidades: 80€ cada una
+• 25 unidades: 70€ cada una
+• 50 unidades: 60€ cada una
+• 100 unidades: 50€ cada una`,
+                            stock: "Disponible",
+                            images: [
+                                "https://botcreatorltdc.github.io/MP-miniapp/assets/vape_superdope/vape_superdope.jpg",
+                                "https://botcreatorltdc.github.io/MP-miniapp/assets/vape_superdope/vape_superdope_gif.gif"
+                            ]
+                        },
+                        {
+                            name: "Live Resin Diamond - Gelato33 🍧🧊",
+                            price: "1ud / 40# | 5ud / 35# | 10ud / 30# | 25ud / 27.5# | 50ud / 25# | 100ud / 22.5#",
+                            description: "Concentrado premium de resina viva con sabor a gelato. Potencia excepcional y pureza máxima.",
+                            stock: "Disponible",
+                            images: []
+                        }
+                    ]
+                }
+            },
+            sections: {},
+            backups: []
+        };
+
+        // Inicializar app con datos de prueba
+        function initializeTestApp() {
+            if (window.mpApp) {
+                window.mpApp.catalog = testCatalog;
+                window.mpApp.renderProducts();
+                console.log('✅ App de prueba inicializada con catálogo de variantes');
+            } else {
+                console.error('❌ MP App no está disponible');
+            }
+        }
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', () => {
+            // Esperar a que se inicialice la app
+            setTimeout(initializeTestApp, 1000);
+        });
+    </script>
+</body>
+</html>

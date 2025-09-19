@@ -201,6 +201,73 @@ body::before {
     padding: 0.5rem;
 }
 
+/* Estilos para desplegable de variantes */
+.variants-section {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: var(--background-card);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.variants-section h3 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.variant-select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--background-darker);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-lg);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    padding-right: 3rem;
+}
+
+.variant-select:hover {
+    border-color: var(--secondary-color);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
+}
+
+.variant-select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: var(--shadow-gold);
+    transform: translateY(-1px);
+}
+
+.variant-select option {
+    background: var(--background-darker);
+    color: var(--text-primary);
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.variant-select option:hover {
+    background: var(--background-hover);
+}
+
+.variant-select option:checked {
+    background: var(--primary-color);
+    color: var(--text-primary);
+}
+
 .cart-btn {
     position: relative;
     background: var(--primary-color);

@@ -42,6 +42,8 @@ const translations = {
         'unavailable': 'No Disponible',
         'description': 'Descripción',
         'stock': 'Stock',
+        'select_variant': 'Selecciona Variante',
+        'choose_variant': 'Elige una variante...',
 
         // Cart Modal
         'my_order': 'Mi Pedido',
@@ -286,6 +288,8 @@ const translations = {
         'unavailable': 'Unavailable',
         'description': 'Description',
         'stock': 'Stock',
+        'select_variant': 'Select Variant',
+        'choose_variant': 'Choose a variant...',
 
         // Cart Modal
         'my_order': 'My Order',
@@ -530,6 +534,8 @@ const translations = {
         'unavailable': 'Indisponible',
         'description': 'Description',
         'stock': 'Stock',
+        'select_variant': 'Sélectionner Variante',
+        'choose_variant': 'Choisir une variante...',
 
         // Cart Modal
         'my_order': 'Ma Commande',
