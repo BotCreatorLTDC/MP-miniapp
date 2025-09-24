@@ -35,7 +35,7 @@ MINIAPP_URL=https://TU_USUARIO.github.io/mp-bot-miniapp
 ## 🔗 URLs
 
 - **Miniapp:** `https://TU_USUARIO.github.io/mp-bot-miniapp`
-- **API del Bot:** `https://mp-bot-wtcf.onrender.com/api/`
+- **API del Bot:** `https://mp-bot-3lij.onrender.com/api/`
 
 ## ✅ Funcionalidades
 

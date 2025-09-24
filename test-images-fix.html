@@ -144,7 +144,7 @@
             try {
                 document.getElementById('loading').innerHTML = '🔄 Cargando desde API...';
                 
-                const response = await fetch('https://mp-bot-wtcf.onrender.com/api/catalog');
+                const response = await fetch('https://mp-bot-3lij.onrender.com/api/catalog');
                 const data = await response.json();
                 
                 if (data.success && data.data.categories) {

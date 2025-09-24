@@ -1,0 +1,728 @@
+{
+  "categories": {
+    "moroccan_hash": {
+      "name": "🇲🇦 MOROCCAN STUFF 🇲🇦",
+      "description": "Productos de hash marroquí",
+      "products": [
+        {
+          "name": "Producto Integración Test 12:59:32",
+          "price": "150@ / 400# | 300@ / 350#",
+          "description": "Producto para probar integración completa",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Producto Test 12:55:04",
+          "price": "100@ / 350# | 300@ / 320# | 500@ / 300#",
+          "description": "Producto de prueba con imágenes y precios segmentados",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Static Sift",
+          "price": "Currently Not Available!",
+          "description": "Static Sift - Currently Not Available!",
+          "stock": "No Disponible",
+          "images": []
+        },
+        {
+          "name": "Commercial Mousse",
+          "price": "100@ / 320# | 300@ / 290# | 500@ / 270# | 1k@ / 250#",
+          "description": "Commercial Mousse - 100@ / 320# | 300@ / 290# | 500@ / 270# | 1k@ / 250#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "7Seven Mousse",
+          "price": "100@ / 320# | 300@ / 290# | 500@ / 270# | 1k@ / 250#",
+          "description": "7Seven Mousse - 100@ / 320# | 300@ / 290# | 500@ / 270# | 1k@ / 250#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Low Dry - Cherry Kush Mints (DRY)",
+          "price": "100@ / 390# | 300@ / 360# | 500@ / 340# | 1k@ / 310#",
+          "description": "Low Dry - Cherry Kush Mints (DRY) - 100@ / 390# | 300@ / 360# | 500@ / 340# | 1k@ / 310#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Top Dry - Royal Farms Plates",
+          "price": "100@ / 440# | 300@ / 410# | 500@ / 390# | 1k@ / 370#",
+          "description": "Top Dry - Royal Farms Plates - 100@ / 440# | 300@ / 410# | 500@ / 390# | 1k@ / 370#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Premium Dry",
+          "price": "Currently Not Available!",
+          "description": "Premium Dry - Currently Not Available!",
+          "stock": "No Disponible",
+          "images": []
+        },
+        {
+          "name": "Fresh Frozen",
+          "price": "Currently Not Available!",
+          "description": "Fresh Frozen - Currently Not Available!",
+          "stock": "No Disponible",
+          "images": []
+        },
+        {
+          "name": "Producto Integración Test 13:03:22",
+          "price": "150@ / 400# | 300@ / 350#",
+          "description": "Producto para probar integración completa",
+          "stock": "Disponible",
+          "images": []
+        }
+      ]
+    },
+    "spanish_flower": {
+      "name": "🇪🇸 SPANISH STUFF 🇪🇸",
+      "description": "Productos de flor española",
+      "products": [
+        {
+          "name": "Top Indoor (Loose) - Zkittlez",
+          "price": "100@ / 510# | 300@ / 480# | 500@ / 450#",
+          "description": "Top Indoor (Loose) - Zkittlez - 100@ / 510# | 300@ / 480# | 500@ / 450#",
+          "stock": "Disponible1",
+          "images": []
+        },
+        {
+          "name": "Top Shelf Indoor",
+          "price": "Currently Not Available! - MOQ: 1Oz — DM for prices",
+          "description": "Top Shelf Indoor - Currently Not Available! - MOQ: 1Oz — DM for prices",
+          "stock": "No Disponible",
+          "images": []
+        },
+        {
+          "name": "Top Shelf Exotics",
+          "price": "Currently Available! - MOQ: 1Oz — DM for prices",
+          "description": "Top Shelf Exotics - Currently Available! - MOQ: 1Oz — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Top Indoor (Loose) - Gary Payton",
+          "price": "100@ / 490# | 300@ / 460# | 500@ / 420#",
+          "description": "Top Indoor (Loose) - Gary Payton - 100@ / 490# | 300@ / 460# | 500@ / 420#",
+          "stock": "Disponible",
+          "images": []
+        }
+      ]
+    },
+    "cali_flower": {
+      "name": "🇺🇸 CALIFORNIA STUFF 🇺🇸",
+      "description": "Productos de flor californiana",
+      "products": [
+        {
+          "name": "Standard Indoor (Loose) - Apple Tartz",
+          "price": "1Oz / 260# | Qp / 780# | Hp / 1.240# | Lb / 2.400#",
+          "description": "Standard Indoor (Loose) - Apple Tartz - 1Oz / 260# | Qp / 780# | Hp / 1.240# | Lb / 2.400#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Loose Mids",
+          "price": "Currently Available! - MOQ: 1lb — DM for prices",
+          "description": "Loose Mids - Currently Available! - MOQ: 1lb — DM for prices",
+          "stock": "Dispo",
+          "images": []
+        },
+        {
+          "name": "Top Shelf Indoor - SuperDope - Cherry Popperz",
+          "price": "1Oz / 380# | Qp / 1.240# | Hp / 2.200# | Lb / 3600#",
+          "description": "Top Shelf Indoor - SuperDope - Cherry Popperz - 1Oz / 380# | Qp / 1.240# | Hp / 2.200# | Lb / 3600#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Top Shelf Indoor - SuperDope - BubbleGum Popperz",
+          "price": "1Oz / 380# | Qp / 1.240# | Hp / 2.200# | Lb / 3600#",
+          "description": "Top Shelf Indoor - SuperDope - BubbleGum Popperz - 1Oz / 380# | Qp / 1.240# | Hp / 2.200# | Lb / 3600#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Top Shelf Indoor - SuperDope - Plum Popperz",
+          "price": "1Oz / 380# | Qp / 1.240# | Hp / 2.200# | Lb / 3600#",
+          "description": "Top Shelf Indoor - SuperDope - Plum Popperz - 1Oz / 380# | Qp / 1.240# | Hp / 2.200# | Lb / 3600#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Branded Exotics - Genetics By G - Kalifa Kush Baby",
+          "price": "7@ / 180# | 14@ / 340# | 1Oz / 640€ | Qp / 1.920# | Hp / 3680# | Lb / 7040#",
+          "description": "Branded Exotics - Genetics By G - Kalifa Kush Baby - 7@ / 180# | 14@ / 340# | 1Oz / 640€ | Qp / 1.920# | Hp / 3680# | Lb / 7040#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Branded Exotics - Genetics By G - Grape Seizure",
+          "price": "7@ / 180# | 14@ / 340# | 1Oz / 640€ | Qp / 1.920# | Hp / 3680# | Lb / 7040#",
+          "description": "Branded Exotics - Genetics By G - Grape Seizure - 7@ / 180# | 14@ / 340# | 1Oz / 640€ | Qp / 1.920# | Hp / 3680# | Lb / 7040#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Branded Exotics - Genetics By G - Pink Zushi",
+          "price": "7@ / 180# | 14@ / 340# | 1Oz / 640€ | Qp / 1.920# | Hp / 3680# | Lb / 7040#",
+          "description": "Branded Exotics - Genetics By G - Pink Zushi - 7@ / 180# | 14@ / 340# | 1Oz / 640€ | Qp / 1.920# | Hp / 3680# | Lb / 7040#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Whole Plant Fresh Frozen (Wpff) - Exotic Terps - Wedding Papaya [2@ Jars]",
+          "price": "2@ / 50# | 10@ / 40# | 50@ / 35# | 100@ / 30#",
+          "description": "Whole Plant Fresh Frozen (Wpff) - Exotic Terps - Wedding Papaya [2@ Jars] - 2@ / 50# | 10@ / 40# | 50@ / 35# | 100@ / 30#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Whole Plant Fresh Frozen (Wpff) - Exotic Terps - Raimbow Belts 2.0 [2@ Jars]",
+          "price": "2@ / 70# | 10@ / 60# | 50@ / 55# | 100@ / 50#",
+          "description": "Whole Plant Fresh Frozen (Wpff) - Exotic Terps - Raimbow Belts 2.0 [2@ Jars] - 2@ / 70# | 10@ / 60# | 50@ / 55# | 100@ / 50#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Static Sift",
+          "price": "Currently Not Available!",
+          "description": "Static Sift - Currently Not Available!",
+          "stock": "No Disponible",
+          "images": []
+        }
+      ]
+    },
+    "extractions": {
+      "name": "🔬 EXTRACTIONS",
+      "description": "Productos de extracciones",
+      "products": [
+        {
+          "name": "Hash Rosin - Exotic Terps - Sour D x Zkittlez [2G Jars]",
+          "price": "1ud / 90# | 5ud / 80# | 10ud / 75#",
+          "description": "Hash Rosin - Exotic Terps - Sour D x Zkittlez [2G Jars] - 1ud / 90# | 5ud / 80# | 10ud / 75#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Hash Rosin - Exotic Terps - Sfv Og x Zkittlez [2G Jars]",
+          "price": "1ud / 110# | 5ud / 100# | 10ud / 95#",
+          "description": "Hash Rosin - Exotic Terps - Sfv Og x Zkittlez [2G Jars] - 1ud / 110# | 5ud / 100# | 10ud / 95#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "BHO",
+          "price": "Currently Available! - MOQ: 1oz — DM for prices",
+          "description": "BHO - Currently Available! - MOQ: 1oz — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Live Resin - Exotic Terps - LemonGum [2G Jars]",
+          "price": "2@ / 50# | 5ud / 45# | 10ud / 40# | 50ud / 35# | 100ud / 30#",
+          "description": "Live Resin - Exotic Terps - LemonGum [2G Jars] - 2@ / 50# | 5ud / 45# | 10ud / 40# | 50ud / 35# | 100ud / 30#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Live Resin - Exotic Terps - LemonGum [7G Jars]",
+          "price": "2@ / 160# | 5ud / 140# | 10ud / 125# | 50ud / 110# | 100ud / 90#",
+          "description": "Live Resin - Exotic Terps - LemonGum [7G Jars] - 2@ / 160# | 5ud / 140# | 10ud / 125# | 50ud / 110# | 100ud / 90#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Live Resin Sugars",
+          "price": "Currently Available! - MOQ: 1oz — DM for prices",
+          "description": "Live Resin Sugars - Currently Available! - MOQ: 1oz — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Live Resin Butter",
+          "price": "Currently Available! - MOQ: 1oz — DM for prices",
+          "description": "Live Resin Butter - Currently Available! - MOQ: 1oz — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Live Resin Crumble",
+          "price": "Currently Available! - MOQ: 1oz — DM for prices",
+          "description": "Live Resin Crumble - Currently Available! - MOQ: 1oz — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Live Resin Shatters",
+          "price": "Currently Available! - MOQ: 1oz — DM for prices",
+          "description": "Live Resin Shatters - Currently Available! - MOQ: 1oz — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Live Resin Diamonds - Exotic Terps - Alien OG [2G Jars]",
+          "price": "2@ / 60# | 10@ / 50# | 50@ / 35# | 100@ / 30#",
+          "description": "Live Resin Diamonds - Exotic Terps - Alien OG [2G Jars] - 2@ / 60# | 10@ / 50# | 50@ / 35# | 100@ / 30#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Live Resin Diamonds - Exotic Terps - Alien OG [7G Jars]",
+          "price": "2@ / 180# | 10@ / 125# | 50@ / 110# | 100@ / 90#",
+          "description": "Live Resin Diamonds - Exotic Terps - Alien OG [7G Jars] - 2@ / 180# | 10@ / 125# | 50@ / 110# | 100@ / 90#",
+          "stock": "Disponible",
+          "images": []
+        }
+      ]
+    },
+    "varios": {
+      "name": "📦 OTHER PRODUCTS",
+      "description": "Otros productos",
+      "products": [
+        {
+          "name": "Disposables - Party Popperz",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Party Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Plum Popperz",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Plum Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Raimbow Popperz",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Raimbow Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Mega Z Red",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Mega Z Red - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Mega Z Dark",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Mega Z Dark - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Mega Z Emerald",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Mega Z Emerald - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Cartridges",
+          "price": "Currently Available! - MOQ: 10 units — DM for prices",
+          "description": "Cartridges - Currently Available! - MOQ: 10 units — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Edibles",
+          "price": "Currently Available! - MOQ: 10 units — DM for prices",
+          "description": "Edibles - Currently Available! - MOQ: 10 units — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Distillate - D9 Cat 2 & 3",
+          "price": "Currently Available! - MOQ: 500Ml — DM for prices",
+          "description": "Distillate - D9 Cat 2 & 3 Currently Available! - MOQ: 500Ml — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Shrooms",
+          "price": "Currently Available! - MOQ: 10g — DM for prices",
+          "description": "Shrooms - Currently Available! - MOQ: 10g — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Producto Test Producción",
+          "price": "200@ / 400# | 500@ / 350#",
+          "description": "Producto de prueba en producción",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Prerolls & Donuts - Exotic Terps x Genetics By G - LA Kush Cake X Pop Rocks [2G Flower]",
+          "price": "1ud / 60# | 5ud / 55# | 10ud / 50#",
+          "description": "Prerolls & Donuts - Exotic Terps x Genetics By G - LA Kush Cake X Pop Rocks [2G Flower] - 1ud / 60# | 5ud / 55# | 10ud / 50#",
+          "stock": "Disponible",
+          "images": [
+            "img/prerroll_donut_wizard_trees_0.jpg",
+            "img/prerroll_donut_wizard_trees_1.jpg",
+            "img/prerroll_donut_wizard_trees_2.jpg"
+          ]
+        },
+        {
+          "name": "Prerolls & Donuts - Exotic Terps x Genetics By G - Zkittlez (2@ Flower)",
+          "price": "1ud / 60# | 5ud / 55# | 10ud / 50#",
+          "description": "Prerolls & Donuts - Exotic Terps x Genetics By G - Zkittlez (2@ Flower) - 1ud / 60# | 5ud / 55# | 10ud / 50#",
+          "stock": "Disponible",
+          "images": [
+            "img/prerroll_donut_zushi_0.jpg",
+            "img/prerroll_donut_zushi_1.jpg"
+          ]
+        },
+        {
+          "name": "Moonrocks",
+          "price": "Currently Available! - MOQ: 1oz — DM for prices",
+          "description": "Moonrocks - Currently Available! - MOQ: 1oz — DM for prices",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Live Resin Diamonds [2@] - SuperDope",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Live Resin Diamonds [2@] - SuperDope - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Lemon Popperz",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Lemon Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Bubblegum Popperz",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Bubblegum Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Disposables - Cherry Popperz",
+          "price": "1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "description": "Disposables - Cherry Popperz - 1ud - 100# | 5ud - 95# | 10ud - 90# | 25ud - 85# | 50ud - 80#",
+          "stock": "Disponible",
+          "images": []
+        }
+      ]
+    },
+    "pruebas": {
+      "name": "Pruebas",
+      "description": "Productos de Pruebas",
+      "products": [
+        {
+          "name": "Imageneess",
+          "price": "Img",
+          "description": "Img",
+          "stock": "Img",
+          "images": []
+        },
+        {
+          "name": "Imagen",
+          "price": "Imagen",
+          "description": "Imagen",
+          "stock": "Imagen",
+          "images": []
+        },
+        {
+          "name": "Prueba IMG precio",
+          "price": "100@ / 320# | 300@ / 290# | 500@ / 270# | 1k@ / 250#",
+          "description": "Top",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Img",
+          "price": "Img",
+          "description": "Img",
+          "stock": "Img",
+          "images": []
+        },
+        {
+          "name": "Prueba",
+          "price": "Prueba",
+          "description": "Prueba",
+          "stock": "Prueba",
+          "images": []
+        },
+        {
+          "name": "Producto Test Imágenes",
+          "price": "100@ / 200# | 200@ / 180#",
+          "description": "Producto de prueba para imágenes",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Producto Test Nueva Imagen",
+          "price": "150@ / 300# | 300@ / 280#",
+          "description": "Producto de prueba con nuevo sistema de imágenes",
+          "stock": "Disponible",
+          "images": []
+        },
+        {
+          "name": "Producto Test Render",
+          "price": "200@ / 400# | 500@ / 350#",
+          "description": "Producto de prueba para Render con imagen en base de datos",
+          "stock": "Disponible",
+          "images": []
+        }
+      ]
+    }
+  },
+  "backups": [
+    {
+      "name": "Test",
+      "price": "Tets",
+      "stock": "Fiifif",
+      "images": [],
+      "deleted_at": "2025-09-11T15:14:21.390905",
+      "description": "Hoal",
+      "deleted_from_index": 8,
+      "deleted_from_category": "moroccan_hash"
+    },
+    {
+      "name": "Prueba",
+      "price": "Gest",
+      "stock": "Udid",
+      "images": [
+        "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-11T17:11:43.237888",
+      "description": "Teid",
+      "deleted_from_index": 0,
+      "deleted_from_category": "moroccan_hash"
+    },
+    {
+      "name": "Yyyyyt",
+      "price": "Yyyy",
+      "stock": "Tyy",
+      "images": [
+        "AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-11T17:11:50.154090",
+      "description": "Yyy",
+      "deleted_from_index": 0,
+      "deleted_from_category": "moroccan_hash"
+    },
+    {
+      "name": "Fffff",
+      "price": "Ffff",
+      "stock": "Ffff",
+      "images": [
+        "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ",
+        "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-11T17:11:57.281908",
+      "description": "Fff",
+      "deleted_from_index": 0,
+      "deleted_from_category": "moroccan_hash"
+    },
+    {
+      "name": "Qqqqqq",
+      "price": "Qqqqq",
+      "stock": "Qqqqq",
+      "images": [
+        "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-11T17:21:41.315894",
+      "description": "Qqqqq",
+      "deleted_from_index": 0,
+      "deleted_from_category": "moroccan_hash"
+    },
+    {
+      "name": "Prueba123",
+      "price": "Prueba123",
+      "stock": "Pruwb",
+      "images": [
+        "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-11T20:44:45.781566",
+      "description": "Prueba123",
+      "deleted_from_index": 0,
+      "deleted_from_category": "test123"
+    },
+    {
+      "name": "Prueba",
+      "price": "Tet",
+      "stock": "Test",
+      "images": [
+        "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-11T20:44:53.591700",
+      "description": "Test",
+      "deleted_from_index": 0,
+      "deleted_from_category": "pruebas1"
+    },
+    {
+      "name": "Jfud",
+      "price": "Kflxod",
+      "stock": "Dkdkdo",
+      "images": [
+        "https://api.telegram.org/file/bot7590800362:AAEUH4iCZkAg0aw9Te5LC3iIX9gVytNBPBU/AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-11T20:44:59.787340",
+      "description": "Dkddifo",
+      "deleted_from_index": 0,
+      "deleted_from_category": "tetdts"
+    },
+    {
+      "name": "Producto de Prueba",
+      "price": "10.00",
+      "stock": "5",
+      "images": [],
+      "deleted_at": "2025-09-12T09:25:15.698193",
+      "description": "Producto para probar eliminación",
+      "deleted_from_index": 0,
+      "deleted_from_category": "test_category_delete"
+    },
+    {
+      "name": "Test cambio",
+      "price": "Test",
+      "stock": "Test",
+      "images": [],
+      "deleted_at": "2025-09-08T16:22:17.466627",
+      "description": "Test",
+      "deleted_from_index": 4,
+      "deleted_from_category": "spanish_flower"
+    },
+    {
+      "name": "Test Product 094410",
+      "price": "100@ / 300#",
+      "stock": "Disponible",
+      "images": [],
+      "deleted_at": "2025-09-10T09:44:11.780128",
+      "description": "Producto de prueba para testing",
+      "deleted_from_index": 1,
+      "deleted_from_category": "spanish_flower"
+    },
+    {
+      "name": "Tets",
+      "price": "Pppprppee",
+      "stock": "Pdododo",
+      "images": [],
+      "deleted_at": "2025-09-10T09:24:51.211611",
+      "description": "Prorpdpd",
+      "deleted_from_index": 0,
+      "deleted_from_category": "spanish_flower"
+    },
+    {
+      "name": "Test cambio",
+      "price": "Test",
+      "stock": "Test",
+      "images": [],
+      "deleted_at": "2025-09-10T09:27:52.332441",
+      "description": "Test",
+      "deleted_from_index": 0,
+      "deleted_from_category": "spanish_flower"
+    },
+    {
+      "name": "PRODUCTO DE PRUEBA VISIBLE",
+      "price": "100@ / 200#",
+      "stock": "Disponible",
+      "images": [],
+      "deleted_at": "2025-09-10T09:28:02.304883",
+      "description": "Este es un producto de prueba para verificar que funciona",
+      "deleted_from_index": 4,
+      "deleted_from_category": "spanish_flower"
+    },
+    {
+      "name": "PRODUCTO TEST CURL 101803",
+      "price": "50@ / 150#",
+      "stock": "Disponible",
+      "images": [],
+      "deleted_at": "2025-09-10T10:27:32.320219",
+      "description": "Producto de prueba para verificar sincronización con miniapp",
+      "deleted_from_index": 4,
+      "deleted_from_category": "spanish_flower"
+    },
+    {
+      "name": "Contact Information",
+      "price": "To Place An Order Contact Us!",
+      "stock": "Disponible",
+      "images": [],
+      "deleted_at": "2025-09-11T13:48:32.149126",
+      "description": "To Place An Order Contact Us!📱 @mpglobalcorp",
+      "deleted_from_index": 0,
+      "deleted_from_category": "varios"
+    },
+    {
+      "name": "Other Products",
+      "price": "Ask Me For Other Products - DMT, LSD, Pharma, Clones, Merch…",
+      "stock": "Disponible",
+      "images": [],
+      "deleted_at": "2025-09-11T13:49:09.681051",
+      "description": "Ask Me For Other Products - DMT, LSD, Pharma, Clones, Merch…",
+      "deleted_from_index": 17,
+      "deleted_from_category": "varios"
+    },
+    {
+      "name": "Prueba",
+      "price": "1Oz / 260# | Qp / 780# | Hp / 1.240# | Lb / 2.400#",
+      "stock": "Pdp",
+      "images": [
+        "AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-12T08:03:45.829471",
+      "description": "Pepe",
+      "deleted_from_index": 0,
+      "deleted_from_category": "pruebas"
+    },
+    {
+      "name": "Ggdgdj",
+      "price": "Djjdkdkd",
+      "stock": "Fjkdkd",
+      "images": [
+        "AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-12T08:04:44.774708",
+      "description": "Dkkddk",
+      "deleted_from_index": 7,
+      "deleted_from_category": "moroccan_hash"
+    },
+    {
+      "name": "Hooooo",
+      "price": "Hoooo",
+      "stock": "F",
+      "images": [
+        "AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-12T08:04:53.043406",
+      "description": "Goooo",
+      "deleted_from_index": 7,
+      "deleted_from_category": "moroccan_hash"
+    },
+    {
+      "name": "Profppdpd",
+      "price": "Pdodpdpd",
+      "stock": "Pdod",
+      "images": [
+        "AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-12T08:04:59.820286",
+      "description": "Ododpdpd",
+      "deleted_from_index": 7,
+      "deleted_from_category": "moroccan_hash"
+    },
+    {
+      "name": "Jjjjg",
+      "price": "Ffff",
+      "stock": "Dddd",
+      "images": [
+        "AgACAgQAAxkBAAIEQ2jC5wZ9ffXFET7Na1atjrPqU_30AAKsyTEbFhwYUvI_8yraDu5bAQADAgADeQADNgQ"
+      ],
+      "deleted_at": "2025-09-12T08:05:07.098253",
+      "description": "Ffff",
+      "deleted_from_index": 7,
+      "deleted_from_category": "moroccan_hash"
+    }
+  ]
+}

@@ -247,7 +247,7 @@ class MPApp {
         // 1) Mismo origen (cuando la miniapp se sirve embebida desde el bot)
         bases.push('');
         // 2) Dominio de Render (servicio del bot)
-        bases.push('https://mp-bot-wtcf.onrender.com');
+        bases.push('https://mp-bot-3lij.onrender.com');
         // 3) Local dev (por si se abre el HTML en local con el bot en 5000)
         bases.push('http://127.0.0.1:5000');
         return bases;
@@ -1305,7 +1305,7 @@ class MPApp {
 
         // Si es una referencia a imagen de base de datos, usar el endpoint de la API
         if (imagePath.startsWith('db_image_')) {
-            const base = location.hostname.endsWith('github.io') ? 'https://mp-bot-wtcf.onrender.com' : '';
+            const base = location.hostname.endsWith('github.io') ? 'https://mp-bot-3lij.onrender.com' : '';
             const apiUrl = `${base}/api/image/${imagePath}`;
             console.log('Using database image:', imagePath, '->', apiUrl);
             return apiUrl;
@@ -1321,7 +1321,7 @@ class MPApp {
         // Si parece ser un file_id de Telegram, intentar construir la URL
         if (imagePath.length > 20 && !imagePath.includes('/') && !imagePath.includes('\\')) {
             // Es muy probable que sea un file_id: construir un proxy a través del backend del bot
-            const base = location.hostname.endsWith('github.io') ? 'https://mp-bot-wtcf.onrender.com' : '';
+            const base = location.hostname.endsWith('github.io') ? 'https://mp-bot-3lij.onrender.com' : '';
             const apiUrl = `${base}/api/file/${imagePath}`;
             console.log('Detected file_id, proxying via:', apiUrl);
             return apiUrl;
