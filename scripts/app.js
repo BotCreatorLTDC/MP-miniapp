@@ -1685,20 +1685,20 @@ class MPApp {
     setupVariantsSection(product, variantsSection, variantSelect) {
         // Detectar si el producto tiene variantes (SuperDope)
         const hasVariants = product.name.includes('SuperDope') && product.description.includes('VARIANTES DISPONIBLES');
-        
+
         if (hasVariants) {
             console.log('Configurando desplegable de variantes para:', product.name);
-            
+
             // Extraer variantes de la descripción
             const variants = this.extractVariantsFromDescription(product.description);
-            
+
             if (variants.length > 0) {
                 // Mostrar sección de variantes
                 variantsSection.style.display = 'block';
-                
+
                 // Limpiar opciones anteriores
                 variantSelect.innerHTML = `<option value="" data-i18n="choose_variant">${this.t('choose_variant')}</option>`;
-                
+
                 // Añadir variantes al desplegable
                 variants.forEach(variant => {
                     const option = document.createElement('option');
@@ -1706,20 +1706,20 @@ class MPApp {
                     option.textContent = variant;
                     variantSelect.appendChild(option);
                 });
-                
+
                 // Configurar event listener para el cambio de variante
                 variantSelect.addEventListener('change', () => {
                     const selectedVariant = variantSelect.value;
                     console.log('Variante seleccionada:', selectedVariant);
-                    
+
                     // Actualizar el botón de agregar al carrito con la variante
                     this.updateAddToCartButtonWithVariant(product, selectedVariant);
                 });
-                
+
                 // Traducir elementos usando data-i18n
                 const h3Element = variantsSection.querySelector('h3');
                 const optionElement = variantSelect.querySelector('option[value=""]');
-                
+
                 if (h3Element && h3Element.dataset.i18n) {
                     h3Element.textContent = this.t(h3Element.dataset.i18n);
                 }
@@ -1738,18 +1738,18 @@ class MPApp {
         const variants = [];
         const lines = description.split('\n');
         let inVariantsSection = false;
-        
+
         for (const line of lines) {
             if (line.includes('VARIANTES DISPONIBLES')) {
                 inVariantsSection = true;
                 continue;
             }
-            
+
             if (inVariantsSection) {
                 if (line.includes('**CARACTERÍSTICAS:**') || line.includes('**PRECIOS POR CANTIDAD:**')) {
                     break;
                 }
-                
+
                 // Extraer variante de líneas que empiezan con "•"
                 const match = line.match(/•\s*(.+)/);
                 if (match) {
@@ -1757,7 +1757,7 @@ class MPApp {
                 }
             }
         }
-        
+
         return variants;
     }
 
@@ -1766,7 +1766,7 @@ class MPApp {
         if (addToCartBtn) {
             // Guardar la variante seleccionada en el botón
             addToCartBtn.dataset.selectedVariant = selectedVariant;
-            
+
             // Actualizar el texto del botón si hay variante seleccionada
             if (selectedVariant) {
                 addToCartBtn.innerHTML = `
@@ -1882,7 +1882,7 @@ class MPApp {
         const totalPrice = this.calculateTotalPrice(selectedQuantity, selectedAmount);
 
         // Crear un ID único para esta variante específica (incluyendo la variante si existe)
-        const variantId = selectedVariant 
+        const variantId = selectedVariant
             ? `${product.name}_${selectedVariant}_${selectedQuantity}_${selectedAmount}`
             : `${product.name}_${selectedQuantity}_${selectedAmount}`;
 
@@ -1892,7 +1892,7 @@ class MPApp {
             existingItem.quantity += 1;
         } else {
             // Crear nombre del producto con variante si aplica
-            const productName = selectedVariant 
+            const productName = selectedVariant
                 ? `${product.name} - ${selectedVariant}`
                 : product.name;
 
