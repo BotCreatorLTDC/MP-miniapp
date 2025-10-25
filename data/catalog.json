@@ -2,29 +2,358 @@
   "categories": {
     "varios": {
       "name": "📦 OTHER PRODUCTS",
+      "description": "Categoría para productos varios",
+      "products": []
+    },
+    "california_branded": {
+      "name": "🇺🇸 CALIFORNIA BRANDED 🇺🇸",
+      "description": "Categoría Morpheopacks - 🇺🇸 CALIFORNIA BRANDED 🇺🇸",
+      "products": [
+        {
+          "name": "Pink Zushi - Genetics By G 7@ Jars",
+          "price": "7@ / 180# | 1Oz / 640# | Qp / 2.010# | Hp / 3.600# | Lb / 6.800#",
+          "description": "Exotics Flowers - Genetics By G Limited Edition 7@ Jars",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Grape Seizure - Genetics By G 7@ Jars",
+          "price": "7@ / 180# | 1Oz / 640# | Qp / 2.010# | Hp / 3.600# | Lb / 6.800#",
+          "description": "Exotics Flowers - Genetics By G Limited Edition 7@ Jars",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Kalifa Kush Baby - Genetics By G 7@ Jars",
+          "price": "7@ / 180# | 1Oz / 640# | Qp / 2.010# | Hp / 3.600# | Lb / 6.800#",
+          "description": "Exotics Flowers - Genetics By G Limited Edition 7@ Jars",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Star-Burst - Exotic Terps 7@ Jars",
+          "price": "7@ / 160# | 1Oz / 540# | Qp / 1.840# | Hp / 3.100# | Lb / 5.600#",
+          "description": "Premium Flowers - Exotic Terps Limited Edition 7@ Jars",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "D-Lish - Exotic Terps 7@ Jars",
+          "price": "7@ / 160# | 1Oz / 540# | Qp / 1.840# | Hp / 3.100# | Lb / 5.600#",
+          "description": "Premium Flowers - Exotic Terps Limited Edition 7@ Jars",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Zkittlez - Exotic Terps 2@+Glass Filter",
+          "price": "1ud / 40# | 5ud / 175# | 10ud / 300# | 25ud / 660# | 50ud / 1200# | 100ud / 2100#",
+          "description": "Premium Prerolls Flowers - Exotic Terps Limited Edition 2@+Glass Filter",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Runtz - Exotic Terps 1.5@+Glass Filter",
+          "price": "1ud / 30# | 5ud / 140# | 10ud / 250# | 25ud / 550# | 50ud / 1000# | 100ud / 1800#",
+          "description": "Classic Prerolls Flowers - Exotic Terps Limited Edition 1.5@+Glass Filter",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Fatso - Exotic Terps Single Gram Jars",
+          "price": "1@ / 100# | 2@ / 180# | 10@ / 850# | 20@ / 1.500# | 50@ / 3.000# | 100@ / 5.500#",
+          "description": "Hash Rosin Cannabis Extracts - Exotic Terps Single Gram Jars Limited Edition! X2 Jars Premium Container Included!",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Hash Burguer - Exotic Terps Single Gram Jars",
+          "price": "1@ / 100# | 2@ / 180# | 10@ / 850# | 20@ / 1.500# | 50@ / 3.000# | 100@ / 5.500#",
+          "description": "Hash Rosin Cannabis Extracts - Exotic Terps Single Gram Jars Limited Edition! X2 Jars Premium Container Included!",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Honey Banana - Exotic Terps Single Gram Jars",
+          "price": "1@ / 100# | 2@ / 180# | 10@ / 850# | 20@ / 1.500# | 50@ / 3.000# | 100@ / 5.500#",
+          "description": "Hash Rosin Cannabis Extracts - Exotic Terps Single Gram Jars Limited Edition! X2 Jars Premium Container Included!",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        }
+      ]
+    },
+    "california_unbranded": {
+      "name": "🇺🇸 CALIFORNIA UNBRANDED 🇺🇸",
+      "description": "Categoría Morpheopacks - 🇺🇸 CALIFORNIA UNBRANDED 🇺🇸",
+      "products": [
+        {
+          "name": "Star-Burst - Premium Flowers Loose",
+          "price": "7@ / 160# | 1Oz / 540# | Qp / 1.840# | Hp / 3.100# | Lb / 5.600#",
+          "description": "Premium Flowers (Loose) - Unbranded California Imported",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "D-Lish - Premium Flowers Loose",
+          "price": "7@ / 160# | 1Oz / 540# | Qp / 1.840# | Hp / 3.100# | Lb / 5.600#",
+          "description": "Premium Flowers (Loose) - Unbranded California Imported",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Sfv Og Z - Hash Rosin Cannabis Extracts Loose",
+          "price": "2@ / 100# | 6@ / 280# | 10@ / 400# | 20@ / 700#",
+          "description": "Hash Rosin Cannabis Extracts (Loose) - Unbranded California Imported",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Sour Zkittlez - Hash Rosin Cannabis Extracts Loose",
+          "price": "2@ / 80# | 6@ / 240# | 10@ / 300# | 20@ / 580#",
+          "description": "Hash Rosin Cannabis Extracts (Loose) - Unbranded California Imported",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        }
+      ]
+    },
+    "california_loose": {
+      "name": "🌿 CALIFORNIA LOOSE 🌿",
+      "description": "Categoría Morpheopacks - 🌿 CALIFORNIA LOOSE 🌿",
+      "products": [
+        {
+          "name": "Premium Flowers RS11 Zerbert",
+          "price": "Stock: 99 Disponible",
+          "description": "Unbranded/Loose Premium Cannabis Flowers",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Top Shelfs Flowers Sherbanger White Runtz",
+          "price": "Stock: 99 Disponible",
+          "description": "Unbranded/Loose Premium Cannabis Flowers",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Mids Shelfs Flowers OG Kush GMO Cookies",
+          "price": "Stock: 99 Disponible",
+          "description": "Unbranded/Loose Premium Cannabis Flowers",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Smalls Flowers Blueberry Muffin Banana Punch",
+          "price": "Stock: 99 Disponible",
+          "description": "Unbranded/Loose Premium Cannabis Flowers",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Prerolls Loose",
+          "price": "Stock: 99 Disponible",
+          "description": "Unbranded/Loose Premium Cannabis Flowers",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        }
+      ]
+    },
+    "vapes": {
+      "name": "🔋 VAPES 🇺🇸",
+      "description": "Categoría Morpheopacks - 🔋 VAPES 🇺🇸",
+      "products": [
+        {
+          "name": "SuperDope Live Resin Diamonds [2@]",
+          "price": "Stock: 99 Disponible",
+          "description": "SuperDope Live Resin Diamonds [2@] - Sabores: Lemon Popperz, Bubblegum Popperz, Cherry Popperz, Party Popperz, Plum Popperz, Rainbow Popperz, Mega Z Red, Mega Z Dark, Mega Z Emerald",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        }
+      ]
+    },
+    "extractions": {
+      "name": "🔬 EXTRACTIONS",
+      "description": "Categoría Morpheopacks - 🔬 EXTRACTIONS",
+      "products": [
+        {
+          "name": "Mousse Hash",
+          "price": "Stock: 99 Disponible",
+          "description": "Hash/Extractos",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Dry Hash",
+          "price": "Stock: 99 Disponible",
+          "description": "Hash/Extractos",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Fresh Frozen",
+          "price": "Stock: 99 Disponible",
+          "description": "Hash/Extractos",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Static Sift",
+          "price": "Stock: 99 Disponible",
+          "description": "Hash/Extractos",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Waterhash/Ice",
+          "price": "Stock: 99 Disponible",
+          "description": "Hash/Extractos",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Live Rosin",
+          "price": "Stock: 99 Disponible",
+          "description": "Extracts - Sin Solventes",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Hash Rosin",
+          "price": "Stock: 99 Disponible",
+          "description": "Extracts - Sin Solventes",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Fresh Press",
+          "price": "Stock: 99 Disponible",
+          "description": "Extracts - Sin Solventes",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Full Melts",
+          "price": "Stock: 99 Disponible",
+          "description": "Extracts - Sin Solventes",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Live Resin",
+          "price": "Stock: 99 Disponible",
+          "description": "Extracts - Con Solventes",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Live Resin Butter",
+          "price": "Stock: 99 Disponible",
+          "description": "Extracts - Con Solventes",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Live Resin Diamonds",
+          "price": "Stock: 99 Disponible",
+          "description": "Extracts - Con Solventes",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Resin Sugar",
+          "price": "Stock: 99 Disponible",
+          "description": "Extracts - Con Solventes",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Resin Crumble",
+          "price": "Stock: 99 Disponible",
+          "description": "Extracts - Con Solventes",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Resin Diamonds",
+          "price": "Stock: 99 Disponible",
+          "description": "Extracts - Con Solventes",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        },
+        {
+          "name": "Destilado",
+          "price": "Stock: 99 Disponible",
+          "description": "Extracts - Con Solventes",
+          "stock": "Disponible",
+          "images": null,
+          "media": null
+        }
+      ]
+    },
+    "other_products": {
+      "name": "📦 OTHER PRODUCTS",
+      "description": "Categoría Morpheopacks - 📦 OTHER PRODUCTS",
       "products": [
         {
           "name": "Prerolls & Donuts - Exotic Terps x Genetics By G - LA Kush Cake X Pop Rocks [2G Flower]",
           "price": "1ud / 60# | 5ud / 55# | 10ud / 50#",
-          "description": "Prerolls & Donuts - Exotic Terps x Genetics By G - LA Kush Cake X Pop Rocks [2G Flower] - 1ud / 60# | 5ud / 55# | 10ud / 50#",
+          "description": "Prerolls & Donuts - Exotic Terps x Genetics By G",
           "stock": "Disponible",
           "images": [
             "img/prerroll_donut_wizard_trees_0.jpg",
             "img/prerroll_donut_wizard_trees_1.jpg",
             "img/prerroll_donut_wizard_trees_2.jpg"
-          ]
+          ],
+          "media": null
         },
         {
           "name": "Prerolls & Donuts - Exotic Terps x Genetics By G - Zkittlez (2@ Flower)",
           "price": "1ud / 60# | 5ud / 55# | 10ud / 50#",
-          "description": "Prerolls & Donuts - Exotic Terps x Genetics By G - Zkittlez (2@ Flower) - 1ud / 60# | 5ud / 55# | 10ud / 50#",
+          "description": "Prerolls & Donuts - Exotic Terps x Genetics By G",
           "stock": "Disponible",
           "images": [
             "img/prerroll_donut_zushi_0.jpg",
             "img/prerroll_donut_zushi_1.jpg"
-          ]
+          ],
+          "media": null
         }
       ]
     }
-  }
+  },
+  "sections": {},
+  "vpg_config": {},
+  "backups": []
 }
