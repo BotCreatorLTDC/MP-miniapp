@@ -7,13 +7,12 @@ Conecta la miniapp con la base de datos PostgreSQL del bot
 import os
 import json
 import logging
-import psycopg2
-import psycopg2.extras
 from datetime import datetime
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
 import requests
+from supabase import create_client
 
 # Cargar variables de entorno
 load_dotenv()
@@ -27,7 +26,7 @@ CORS(app)  # Permitir CORS para la miniapp
 
 class DatabaseManager:
     def __init__(self):
-        self.connection = None
+        self.client = None
         self.bot_token = os.getenv('BOT_TOKEN')
         self.connect()
 
@@ -83,20 +82,26 @@ class DatabaseManager:
         return converted_images
 
     def connect(self):
-        """Conectar a la base de datos PostgreSQL"""
+        """Conectar a Supabase"""
         try:
-            database_url = os.getenv('DATABASE_URL', 'postgresql://localhost/mp_bot')
-            self.connection = psycopg2.connect(database_url)
-            logger.info("✅ Conectado a PostgreSQL")
+            url = os.getenv('SUPABASE_URL')
+            key = os.getenv('SUPABASE_KEY')
+
+            if not url or not key:
+                logger.error("❌ SUPABASE_URL o SUPABASE_KEY no encontradas en .env")
+                return
+
+            self.client = create_client(url, key)
+            logger.info("✅ Conectado a Supabase")
         except Exception as e:
-            logger.error(f"❌ Error conectando a PostgreSQL: {e}")
-            self.connection = None
+            logger.error(f"❌ Error conectando a Supabase: {e}")
+            self.client = None
 
     def get_connection(self):
-        """Obtener conexión a la base de datos"""
-        if not self.connection or self.connection.closed:
+        """Obtener cliente Supabase"""
+        if not self.client:
             self.connect()
-        return self.connection
+        return self.client
 
     def get_catalog(self):
         """Obtener catálogo completo desde la base de datos"""
@@ -425,25 +430,25 @@ def get_image(image_id):
         # Si es una referencia a imagen de base de datos
         if image_id.startswith('db_image_'):
             actual_id = image_id.replace('db_image_', '')
-            
+
             conn = db.get_connection()
             if not conn:
                 return "Database not connected", 500
-                
+
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT image_data, filename FROM images WHERE id = %s
             """, (actual_id,))
-            
+
             result = cursor.fetchone()
             cursor.close()
-            
+
             if result:
                 image_data, filename = result
                 # Decodificar base64
                 import base64
                 image_bytes = base64.b64decode(image_data)
-                
+
                 # Determinar content type basado en la extensión
                 if filename.lower().endswith('.png'):
                     content_type = 'image/png'
@@ -451,13 +456,13 @@ def get_image(image_id):
                     content_type = 'image/gif'
                 else:
                     content_type = 'image/jpeg'
-                
+
                 return image_bytes, 200, {'Content-Type': content_type}
             else:
                 return "Image not found", 404
         else:
             return "Invalid image ID format", 400
-            
+
     except Exception as e:
         logger.error(f"Error obteniendo imagen {image_id}: {e}")
         return f"Error: {str(e)}", 500
