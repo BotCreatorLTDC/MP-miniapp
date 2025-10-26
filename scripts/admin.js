@@ -17,14 +17,14 @@ class AdminPanel {
         try {
             // Obtener username del usuario de Telegram
             let username = null;
-            
+
             console.log('🔍 Verificando datos de Telegram...');
-            
+
             // Método oficial de Telegram WebApp (el mismo que usa app.js)
             if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
                 const initData = window.Telegram.WebApp.initDataUnsafe;
                 console.log('✅ Datos de Telegram disponibles:', initData);
-                
+
                 if (initData?.user?.username) {
                     username = initData.user.username;
                     console.log('✅ Username encontrado:', username);
@@ -34,7 +34,7 @@ class AdminPanel {
             } else {
                 console.log('⚠️ Telegram.WebApp no disponible');
             }
-            
+
             // Para testing: si no hay initData, usar localStorage
             if (!username) {
                 const storedUsername = localStorage.getItem('admin_username');
@@ -47,7 +47,7 @@ class AdminPanel {
                     return;
                 }
             }
-            
+
             console.log('✅ Verificando admin para:', username);
 
             // Obtener la URL base de la API
@@ -84,11 +84,18 @@ class AdminPanel {
 
                 // Mostrar sección en navigation
                 const adminNavSection = document.getElementById('adminNavSection');
+                console.log('🔍 Buscando adminNavSection...', adminNavSection);
                 if (adminNavSection) {
                     adminNavSection.style.display = 'block';
-                    console.log('✅ Sección admin en navegación mostrada');
+                    console.log('✅ Sección admin en navegación mostrada (display: block)');
+                    console.log('🔍 Comprobando después de 1s...');
+                    setTimeout(() => {
+                        console.log('🔍 adminNavSection.style.display después de setTimeout:', adminNavSection.style.display);
+                    }, 1000);
+                } else {
+                    console.error('❌ No se encontró adminNavSection');
                 }
-
+                
                 console.log('✅ Panel de admin activado para:', this.currentUser);
             } else {
                 console.log('❌ Usuario no es admin:', username);
@@ -112,9 +119,13 @@ class AdminPanel {
 
                 // Mostrar sección en navigation
                 const adminNavSection = document.getElementById('adminNavSection');
+                console.log('🔍 Buscando adminNavSection (fallback)...', adminNavSection);
                 if (adminNavSection) {
                     adminNavSection.style.display = 'block';
                     console.log('✅ Sección admin en navegación mostrada (verificación local)');
+                    console.log('🔍 adminNavSection.style.display:', adminNavSection.style.display);
+                } else {
+                    console.error('❌ No se encontró adminNavSection (fallback)');
                 }
 
                 console.log('✅ Panel de admin activado (verificación local)');
@@ -482,6 +493,15 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('🔧 Inicializando AdminPanel...');
     adminPanel = new AdminPanel();
     console.log('✅ AdminPanel inicializado');
+    
+    // Verificar después de un breve delay para asegurar que el DOM está listo
+    setTimeout(() => {
+        const adminNavSection = document.getElementById('adminNavSection');
+        console.log('🔍 adminNavSection encontrada:', adminNavSection);
+        if (adminNavSection) {
+            console.log('🔍 adminNavSection.style.display:', adminNavSection.style.display);
+        }
+    }, 2000);
 });
 
 // Exportar para uso global
