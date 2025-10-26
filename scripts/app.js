@@ -954,7 +954,6 @@ class MPApp {
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">${product.name}</h3>
-                    <p class="product-price">${product.price}</p>
                     ${priceVariantsHtml}
                     <span class="product-stock ${isAvailable ? 'stock-available' : 'stock-unavailable'}">
                         ${isAvailable ? this.t('available') : this.t('unavailable')}
@@ -1799,17 +1798,18 @@ class MPApp {
     }
 
     parsePrices(priceString) {
-        // Parsear precios del formato "100@ / 320# | 300@ / 290#"
+        // Parsear precios del formato "7@ / 180# | 1Oz / 640# | Qp / 2.010#"
         const prices = [];
         // Permitir separadores con espacios variables alrededor de |
         const priceParts = priceString.split(/\s*\|\s*/);
 
         priceParts.forEach(part => {
-            // Aceptar espacios entre número y unidad (p.ej. "2 Oz"), y símbolos como @, #, €
-            const match = part.match(/(\d+\s*[a-zA-Z@#]*)\s*\/\s*(\d+[\.,]?\d*\s*[a-zA-Z@#€]*)/);
+            // Matcher flexible: captura cantidad / precio
+            // Ejemplos: "7@ / 180#", "1Oz / 640#", "Qp / 2.010#", "3.5@ / 80#"
+            const match = part.match(/([^/]+)\s*\/\s*([^/]+)/);
             if (match) {
-                const quantity = match[1].replace(/\s+/g, ' ').trim();
-                const pricePerUnit = match[2].replace(/\s+/g, ' ').trim();
+                const quantity = match[1].trim();
+                const pricePerUnit = match[2].trim();
 
                 // Calcular precio total para esta cantidad
                 const totalPrice = this.calculateTotalPrice(quantity, pricePerUnit);
@@ -1819,7 +1819,7 @@ class MPApp {
                     amount: pricePerUnit,
                     totalPrice: totalPrice,
                     pricePerUnit: pricePerUnit,
-                    pricePer100: pricePerUnit // Precio por cada 100@
+                    pricePer100: pricePerUnit
                 });
             }
         });
