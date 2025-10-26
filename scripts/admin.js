@@ -15,65 +15,73 @@ class AdminPanel {
 
     async checkAuth() {
         try {
-            // Obtener username del usuario de Telegram
+            // Obtener username del usuario
             let username = null;
-
-            console.log('🔍 Verificando datos de Telegram...');
-
-            // Método oficial de Telegram WebApp (el mismo que usa app.js)
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
-                const initData = window.Telegram.WebApp.initDataUnsafe;
-                console.log('✅ Datos de Telegram disponibles:', initData);
-
-                if (initData?.user?.username) {
-                    username = initData.user.username;
-                    console.log('✅ Username encontrado:', username);
-                } else {
-                    console.log('⚠️ Usuario no tiene username:', initData?.user);
-                }
+            
+            console.log('🔍 Verificando datos de admin...');
+            
+            // Método 1: Parámetros de URL (cuando viene del bot)
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlUser = urlParams.get('user');
+            const isAdmin = urlParams.get('admin') === 'true';
+            
+            if (urlUser && isAdmin) {
+                username = urlUser;
+                console.log('✅ Username desde URL:', username);
+                console.log('✅ Admin mode activado desde URL');
             } else {
-                console.log('⚠️ Telegram.WebApp no disponible');
-            }
-
-            // Para testing: si no hay initData, usar localStorage
-            if (!username) {
-                const storedUsername = localStorage.getItem('admin_username');
-                if (storedUsername) {
-                    username = storedUsername;
-                    console.log('Usando username de localStorage:', username);
-                } else {
-                    console.log('❌ No hay username disponible de Telegram');
-                    console.log('Para testing local, ejecuta en consola: localStorage.setItem("admin_username", "Mpglobalcorp")');
-                    return;
+                // Método 2: Telegram WebApp
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+                    const initData = window.Telegram.WebApp.initDataUnsafe;
+                    console.log('✅ Datos de Telegram disponibles:', initData);
+                    
+                    if (initData?.user?.username) {
+                        username = initData.user.username;
+                        console.log('✅ Username encontrado en Telegram:', username);
+                    }
                 }
             }
-
+            
+            // Si no hay username, no es admin
+            if (!username) {
+                console.log('❌ No hay username disponible');
+                return;
+            }
+            
             console.log('✅ Verificando admin para:', username);
-
-            // Obtener la URL base de la API
-            const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
-
-            console.log('API Base:', apiBase);
-
-            // Verificar si el usuario es admin a través de la API
-            const response = await fetch(`${apiBase}/api/admin/check`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: username })
-            });
-
-            const data = await response.json();
-            console.log('Respuesta de API admin:', data);
 
             // Lista de usuarios admin (mismo que en bot.py)
             const adminUsers = ['Mpglobalcorp', 'latierradc', 'grlltdc'];
-            const isAdmin = data.authenticated || (username && adminUsers.includes(username));
+            let isAdmin = false;
+            
+            // Si viene de URL con admin=true, verificar que el usuario está en la lista de admins
+            if (urlUser && isAdmin) {
+                isAdmin = adminUsers.includes(username);
+                console.log('✅ Verificación desde URL:', isAdmin);
+            } else {
+                // Obtener la URL base de la API
+                const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
+
+                console.log('API Base:', apiBase);
+                
+                // Verificar si el usuario es admin a través de la API
+                const response = await fetch(`${apiBase}/api/admin/check`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username: username })
+                });
+
+                const data = await response.json();
+                console.log('Respuesta de API admin:', data);
+
+                isAdmin = data.authenticated || (username && adminUsers.includes(username));
+            }
 
             if (isAdmin) {
                 this.authenticated = true;
-                this.currentUser = data.user || username;
+                this.currentUser = username;
 
                 // Mostrar botón en header
                 const adminBtn = document.getElementById('adminBtn');
@@ -95,7 +103,7 @@ class AdminPanel {
                 } else {
                     console.error('❌ No se encontró adminNavSection');
                 }
-                
+
                 console.log('✅ Panel de admin activado para:', this.currentUser);
             } else {
                 console.log('❌ Usuario no es admin:', username);
@@ -493,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('🔧 Inicializando AdminPanel...');
     adminPanel = new AdminPanel();
     console.log('✅ AdminPanel inicializado');
-    
+
     // Verificar después de un breve delay para asegurar que el DOM está listo
     setTimeout(() => {
         const adminNavSection = document.getElementById('adminNavSection');
