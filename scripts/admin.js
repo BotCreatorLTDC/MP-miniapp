@@ -399,8 +399,16 @@ class AdminPanel {
     }
 
     editCategory(categoryKey) {
-        // Implementar edición
-        alert('Función de edición en desarrollo');
+        const newName = prompt('Nuevo nombre de la categoría:');
+        if (!newName) return;
+
+        const newDescription = prompt('Nueva descripción (opcional):') || '';
+
+        this.makeRequest('POST', '/api/admin/categories', {
+            category_key: categoryKey,
+            category_name: newName,
+            description: newDescription
+        }).then(() => this.loadCategories());
     }
 
     deleteCategory(categoryKey) {
@@ -412,11 +420,45 @@ class AdminPanel {
 
     // Product methods
     addProduct() {
-        alert('Función de añadir producto en desarrollo');
+        const categoryKey = prompt('Categoría para el producto (ej: varios):');
+        if (!categoryKey) return;
+
+        const productName = prompt('Nombre del producto:');
+        if (!productName) return;
+
+        const productPrice = prompt('Precio del producto:');
+        if (!productPrice) return;
+
+        const productDescription = prompt('Descripción del producto (opcional):') || '';
+        const productStock = prompt('Stock del producto (ej: 99)') || '99';
+
+        this.makeRequest('POST', '/api/admin/products', {
+            category_key: categoryKey,
+            name: productName,
+            price: productPrice,
+            description: productDescription,
+            stock: productStock
+        }).then(() => this.loadProducts());
     }
 
     editProduct(categoryKey, productName) {
-        alert('Función de editar producto en desarrollo');
+        const newName = prompt('Nuevo nombre del producto:', productName);
+        if (!newName) return;
+
+        const newPrice = prompt('Nuevo precio del producto:');
+        if (!newPrice) return;
+
+        const newDescription = prompt('Nueva descripción (opcional):') || '';
+        const newStock = prompt('Nuevo stock (ej: 99)') || '99';
+
+        this.makeRequest('POST', '/api/admin/products', {
+            category_key: categoryKey,
+            name: newName,
+            price: newPrice,
+            description: newDescription,
+            stock: newStock,
+            old_name: productName  // Para identificar el producto a actualizar
+        }).then(() => this.loadProducts());
     }
 
     deleteProduct(categoryKey, productName) {
@@ -444,7 +486,16 @@ class AdminPanel {
     }
 
     editSection(sectionKey) {
-        alert('Función de edición en desarrollo');
+        const newTitle = prompt('Nuevo título de la sección:');
+        if (!newTitle) return;
+
+        const newContent = prompt('Nuevo contenido de la sección (opcional):') || '';
+
+        this.makeRequest('POST', '/api/admin/sections', {
+            section_key: sectionKey,
+            title: newTitle,
+            content: newContent
+        }).then(() => this.loadSections());
     }
 
     deleteSection(sectionKey) {
@@ -469,6 +520,14 @@ class AdminPanel {
 
     async makeRequest(method, url, data = null) {
         try {
+            // Obtener la URL base de la API
+            const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
+
+            // Construir la URL completa
+            const fullUrl = url.startsWith('http') ? url : `${apiBase}${url}`;
+
+            console.log(`🔍 Request: ${method} ${fullUrl}`, data);
+
             const options = {
                 method: method,
                 headers: {
@@ -480,19 +539,21 @@ class AdminPanel {
                 options.body = JSON.stringify(data);
             }
 
-            const response = await fetch(url, options);
+            const response = await fetch(fullUrl, options);
             const result = await response.json();
 
+            console.log(`✅ Response:`, result);
+
             if (result.success) {
-                alert('Operación exitosa');
+                alert('✅ Operación exitosa');
             } else {
-                alert('Error: ' + (result.error || 'Desconocido'));
+                alert('❌ Error: ' + (result.error || 'Desconocido'));
             }
 
             return result;
         } catch (error) {
-            console.error('Request error:', error);
-            alert('Error en la petición');
+            console.error('❌ Request error:', error);
+            alert('❌ Error en la petición: ' + error.message);
         }
     }
 }
