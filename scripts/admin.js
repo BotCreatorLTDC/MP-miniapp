@@ -17,12 +17,12 @@ class AdminPanel {
         try {
             // Obtener username del usuario de Telegram
             let username = null;
-            
+
             // Intentar obtener username de Telegram initData
             if (window.initData?.user?.username) {
                 username = window.initData.user.username;
             }
-            
+
             // Para testing: si no hay initData, usar localStorage o prompt
             if (!username) {
                 const storedUsername = localStorage.getItem('admin_username');
@@ -40,14 +40,14 @@ class AdminPanel {
                     }
                 }
             }
-            
+
             console.log('Verificando admin para:', username);
-            
+
             // Obtener la URL base de la API
             const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
-            
+
             console.log('API Base:', apiBase);
-            
+
             // Verificar si el usuario es admin a través de la API
             const response = await fetch(`${apiBase}/api/admin/check`, {
                 method: 'POST',
@@ -60,17 +60,41 @@ class AdminPanel {
             const data = await response.json();
             console.log('Respuesta de API admin:', data);
 
-            if (data.authenticated) {
+            // Lista de usuarios admin (mismo que en bot.py)
+            const adminUsers = ['Mpglobalcorp', 'latierradc', 'grlltdc'];
+            const isAdmin = data.authenticated || (username && adminUsers.includes(username));
+
+            if (isAdmin) {
                 this.authenticated = true;
-                this.currentUser = data.user;
-                document.getElementById('adminBtn').style.display = 'flex';
-                console.log('✅ Panel de admin activado para:', this.currentUser);
+                this.currentUser = data.user || username;
+                const adminBtn = document.getElementById('adminBtn');
+                if (adminBtn) {
+                    adminBtn.style.display = 'flex';
+                    console.log('✅ Panel de admin activado para:', this.currentUser);
+                    console.log('✅ Botón admin mostrado');
+                } else {
+                    console.error('❌ No se encontró el botón adminBtn');
+                }
             } else {
                 console.log('❌ Usuario no es admin:', username);
             }
         } catch (error) {
             console.error('Error verificando admin:', error);
-            console.log('No hay acceso de administrador');
+            console.log('Intentando verificación local...');
+            
+            // Fallback: verificar localmente
+            const adminUsers = ['Mpglobalcorp', 'latierradc', 'grlltdc'];
+            if (username && adminUsers.includes(username)) {
+                this.authenticated = true;
+                this.currentUser = username;
+                const adminBtn = document.getElementById('adminBtn');
+                if (adminBtn) {
+                    adminBtn.style.display = 'flex';
+                    console.log('✅ Panel de admin activado (verificación local)');
+                }
+            } else {
+                console.log('No hay acceso de administrador');
+            }
         }
     }
 
@@ -420,7 +444,9 @@ class AdminPanel {
 // Inicializar admin panel
 let adminPanel;
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔧 Inicializando AdminPanel...');
     adminPanel = new AdminPanel();
+    console.log('✅ AdminPanel inicializado');
 });
 
 // Exportar para uso global
