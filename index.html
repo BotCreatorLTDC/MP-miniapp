@@ -80,6 +80,10 @@
                         <option value="fr">🇫🇷 FR</option>
                     </select>
                 </div>
+                <button class="admin-btn" id="adminBtn" style="display: none;">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </button>
                 <button class="cart-btn" id="cartBtn">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count" id="cartCount">0</span>
@@ -443,6 +447,99 @@
         </div>
     </div>
 
+    <!-- Admin Panel Modal -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content large admin-modal">
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <img src="assets/images/logo.jpg" alt="MP Global Corp Logo" class="modal-logo">
+                    <h2><i class="fas fa-user-shield"></i> Panel de Administración</h2>
+                </div>
+                <button class="close-btn" id="closeAdminModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body admin-body">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="categories">
+                        <i class="fas fa-tags"></i> Categorías
+                    </button>
+                    <button class="admin-tab" data-tab="products">
+                        <i class="fas fa-box"></i> Productos
+                    </button>
+                    <button class="admin-tab" data-tab="sections">
+                        <i class="fas fa-file-alt"></i> Secciones
+                    </button>
+                    <button class="admin-tab" data-tab="orders">
+                        <i class="fas fa-shopping-bag"></i> Pedidos
+                    </button>
+                </div>
+
+                <div class="admin-content">
+                    <!-- Categories Tab -->
+                    <div class="admin-panel active" id="adminCategories">
+                        <h3><i class="fas fa-tags"></i> Gestión de Categorías</h3>
+                        <div class="admin-actions">
+                            <button class="btn btn-primary" id="addCategoryBtn">
+                                <i class="fas fa-plus"></i> Añadir Categoría
+                            </button>
+                            <button class="btn btn-secondary" id="refreshCategoriesBtn">
+                                <i class="fas fa-sync"></i> Actualizar
+                            </button>
+                        </div>
+                        <div id="categoriesList" class="admin-list"></div>
+                    </div>
+
+                    <!-- Products Tab -->
+                    <div class="admin-panel" id="adminProducts">
+                        <h3><i class="fas fa-box"></i> Gestión de Productos</h3>
+                        <div class="admin-actions">
+                            <button class="btn btn-primary" id="addProductBtn">
+                                <i class="fas fa-plus"></i> Añadir Producto
+                            </button>
+                            <button class="btn btn-secondary" id="refreshProductsBtn">
+                                <i class="fas fa-sync"></i> Actualizar
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label>Filtrar por categoría:</label>
+                            <select id="productCategoryFilter" class="form-control"></select>
+                        </div>
+                        <div id="productsList" class="admin-list"></div>
+                    </div>
+
+                    <!-- Sections Tab -->
+                    <div class="admin-panel" id="adminSections">
+                        <h3><i class="fas fa-file-alt"></i> Gestión de Secciones</h3>
+                        <div class="admin-actions">
+                            <button class="btn btn-primary" id="addSectionBtn">
+                                <i class="fas fa-plus"></i> Añadir Sección
+                            </button>
+                            <button class="btn btn-secondary" id="refreshSectionsBtn">
+                                <i class="fas fa-sync"></i> Actualizar
+                            </button>
+                        </div>
+                        <div id="sectionsList" class="admin-list"></div>
+                    </div>
+
+                    <!-- Orders Tab -->
+                    <div class="admin-panel" id="adminOrders">
+                        <h3><i class="fas fa-shopping-bag"></i> Gestión de Pedidos</h3>
+                        <div class="admin-actions">
+                            <button class="btn btn-secondary" id="refreshOrdersBtn">
+                                <i class="fas fa-sync"></i> Actualizar
+                            </button>
+                        </div>
+                        <div id="ordersList" class="admin-list"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeAdminModalBtn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
@@ -471,5 +568,6 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/catalog.js"></script>
     <script src="scripts/orders.js"></script>
+    <script src="scripts/admin.js"></script>
 </body>
 </html>

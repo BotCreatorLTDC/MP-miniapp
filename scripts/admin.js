@@ -1,0 +1,387 @@
+// Admin Panel para Miniapp
+class AdminPanel {
+    constructor() {
+        this.currentTab = 'categories';
+        this.authenticated = false;
+        this.currentUser = null;
+
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.checkAuth();
+    }
+
+    async checkAuth() {
+        try {
+            // Verificar si el usuario es admin a través de la API
+            const response = await fetch('/api/admin/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: window.initData?.user?.username
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.authenticated) {
+                this.authenticated = true;
+                this.currentUser = data.user;
+                document.getElementById('adminBtn').style.display = 'flex';
+            }
+        } catch (error) {
+            console.log('No hay acceso de administrador');
+        }
+    }
+
+    setupEventListeners() {
+        const adminBtn = document.getElementById('adminBtn');
+        const adminModal = document.getElementById('adminModal');
+        const closeAdminModal = document.getElementById('closeAdminModal');
+        const closeAdminModalBtn = document.getElementById('closeAdminModalBtn');
+
+        if (adminBtn) {
+            adminBtn.addEventListener('click', () => {
+                adminModal.classList.add('show');
+                this.loadCurrentTab();
+            });
+        }
+
+        if (closeAdminModal) {
+            closeAdminModal.addEventListener('click', () => {
+                adminModal.classList.remove('show');
+            });
+        }
+
+        if (closeAdminModalBtn) {
+            closeAdminModalBtn.addEventListener('click', () => {
+                adminModal.classList.remove('show');
+            });
+        }
+
+        // Tabs navigation
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                this.switchTab(e.target.dataset.tab);
+            });
+        });
+
+        // Action buttons
+        document.getElementById('addCategoryBtn').addEventListener('click', () => this.addCategory());
+        document.getElementById('addProductBtn').addEventListener('click', () => this.addProduct());
+        document.getElementById('addSectionBtn').addEventListener('click', () => this.addSection());
+
+        document.getElementById('refreshCategoriesBtn').addEventListener('click', () => this.loadCategories());
+        document.getElementById('refreshProductsBtn').addEventListener('click', () => this.loadProducts());
+        document.getElementById('refreshSectionsBtn').addEventListener('click', () => this.loadSections());
+        document.getElementById('refreshOrdersBtn').addEventListener('click', () => this.loadOrders());
+    }
+
+    switchTab(tabName) {
+        this.currentTab = tabName;
+
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.tab === tabName);
+        });
+
+        document.querySelectorAll('.admin-panel').forEach(panel => {
+            panel.classList.toggle('active', panel.id === `admin${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
+        });
+
+        this.loadCurrentTab();
+    }
+
+    loadCurrentTab() {
+        switch(this.currentTab) {
+            case 'categories':
+                this.loadCategories();
+                break;
+            case 'products':
+                this.loadProducts();
+                break;
+            case 'sections':
+                this.loadSections();
+                break;
+            case 'orders':
+                this.loadOrders();
+                break;
+        }
+    }
+
+    async loadCategories() {
+        try {
+            const response = await fetch('/api/catalog');
+            const data = await response.json();
+
+            const categoriesList = document.getElementById('categoriesList');
+            const categories = data.data?.categories || {};
+
+            categoriesList.innerHTML = '';
+
+            Object.entries(categories).forEach(([key, category]) => {
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'admin-item-card';
+                categoryCard.innerHTML = `
+                    <div class="admin-item-header">
+                        <h4>${category.name}</h4>
+                        <span class="badge">${category.products?.length || 0} productos</span>
+                    </div>
+                    <p class="admin-item-description">${category.description || 'Sin descripción'}</p>
+                    <div class="admin-item-actions">
+                        <button class="btn btn-sm btn-primary" onclick="adminPanel.editCategory('${key}')">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="adminPanel.deleteCategory('${key}')">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                `;
+                categoriesList.appendChild(categoryCard);
+            });
+        } catch (error) {
+            console.error('Error loading categories:', error);
+        }
+    }
+
+    async loadProducts() {
+        try {
+            const response = await fetch('/api/catalog');
+            const data = await response.json();
+
+            const productsList = document.getElementById('productsList');
+            const categories = data.data?.categories || {};
+
+            productsList.innerHTML = '';
+
+            Object.entries(categories).forEach(([catKey, category]) => {
+                category.products?.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'admin-item-card';
+                    productCard.innerHTML = `
+                        <div class="admin-item-header">
+                            <h4>${product.name}</h4>
+                            <span class="badge">${catKey}</span>
+                        </div>
+                        <p class="admin-item-description">${product.description || 'Sin descripción'}</p>
+                        <p class="admin-item-price">${product.price || 'Sin precio'}</p>
+                        <div class="admin-item-actions">
+                            <button class="btn btn-sm btn-primary" onclick="adminPanel.editProduct('${catKey}', '${product.name}')">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="adminPanel.deleteProduct('${catKey}', '${product.name}')">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    `;
+                    productsList.appendChild(productCard);
+                });
+            });
+        } catch (error) {
+            console.error('Error loading products:', error);
+        }
+    }
+
+    async loadSections() {
+        try {
+            const response = await fetch('/api/sections');
+            const data = await response.json();
+
+            const sectionsList = document.getElementById('sectionsList');
+            const sections = data.data?.sections || {};
+
+            sectionsList.innerHTML = '';
+
+            Object.entries(sections).forEach(([key, section]) => {
+                const sectionCard = document.createElement('div');
+                sectionCard.className = 'admin-item-card';
+                sectionCard.innerHTML = `
+                    <div class="admin-item-header">
+                        <h4>${section.title}</h4>
+                        <span class="badge">${key}</span>
+                    </div>
+                    <p class="admin-item-description">${section.content || 'Sin contenido'}</p>
+                    <div class="admin-item-actions">
+                        <button class="btn btn-sm btn-primary" onclick="adminPanel.editSection('${key}')">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="adminPanel.deleteSection('${key}')">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                `;
+                sectionsList.appendChild(sectionCard);
+            });
+        } catch (error) {
+            console.error('Error loading sections:', error);
+        }
+    }
+
+    async loadOrders() {
+        try {
+            const response = await fetch('/api/orders');
+            const data = await response.json();
+
+            const ordersList = document.getElementById('ordersList');
+            const orders = data.orders || [];
+
+            ordersList.innerHTML = '';
+
+            if (orders.length === 0) {
+                ordersList.innerHTML = '<p class="empty-state">No hay pedidos disponibles</p>';
+                return;
+            }
+
+            orders.forEach(order => {
+                const orderCard = document.createElement('div');
+                orderCard.className = 'admin-item-card';
+                orderCard.innerHTML = `
+                    <div class="admin-item-header">
+                        <h4>Pedido #${order.id || 'N/A'}</h4>
+                        <span class="badge ${order.status}">${order.status}</span>
+                    </div>
+                    <p class="admin-item-description"><strong>Cliente:</strong> ${order.customer_name || 'N/A'}</p>
+                    <p class="admin-item-price"><strong>Total:</strong> ${order.total || 'N/A'}</p>
+                    <div class="admin-item-actions">
+                        <button class="btn btn-sm btn-success" onclick="adminPanel.completeOrder(${order.id})">
+                            <i class="fas fa-check"></i> Completar
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="adminPanel.cancelOrder(${order.id})">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                    </div>
+                `;
+                ordersList.appendChild(orderCard);
+            });
+        } catch (error) {
+            console.error('Error loading orders:', error);
+        }
+    }
+
+    // Category methods
+    addCategory() {
+        const categoryKey = prompt('Clave de la categoría (ej: nueva_categoria):');
+        if (!categoryKey) return;
+
+        const categoryName = prompt('Nombre de la categoría:');
+        if (!categoryName) return;
+
+        const description = prompt('Descripción:') || '';
+
+        this.makeRequest('POST', '/api/admin/categories', {
+            category_key: categoryKey,
+            category_name: categoryName,
+            description: description
+        }).then(() => this.loadCategories());
+    }
+
+    editCategory(categoryKey) {
+        // Implementar edición
+        alert('Función de edición en desarrollo');
+    }
+
+    deleteCategory(categoryKey) {
+        if (!confirm('¿Estás seguro de eliminar esta categoría?')) return;
+
+        this.makeRequest('DELETE', `/api/admin/categories/${categoryKey}`)
+            .then(() => this.loadCategories());
+    }
+
+    // Product methods
+    addProduct() {
+        alert('Función de añadir producto en desarrollo');
+    }
+
+    editProduct(categoryKey, productName) {
+        alert('Función de editar producto en desarrollo');
+    }
+
+    deleteProduct(categoryKey, productName) {
+        if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+
+        this.makeRequest('DELETE', `/api/admin/products/${categoryKey}/${productName}`)
+            .then(() => this.loadProducts());
+    }
+
+    // Section methods
+    addSection() {
+        const sectionKey = prompt('Clave de la sección (ej: nueva_seccion):');
+        if (!sectionKey) return;
+
+        const title = prompt('Título:');
+        if (!title) return;
+
+        const content = prompt('Contenido:') || '';
+
+        this.makeRequest('POST', '/api/admin/sections', {
+            section_key: sectionKey,
+            title: title,
+            content: content
+        }).then(() => this.loadSections());
+    }
+
+    editSection(sectionKey) {
+        alert('Función de edición en desarrollo');
+    }
+
+    deleteSection(sectionKey) {
+        if (!confirm('¿Estás seguro de eliminar esta sección?')) return;
+
+        this.makeRequest('DELETE', `/api/admin/sections/${sectionKey}`)
+            .then(() => this.loadSections());
+    }
+
+    // Order methods
+    completeOrder(orderId) {
+        this.makeRequest('POST', `/api/admin/orders/${orderId}/complete`)
+            .then(() => this.loadOrders());
+    }
+
+    cancelOrder(orderId) {
+        if (!confirm('¿Estás seguro de cancelar este pedido?')) return;
+
+        this.makeRequest('POST', `/api/admin/orders/${orderId}/cancel`)
+            .then(() => this.loadOrders());
+    }
+
+    async makeRequest(method, url, data = null) {
+        try {
+            const options = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            if (data) {
+                options.body = JSON.stringify(data);
+            }
+
+            const response = await fetch(url, options);
+            const result = await response.json();
+
+            if (result.success) {
+                alert('Operación exitosa');
+            } else {
+                alert('Error: ' + (result.error || 'Desconocido'));
+            }
+
+            return result;
+        } catch (error) {
+            console.error('Request error:', error);
+            alert('Error en la petición');
+        }
+    }
+}
+
+// Inicializar admin panel
+let adminPanel;
+document.addEventListener('DOMContentLoaded', () => {
+    adminPanel = new AdminPanel();
+});
+
+// Exportar para uso global
+window.adminPanel = adminPanel;
