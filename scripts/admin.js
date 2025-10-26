@@ -17,14 +17,14 @@ class AdminPanel {
         try {
             // Obtener username del usuario
             let username = null;
-            
+
             console.log('🔍 Verificando datos de admin...');
-            
+
             // Método 1: Parámetros de URL (cuando viene del bot)
             const urlParams = new URLSearchParams(window.location.search);
             const urlUser = urlParams.get('user');
             const isAdmin = urlParams.get('admin') === 'true';
-            
+
             if (urlUser && isAdmin) {
                 username = urlUser;
                 console.log('✅ Username desde URL:', username);
@@ -34,20 +34,20 @@ class AdminPanel {
                 if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
                     const initData = window.Telegram.WebApp.initDataUnsafe;
                     console.log('✅ Datos de Telegram disponibles:', initData);
-                    
+
                     if (initData?.user?.username) {
                         username = initData.user.username;
                         console.log('✅ Username encontrado en Telegram:', username);
                     }
                 }
             }
-            
+
             // Si no hay username, no es admin
             if (!username) {
                 console.log('❌ No hay username disponible');
                 return;
             }
-            
+
             console.log('✅ Verificando admin para:', username);
 
             // Lista de usuarios admin (mismo que en bot.py)
@@ -55,9 +55,9 @@ class AdminPanel {
             let isAdmin = false;
             
             // Si viene de URL con admin=true, verificar que el usuario está en la lista de admins
-            if (urlUser && isAdmin) {
+            if (urlUser && urlParams.get('admin') === 'true') {
                 isAdmin = adminUsers.includes(username);
-                console.log('✅ Verificación desde URL:', isAdmin);
+                console.log('✅ Verificación desde URL:', isAdmin, 'usuario:', username, 'es admin?', isAdmin);
             } else {
                 // Obtener la URL base de la API
                 const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
@@ -78,6 +78,8 @@ class AdminPanel {
 
                 isAdmin = data.authenticated || (username && adminUsers.includes(username));
             }
+            
+            console.log('🔍 Verificación final isAdmin:', isAdmin);
 
             if (isAdmin) {
                 this.authenticated = true;
