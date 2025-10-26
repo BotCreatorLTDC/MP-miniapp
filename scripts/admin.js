@@ -29,10 +29,15 @@ class AdminPanel {
                 if (storedUsername) {
                     username = storedUsername;
                 } else {
-                    // Para testing local
-                    console.log('No username disponible en Telegram');
-                    console.log('Para activar el panel de admin, necesitas abrir la miniapp desde el bot de Telegram');
-                    return;
+                    // Para testing local - mostrar prompt
+                    const testUsername = prompt('Ingresa tu username para verificar admin (para testing):\n(Usa "Mpglobalcorp", "latierradc", o "grlltdc" para testing)');
+                    if (testUsername) {
+                        username = testUsername;
+                        localStorage.setItem('admin_username', testUsername);
+                    } else {
+                        console.log('No username disponible. Para testing, ejecuta: localStorage.setItem("admin_username", "Mpglobalcorp")');
+                        return;
+                    }
                 }
             }
             
