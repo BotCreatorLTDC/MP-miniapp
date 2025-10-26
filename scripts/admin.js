@@ -67,31 +67,50 @@ class AdminPanel {
             if (isAdmin) {
                 this.authenticated = true;
                 this.currentUser = data.user || username;
+                
+                // Mostrar botón en header
                 const adminBtn = document.getElementById('adminBtn');
                 if (adminBtn) {
                     adminBtn.style.display = 'flex';
-                    console.log('✅ Panel de admin activado para:', this.currentUser);
-                    console.log('✅ Botón admin mostrado');
-                } else {
-                    console.error('❌ No se encontró el botón adminBtn');
+                    console.log('✅ Botón admin en header mostrado');
                 }
+                
+                // Mostrar sección en navigation
+                const adminNavSection = document.getElementById('adminNavSection');
+                if (adminNavSection) {
+                    adminNavSection.style.display = 'block';
+                    console.log('✅ Sección admin en navegación mostrada');
+                }
+                
+                console.log('✅ Panel de admin activado para:', this.currentUser);
             } else {
                 console.log('❌ Usuario no es admin:', username);
             }
         } catch (error) {
             console.error('Error verificando admin:', error);
             console.log('Intentando verificación local...');
-            
+
             // Fallback: verificar localmente
             const adminUsers = ['Mpglobalcorp', 'latierradc', 'grlltdc'];
             if (username && adminUsers.includes(username)) {
                 this.authenticated = true;
                 this.currentUser = username;
+                
+                // Mostrar botón en header
                 const adminBtn = document.getElementById('adminBtn');
                 if (adminBtn) {
                     adminBtn.style.display = 'flex';
-                    console.log('✅ Panel de admin activado (verificación local)');
+                    console.log('✅ Botón admin en header mostrado (verificación local)');
                 }
+                
+                // Mostrar sección en navigation
+                const adminNavSection = document.getElementById('adminNavSection');
+                if (adminNavSection) {
+                    adminNavSection.style.display = 'block';
+                    console.log('✅ Sección admin en navegación mostrada (verificación local)');
+                }
+                
+                console.log('✅ Panel de admin activado (verificación local)');
             } else {
                 console.log('No hay acceso de administrador');
             }
@@ -100,15 +119,24 @@ class AdminPanel {
 
     setupEventListeners() {
         const adminBtn = document.getElementById('adminBtn');
+        const adminNavBtn = document.getElementById('adminNavBtn');
         const adminModal = document.getElementById('adminModal');
         const closeAdminModal = document.getElementById('closeAdminModal');
         const closeAdminModalBtn = document.getElementById('closeAdminModalBtn');
 
-        if (adminBtn) {
-            adminBtn.addEventListener('click', () => {
+        const showAdminModal = () => {
+            if (adminModal) {
                 adminModal.classList.add('show');
                 this.loadCurrentTab();
-            });
+            }
+        };
+
+        if (adminBtn) {
+            adminBtn.addEventListener('click', showAdminModal);
+        }
+
+        if (adminNavBtn) {
+            adminNavBtn.addEventListener('click', showAdminModal);
         }
 
         if (closeAdminModal) {
