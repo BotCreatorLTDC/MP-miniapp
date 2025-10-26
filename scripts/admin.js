@@ -195,6 +195,33 @@ class AdminPanel {
         document.getElementById('refreshProductsBtn').addEventListener('click', () => this.loadProducts());
         document.getElementById('refreshSectionsBtn').addEventListener('click', () => this.loadSections());
         document.getElementById('refreshOrdersBtn').addEventListener('click', () => this.loadOrders());
+
+        // Category form events
+        document.getElementById('submitCategoryFormBtn').addEventListener('click', () => this.submitCategoryForm());
+        document.getElementById('closeCategoryFormBtn').addEventListener('click', () => {
+            document.getElementById('categoryFormModal').classList.remove('show');
+        });
+        document.getElementById('cancelCategoryFormBtn').addEventListener('click', () => {
+            document.getElementById('categoryFormModal').classList.remove('show');
+        });
+
+        // Product form events
+        document.getElementById('submitProductFormBtn').addEventListener('click', () => this.submitProductForm());
+        document.getElementById('closeProductFormBtn').addEventListener('click', () => {
+            document.getElementById('productFormModal').classList.remove('show');
+        });
+        document.getElementById('cancelProductFormBtn').addEventListener('click', () => {
+            document.getElementById('productFormModal').classList.remove('show');
+        });
+
+        // Section form events
+        document.getElementById('submitSectionFormBtn').addEventListener('click', () => this.submitSectionForm());
+        document.getElementById('closeSectionFormBtn').addEventListener('click', () => {
+            document.getElementById('sectionFormModal').classList.remove('show');
+        });
+        document.getElementById('cancelSectionFormBtn').addEventListener('click', () => {
+            document.getElementById('sectionFormModal').classList.remove('show');
+        });
     }
 
     switchTab(tabName) {
@@ -383,31 +410,48 @@ class AdminPanel {
 
     // Category methods
     addCategory() {
-        const categoryKey = prompt('Clave de la categoría (ej: nueva_categoria):');
-        if (!categoryKey) return;
+        // Mostrar formulario
+        document.getElementById('categoryFormMode').value = 'add';
+        document.getElementById('categoryFormKey').value = '';
+        document.getElementById('categoryFormTitle').textContent = 'Añadir Categoría';
+        document.getElementById('categoryKey').disabled = false;
+        document.getElementById('categoryKey').value = '';
+        document.getElementById('categoryName').value = '';
+        document.getElementById('categoryDescription').value = '';
+        document.getElementById('categoryFormModal').classList.add('show');
+    }
 
-        const categoryName = prompt('Nombre de la categoría:');
-        if (!categoryName) return;
+    editCategory(categoryKey) {
+        // Cargar datos de la categoría en el formulario
+        document.getElementById('categoryFormMode').value = 'edit';
+        document.getElementById('categoryFormKey').value = categoryKey;
+        document.getElementById('categoryFormTitle').textContent = 'Editar Categoría';
+        document.getElementById('categoryKey').disabled = true;
+        document.getElementById('categoryKey').value = categoryKey;
+        
+        // TODO: Cargar datos de la categoría desde el API
+        document.getElementById('categoryName').value = '';
+        document.getElementById('categoryDescription').value = '';
+        document.getElementById('categoryFormModal').classList.add('show');
+    }
+    
+    submitCategoryForm() {
+        const mode = document.getElementById('categoryFormMode').value;
+        const categoryKey = document.getElementById('categoryFormKey').value || document.getElementById('categoryKey').value;
+        const categoryName = document.getElementById('categoryName').value;
+        const description = document.getElementById('categoryDescription').value;
 
-        const description = prompt('Descripción:') || '';
+        if (!categoryKey || !categoryName) {
+            alert('Por favor completa todos los campos requeridos');
+            return;
+        }
+
+        document.getElementById('categoryFormModal').classList.remove('show');
 
         this.makeRequest('POST', '/api/admin/categories', {
             category_key: categoryKey,
             category_name: categoryName,
             description: description
-        }).then(() => this.loadCategories());
-    }
-
-    editCategory(categoryKey) {
-        const newName = prompt('Nuevo nombre de la categoría:');
-        if (!newName) return;
-
-        const newDescription = prompt('Nueva descripción (opcional):') || '';
-
-        this.makeRequest('POST', '/api/admin/categories', {
-            category_key: categoryKey,
-            category_name: newName,
-            description: newDescription
         }).then(() => this.loadCategories());
     }
 
@@ -419,46 +463,78 @@ class AdminPanel {
     }
 
     // Product methods
-    addProduct() {
-        const categoryKey = prompt('Categoría para el producto (ej: varios):');
-        if (!categoryKey) return;
+    async addProduct() {
+        // Cargar categorías en el select
+        const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
+        const response = await fetch(`${apiBase}/api/catalog`);
+        const data = await response.json();
+        const categories = data.data?.categories || {};
 
-        const productName = prompt('Nombre del producto:');
-        if (!productName) return;
+        const categorySelect = document.getElementById('productCategory');
+        categorySelect.innerHTML = '<option value="">Seleccionar categoría...</option>';
+        
+        Object.entries(categories).forEach(([key, category]) => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+        });
 
-        const productPrice = prompt('Precio del producto:');
-        if (!productPrice) return;
-
-        const productDescription = prompt('Descripción del producto (opcional):') || '';
-        const productStock = prompt('Stock del producto (ej: 99)') || '99';
-
-        this.makeRequest('POST', '/api/admin/products', {
-            category_key: categoryKey,
-            name: productName,
-            price: productPrice,
-            description: productDescription,
-            stock: productStock
-        }).then(() => this.loadProducts());
+        // Mostrar formulario
+        document.getElementById('productFormMode').value = 'add';
+        document.getElementById('productFormOldName').value = '';
+        document.getElementById('productFormCategoryKey').value = '';
+        document.getElementById('productFormTitle').textContent = 'Añadir Producto';
+        document.getElementById('productCategory').value = '';
+        document.getElementById('productName').value = '';
+        document.getElementById('productPrice').value = '';
+        document.getElementById('productDescription').value = '';
+        document.getElementById('productStock').value = '99';
+        document.getElementById('productFormModal').classList.add('show');
     }
 
     editProduct(categoryKey, productName) {
-        const newName = prompt('Nuevo nombre del producto:', productName);
-        if (!newName) return;
+        // Mostrar formulario con datos pre-llenados
+        document.getElementById('productFormMode').value = 'edit';
+        document.getElementById('productFormOldName').value = productName;
+        document.getElementById('productFormCategoryKey').value = categoryKey;
+        document.getElementById('productFormTitle').textContent = 'Editar Producto';
+        
+        // Cargar datos del producto en el formulario
+        // TODO: Obtener datos del producto desde el API
+        
+        document.getElementById('productFormModal').classList.add('show');
+    }
+    
+    submitProductForm() {
+        const mode = document.getElementById('productFormMode').value;
+        const categoryKey = document.getElementById('productCategory').value || document.getElementById('productFormCategoryKey').value;
+        const productName = document.getElementById('productName').value;
+        const productPrice = document.getElementById('productPrice').value;
+        const productDescription = document.getElementById('productDescription').value;
+        const productStock = document.getElementById('productStock').value;
+        const oldName = document.getElementById('productFormOldName').value;
 
-        const newPrice = prompt('Nuevo precio del producto:');
-        if (!newPrice) return;
+        if (!categoryKey || !productName || !productPrice) {
+            alert('Por favor completa todos los campos requeridos');
+            return;
+        }
 
-        const newDescription = prompt('Nueva descripción (opcional):') || '';
-        const newStock = prompt('Nuevo stock (ej: 99)') || '99';
+        document.getElementById('productFormModal').classList.remove('show');
 
-        this.makeRequest('POST', '/api/admin/products', {
+        const formData = {
             category_key: categoryKey,
-            name: newName,
-            price: newPrice,
-            description: newDescription,
-            stock: newStock,
-            old_name: productName  // Para identificar el producto a actualizar
-        }).then(() => this.loadProducts());
+            name: productName,
+            price: productPrice,
+            description: productDescription || '',
+            stock: productStock || '99'
+        };
+
+        if (mode === 'edit' && oldName) {
+            formData.old_name = oldName;
+        }
+
+        this.makeRequest('POST', '/api/admin/products', formData).then(() => this.loadProducts());
     }
 
     deleteProduct(categoryKey, productName) {
@@ -470,31 +546,47 @@ class AdminPanel {
 
     // Section methods
     addSection() {
-        const sectionKey = prompt('Clave de la sección (ej: nueva_seccion):');
-        if (!sectionKey) return;
+        // Mostrar formulario
+        document.getElementById('sectionFormMode').value = 'add';
+        document.getElementById('sectionFormKey').value = '';
+        document.getElementById('sectionFormTitle').textContent = 'Añadir Sección';
+        document.getElementById('sectionKey').disabled = false;
+        document.getElementById('sectionKey').value = '';
+        document.getElementById('sectionTitle').value = '';
+        document.getElementById('sectionContent').value = '';
+        document.getElementById('sectionFormModal').classList.add('show');
+    }
 
-        const title = prompt('Título:');
-        if (!title) return;
+    editSection(sectionKey) {
+        // Mostrar formulario con datos pre-llenados
+        document.getElementById('sectionFormMode').value = 'edit';
+        document.getElementById('sectionFormKey').value = sectionKey;
+        document.getElementById('sectionFormTitle').textContent = 'Editar Sección';
+        document.getElementById('sectionKey').disabled = true;
+        document.getElementById('sectionKey').value = sectionKey;
+        
+        // TODO: Cargar datos de la sección desde el API
+        
+        document.getElementById('sectionFormModal').classList.add('show');
+    }
+    
+    submitSectionForm() {
+        const mode = document.getElementById('sectionFormMode').value;
+        const sectionKey = document.getElementById('sectionFormKey').value || document.getElementById('sectionKey').value;
+        const title = document.getElementById('sectionTitle').value;
+        const content = document.getElementById('sectionContent').value;
 
-        const content = prompt('Contenido:') || '';
+        if (!sectionKey || !title || !content) {
+            alert('Por favor completa todos los campos requeridos');
+            return;
+        }
+
+        document.getElementById('sectionFormModal').classList.remove('show');
 
         this.makeRequest('POST', '/api/admin/sections', {
             section_key: sectionKey,
             title: title,
             content: content
-        }).then(() => this.loadSections());
-    }
-
-    editSection(sectionKey) {
-        const newTitle = prompt('Nuevo título de la sección:');
-        if (!newTitle) return;
-
-        const newContent = prompt('Nuevo contenido de la sección (opcional):') || '';
-
-        this.makeRequest('POST', '/api/admin/sections', {
-            section_key: sectionKey,
-            title: newTitle,
-            content: newContent
         }).then(() => this.loadSections());
     }
 

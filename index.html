@@ -547,6 +547,118 @@
         </div>
     </div>
 
+    <!-- Admin Forms -->
+    <!-- Category Form -->
+    <div class="modal" id="categoryFormModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="categoryFormTitle">Añadir Categoría</h2>
+                <button class="close-btn" id="closeCategoryFormBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <input type="hidden" id="categoryFormMode" value="add">
+                    <input type="hidden" id="categoryFormKey" value="">
+                    <div class="form-group">
+                        <label for="categoryKey">Clave de la categoría:</label>
+                        <input type="text" id="categoryKey" required placeholder="ej: nueva_categoria" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryName">Nombre de la categoría:</label>
+                        <input type="text" id="categoryName" required placeholder="Nombre a mostrar">
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryDescription">Descripción (opcional):</label>
+                        <textarea id="categoryDescription" rows="3" placeholder="Descripción de la categoría"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelCategoryFormBtn">Cancelar</button>
+                <button class="btn btn-primary" id="submitCategoryFormBtn">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Form -->
+    <div class="modal" id="productFormModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="productFormTitle">Añadir Producto</h2>
+                <button class="close-btn" id="closeProductFormBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productFormMode" value="add">
+                    <input type="hidden" id="productFormOldName" value="">
+                    <input type="hidden" id="productFormCategoryKey" value="">
+                    <div class="form-group">
+                        <label for="productCategory">Categoría:</label>
+                        <select id="productCategory" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productName">Nombre del producto:</label>
+                        <input type="text" id="productName" required placeholder="Nombre del producto">
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Precio:</label>
+                        <input type="text" id="productPrice" required placeholder="ej: 100# | 200#">
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Descripción (opcional):</label>
+                        <textarea id="productDescription" rows="3" placeholder="Descripción del producto"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="productStock">Stock:</label>
+                        <input type="text" id="productStock" value="99" placeholder="ej: 99">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelProductFormBtn">Cancelar</button>
+                <button class="btn btn-primary" id="submitProductFormBtn">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Form -->
+    <div class="modal" id="sectionFormModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="sectionFormTitle">Añadir Sección</h2>
+                <button class="close-btn" id="closeSectionFormBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="sectionForm">
+                    <input type="hidden" id="sectionFormMode" value="add">
+                    <input type="hidden" id="sectionFormKey" value="">
+                    <div class="form-group">
+                        <label for="sectionKey">Clave de la sección:</label>
+                        <input type="text" id="sectionKey" required placeholder="ej: nueva_seccion" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="sectionTitle">Título:</label>
+                        <input type="text" id="sectionTitle" required placeholder="Título de la sección">
+                    </div>
+                    <div class="form-group">
+                        <label for="sectionContent">Contenido:</label>
+                        <textarea id="sectionContent" rows="5" required placeholder="Contenido de la sección"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelSectionFormBtn">Cancelar</button>
+                <button class="btn btn-primary" id="submitSectionFormBtn">Guardar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
