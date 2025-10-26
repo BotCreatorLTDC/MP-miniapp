@@ -23,9 +23,9 @@ class AdminPanel {
             // Método 1: Parámetros de URL (cuando viene del bot)
             const urlParams = new URLSearchParams(window.location.search);
             const urlUser = urlParams.get('user');
-            const isAdmin = urlParams.get('admin') === 'true';
+            const isAdminUrl = urlParams.get('admin') === 'true';
 
-            if (urlUser && isAdmin) {
+            if (urlUser && isAdminUrl) {
                 username = urlUser;
                 console.log('✅ Username desde URL:', username);
                 console.log('✅ Admin mode activado desde URL');
@@ -53,7 +53,7 @@ class AdminPanel {
             // Lista de usuarios admin (mismo que en bot.py)
             const adminUsers = ['Mpglobalcorp', 'latierradc', 'grlltdc'];
             let isAdmin = false;
-            
+
             // Si viene de URL con admin=true, verificar que el usuario está en la lista de admins
             if (urlUser && urlParams.get('admin') === 'true') {
                 isAdmin = adminUsers.includes(username);
@@ -63,7 +63,7 @@ class AdminPanel {
                 const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
 
                 console.log('API Base:', apiBase);
-                
+
                 // Verificar si el usuario es admin a través de la API
                 const response = await fetch(`${apiBase}/api/admin/check`, {
                     method: 'POST',
@@ -78,7 +78,7 @@ class AdminPanel {
 
                 isAdmin = data.authenticated || (username && adminUsers.includes(username));
             }
-            
+
             console.log('🔍 Verificación final isAdmin:', isAdmin);
 
             if (isAdmin) {
