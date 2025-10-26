@@ -17,31 +17,38 @@ class AdminPanel {
         try {
             // Obtener username del usuario de Telegram
             let username = null;
-
-            // Intentar obtener username de Telegram initData
-            if (window.initData?.user?.username) {
-                username = window.initData.user.username;
+            
+            console.log('🔍 Verificando datos de Telegram...');
+            
+            // Método oficial de Telegram WebApp (el mismo que usa app.js)
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+                const initData = window.Telegram.WebApp.initDataUnsafe;
+                console.log('✅ Datos de Telegram disponibles:', initData);
+                
+                if (initData?.user?.username) {
+                    username = initData.user.username;
+                    console.log('✅ Username encontrado:', username);
+                } else {
+                    console.log('⚠️ Usuario no tiene username:', initData?.user);
+                }
+            } else {
+                console.log('⚠️ Telegram.WebApp no disponible');
             }
-
-            // Para testing: si no hay initData, usar localStorage o prompt
+            
+            // Para testing: si no hay initData, usar localStorage
             if (!username) {
                 const storedUsername = localStorage.getItem('admin_username');
                 if (storedUsername) {
                     username = storedUsername;
+                    console.log('Usando username de localStorage:', username);
                 } else {
-                    // Para testing local - mostrar prompt
-                    const testUsername = prompt('Ingresa tu username para verificar admin (para testing):\n(Usa "Mpglobalcorp", "latierradc", o "grlltdc" para testing)');
-                    if (testUsername) {
-                        username = testUsername;
-                        localStorage.setItem('admin_username', testUsername);
-                    } else {
-                        console.log('No username disponible. Para testing, ejecuta: localStorage.setItem("admin_username", "Mpglobalcorp")');
-                        return;
-                    }
+                    console.log('❌ No hay username disponible de Telegram');
+                    console.log('Para testing local, ejecuta en consola: localStorage.setItem("admin_username", "Mpglobalcorp")');
+                    return;
                 }
             }
-
-            console.log('Verificando admin para:', username);
+            
+            console.log('✅ Verificando admin para:', username);
 
             // Obtener la URL base de la API
             const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
@@ -67,21 +74,21 @@ class AdminPanel {
             if (isAdmin) {
                 this.authenticated = true;
                 this.currentUser = data.user || username;
-                
+
                 // Mostrar botón en header
                 const adminBtn = document.getElementById('adminBtn');
                 if (adminBtn) {
                     adminBtn.style.display = 'flex';
                     console.log('✅ Botón admin en header mostrado');
                 }
-                
+
                 // Mostrar sección en navigation
                 const adminNavSection = document.getElementById('adminNavSection');
                 if (adminNavSection) {
                     adminNavSection.style.display = 'block';
                     console.log('✅ Sección admin en navegación mostrada');
                 }
-                
+
                 console.log('✅ Panel de admin activado para:', this.currentUser);
             } else {
                 console.log('❌ Usuario no es admin:', username);
@@ -95,21 +102,21 @@ class AdminPanel {
             if (username && adminUsers.includes(username)) {
                 this.authenticated = true;
                 this.currentUser = username;
-                
+
                 // Mostrar botón en header
                 const adminBtn = document.getElementById('adminBtn');
                 if (adminBtn) {
                     adminBtn.style.display = 'flex';
                     console.log('✅ Botón admin en header mostrado (verificación local)');
                 }
-                
+
                 // Mostrar sección en navigation
                 const adminNavSection = document.getElementById('adminNavSection');
                 if (adminNavSection) {
                     adminNavSection.style.display = 'block';
                     console.log('✅ Sección admin en navegación mostrada (verificación local)');
                 }
-                
+
                 console.log('✅ Panel de admin activado (verificación local)');
             } else {
                 console.log('No hay acceso de administrador');
