@@ -15,25 +15,56 @@ class AdminPanel {
 
     async checkAuth() {
         try {
+            // Obtener username del usuario de Telegram
+            let username = null;
+            
+            // Intentar obtener username de Telegram initData
+            if (window.initData?.user?.username) {
+                username = window.initData.user.username;
+            }
+            
+            // Para testing: si no hay initData, usar localStorage o prompt
+            if (!username) {
+                const storedUsername = localStorage.getItem('admin_username');
+                if (storedUsername) {
+                    username = storedUsername;
+                } else {
+                    // Para testing local
+                    console.log('No username disponible en Telegram');
+                    console.log('Para activar el panel de admin, necesitas abrir la miniapp desde el bot de Telegram');
+                    return;
+                }
+            }
+            
+            console.log('Verificando admin para:', username);
+            
+            // Obtener la URL base de la API
+            const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
+            
+            console.log('API Base:', apiBase);
+            
             // Verificar si el usuario es admin a través de la API
-            const response = await fetch('/api/admin/check', {
+            const response = await fetch(`${apiBase}/api/admin/check`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    username: window.initData?.user?.username
-                })
+                body: JSON.stringify({ username: username })
             });
 
             const data = await response.json();
+            console.log('Respuesta de API admin:', data);
 
             if (data.authenticated) {
                 this.authenticated = true;
                 this.currentUser = data.user;
                 document.getElementById('adminBtn').style.display = 'flex';
+                console.log('✅ Panel de admin activado para:', this.currentUser);
+            } else {
+                console.log('❌ Usuario no es admin:', username);
             }
         } catch (error) {
+            console.error('Error verificando admin:', error);
             console.log('No hay acceso de administrador');
         }
     }
@@ -114,7 +145,8 @@ class AdminPanel {
 
     async loadCategories() {
         try {
-            const response = await fetch('/api/catalog');
+            const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
+            const response = await fetch(`${apiBase}/api/catalog`);
             const data = await response.json();
 
             const categoriesList = document.getElementById('categoriesList');
@@ -149,7 +181,8 @@ class AdminPanel {
 
     async loadProducts() {
         try {
-            const response = await fetch('/api/catalog');
+            const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
+            const response = await fetch(`${apiBase}/api/catalog`);
             const data = await response.json();
 
             const productsList = document.getElementById('productsList');
@@ -187,7 +220,8 @@ class AdminPanel {
 
     async loadSections() {
         try {
-            const response = await fetch('/api/sections');
+            const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
+            const response = await fetch(`${apiBase}/api/sections`);
             const data = await response.json();
 
             const sectionsList = document.getElementById('sectionsList');
@@ -222,7 +256,8 @@ class AdminPanel {
 
     async loadOrders() {
         try {
-            const response = await fetch('/api/orders');
+            const apiBase = window.mpApp && window.mpApp.getApiBases ? window.mpApp.getApiBases()[1] : 'https://mp-bot-wtcf.onrender.com';
+            const response = await fetch(`${apiBase}/api/orders`);
             const data = await response.json();
 
             const ordersList = document.getElementById('ordersList');
